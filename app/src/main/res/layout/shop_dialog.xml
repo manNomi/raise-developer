@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.85"
         app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintVertical_bias="0.75"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/shop_dialog_box_without_top_border"
