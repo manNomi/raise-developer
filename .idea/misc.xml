@@ -7,6 +7,10 @@
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/box_border.xml" value="0.1715" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/box_without_bottom_border.xml" value="0.1225" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/box_without_top_border.xml" value="0.1715" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/grass_shop_custom_view_box_border.xml" value="0.1225" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/grass_shop_custom_view_button_design.xml" value="0.1225" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/grass_shop_custom_view_text_view_design.xml" value="0.1225" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/grass_shop_dialog_box_border.xml" value="0.1225" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1235" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1235" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/option_dialog_background.xml" value="0.1225" />
@@ -14,7 +18,11 @@
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/option_dialog_middle_background.xml" value="0.1225" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/shop_category_not_selected_button.xml" value="0.1715" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/shop_category_selected_button.xml" value="0.1715" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/shop_dialog_box_without_top_border.xml" value="0.1235" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/shop_scroll_view_design.xml" value="0.1235" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/layout/grass_shop_custom_view.xml" value="0.264" />
+        <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/layout/grass_shop_dialog.xml" value="0.2" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/layout/option_dialog.xml" value="0.264" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/layout/shop_custom_view.xml" value="0.2" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/layout/shop_dialog.xml" value="0.264" />
