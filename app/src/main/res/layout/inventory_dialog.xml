@@ -25,23 +25,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/shop_dialog_employ_shop_button"
+            android:id="@+id/inventory_dialog_employ_shop_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="고용 상점"
+            android:text="인벤토리"
             android:textColor="@color/white"
             android:layout_weight="1"
             android:background="@drawable/shop_category_selected_button"/>
         <Button
-            android:id="@+id/shop_dialog_watch_shop_button"
+            android:id="@+id/inventory_dialog_watch_shop_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="시계 상점"
+            android:text="고용 직원"
             android:textColor="@color/white"
             android:layout_weight="1"
             android:background="@drawable/shop_category_not_selected_button"/>
         <Button
-            android:id="@+id/shop_dialog_car_shop_button"
+            android:id="@+id/inventory_dialog_car_shop_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="차 상점"

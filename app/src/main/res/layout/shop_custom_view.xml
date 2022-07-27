@@ -26,6 +26,7 @@
         android:background="@drawable/shop_scroll_view_design"
         android:text="금액"
         android:textSize="20dp"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

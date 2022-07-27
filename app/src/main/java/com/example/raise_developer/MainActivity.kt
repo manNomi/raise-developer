@@ -8,25 +8,32 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         grassShopDialogButtonEvent()
         optionDialogButtonEvent()
         shopDialogButtonEvent()
     }
     fun grassShopDialogButtonEvent(){
+        val grassShopDialogButton = findViewById<Button>(R.id.grass_shop_dialog_button)
+        grassShopDialogButton.setOnClickListener {
+            val grassShopDialog = GrassShopDialog()
+
+            grassShopDialog.show(supportFragmentManager,"grassShopDialg")
+        }
 
     }
     fun optionDialogButtonEvent(){
         val optionDialogButton = findViewById<Button>(R.id.option_dialog_button)
         optionDialogButton.setOnClickListener {
-            val messageDialog = OptionDialog()
-            messageDialog.show(supportFragmentManager,"optionDialog")
+            val optionDialog = OptionDialog()
+            optionDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
         }
     }
     fun shopDialogButtonEvent(){
         val shopDialogButton = findViewById<Button>(R.id.shop_dialog_button)
         shopDialogButton.setOnClickListener {
-            val messageDialog = ShopDialog()
-            messageDialog.show(supportFragmentManager,"shopDialog")
+            val shopDialog = ShopDialog()
+            shopDialog.show(supportFragmentManager,"shopDialog") // 다이알로그 생성
         }
 
     }

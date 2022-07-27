@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="300dp"
+    android:background="@color/background_color">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -11,52 +12,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.55">
+        app:layout_constraintBottom_toBottomOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:id="@+id/grass_shop_dialog_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="잔디 관리"
                 android:textSize="25dp"
+                android:textColor="@color/black"
                 android:gravity="center"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.02"/>
-            <ScrollView
-                android:id="@+id/grass_shop_dialog_view_pager2"
+                app:layout_constraintVertical_bias="0.01"
+                />
+            <HorizontalScrollView
+                android:id="@+id/grass_shop_dialog_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@drawable/grass_shop_dialog_box_border"
-                android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/grass_shop_dialog_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHeight_percent="0.7"
-                app:layout_constraintVertical_bias="0.4">
+                app:layout_constraintHeight_percent="0.65"
+                app:layout_constraintVertical_bias="0.1">
                 <LinearLayout
+                    android:id="@+id/grass_shop_dialog_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp"/>
-            </ScrollView>
+                    android:layout_margin="30dp"/>
+            </HorizontalScrollView>
             <Button
                 android:id="@+id/grass_shop_dialog_close_button"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:text="닫기"
-                android:textSize="25dp"
+                android:textSize="20dp"
+                android:background="#D9D9D9"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.96"/>
+                app:layout_constraintVertical_bias="0.97"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

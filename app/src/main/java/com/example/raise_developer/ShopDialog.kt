@@ -23,18 +23,21 @@ class ShopDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.shop_dialog,container,false)
-        linearLayout = view.findViewById(R.id.shop_scroll_view_linear_layout)
-        addView()
+
+        linearLayout = view.findViewById(R.id.shop_scroll_view_linear_layout) // 스크롤 뷰의 linear layout - 여기다 커스텀 뷰를 추가해줌
+        addCustomView()
         employShopButtonEvent(view)
         watchShopButtonEvent(view)
         carShopButtonEvent(view)
 
         return view
     }
-    fun addView(){
-        val childCount = linearLayout.childCount
+
+    fun addCustomView(){ // 커스텀 뷰 추가
+        val childCount = linearLayout.childCount // linear layout의 할당된 뷰들의 수
+
         if (childCount == 0){
-            for(index in 0 until 10){
+            for(index in 0 until 10){ // 나중에 사진이랑 금액 값 넣을거임
                 val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
                 shopCustomView.findViewById<ImageView>(R.id.shop_custom_view_image_view)
                 shopCustomView.findViewById<Button>(R.id.shop_custom_view_buy_button)
@@ -52,7 +55,7 @@ class ShopDialog : DialogFragment() {
             employButton.setBackgroundResource(R.drawable.shop_category_selected_button)
             watchButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
             carButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
-            scrollView.fullScroll(ScrollView.FOCUS_UP)
+            scrollView.fullScroll(ScrollView.FOCUS_UP) // 스크롤 맨 위로 이동
         }
     }
 
@@ -65,7 +68,7 @@ class ShopDialog : DialogFragment() {
             employButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
             watchButton.setBackgroundResource(R.drawable.shop_category_selected_button)
             carButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
-            scrollView.fullScroll(ScrollView.FOCUS_UP)
+            scrollView.fullScroll(ScrollView.FOCUS_UP) // 스크롤 맨 위로 이동
         }
     }
 
@@ -78,16 +81,16 @@ class ShopDialog : DialogFragment() {
             employButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
             watchButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
             carButton.setBackgroundResource(R.drawable.shop_category_selected_button)
-            scrollView.fullScroll(ScrollView.FOCUS_UP)
+            scrollView.fullScroll(ScrollView.FOCUS_UP) // 스크롤 맨 위로 이동
         }
     }
 
     override fun onResume() {
         super.onResume()
-        context?.dialogFragmentResize(this,0.95f,0.7f)
+        context?.dialogFragmentResize(this,0.95f,0.7f) // 다이알로그 크기 조정
     }
 
-    fun Context.dialogFragmentResize(dialogFragment: DialogFragment, width: Float, height: Float) {
+    fun Context.dialogFragmentResize(dialogFragment: DialogFragment, width: Float, height: Float) {// 다이알로그 크기 설정하는 함수
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         if (Build.VERSION.SDK_INT < 30) {
