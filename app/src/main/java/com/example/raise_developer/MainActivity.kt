@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun grassShopDialogButtonEvent(){
+    fun grassShopDialogButtonEvent(){ // 잔디 상점과 연결하면 됨
         val grassShopDialogButton = findViewById<Button>(R.id.grass_shop_dialog_button)
         grassShopDialogButton.setOnClickListener {
             val grassShopDialog = GrassShopDialog()
