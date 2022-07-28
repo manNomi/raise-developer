@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">raise_developer</string>
+    <string name="splash_imoji">▬▬▬.◙.▬▬▬\n═▂▄▄▓▄▄▂\n◢◤ █▀▀████▄▄▄▄◢◤\n█▄▂█ █▄███▀▀▀▀▀▀▀╬\n◥█████◤\n══╩══╩═\n╬═╬\n╬═╬\n╬═╬\n╬═╬\n╬═╬\n╬═╬ ☻/\n╬═╬/▌\n╬═╬/\n</string>
+    <string name="title">개발자\n키우기</string>
+    <string name="grass_explain">(잔디를 확인하자)\n-1년 12개월중 선택-</string>
+    <string name="login">로그인</string>
 </resources>

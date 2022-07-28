@@ -6,37 +6,190 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/shop_dialog_button"
+    <TextView
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/dark_green"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-186dp" />
+
+    <TextView
+        android:id="@+id/topLine"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/top"
+        />
+    <TextView
+        android:id="@+id/mainTop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/grey"
+        app:layout_constraintTop_toBottomOf="@id/topLine"
+        app:layout_constraintHeight_percent="0.3"
+        />
+    <TextView
+        android:id="@+id/mainTopLine"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/mainTop"
+        />
+    <TextView
+        android:id="@+id/mainBot"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/dark_yellow"
+        app:layout_constraintTop_toBottomOf="@id/mainTopLine"
+        app:layout_constraintHeight_percent="0.492"
+        />
+    <TextView
+        android:id="@+id/mainBotLine"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/mainBot"
+        />
+    <TextView
+        android:id="@+id/bot"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/bright_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.1"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@mipmap/window"
+        app:layout_constraintBottom_toTopOf="@+id/mainTopLine"
+        app:layout_constraintEnd_toEndOf="@id/mainTop"
+        app:layout_constraintStart_toStartOf="@id/mainTop"
+        app:layout_constraintTop_toBottomOf="@+id/topLine" />
+
+    <ImageView
+        android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/grass_shop_custom_view_button_design"
-        android:text="shop_dialog"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <Button
-        android:id="@+id/grass_shop_dialog_button"
+        android:src="@mipmap/mark"
+        app:layout_constraintBottom_toTopOf="@+id/mainTopLine"
+        app:layout_constraintEnd_toEndOf="@id/mainTop"
+        app:layout_constraintHorizontal_bias="0.995"
+        app:layout_constraintStart_toStartOf="@id/mainTop"
+        app:layout_constraintTop_toBottomOf="@+id/topLine"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <ImageView
+        android:id="@+id/trophy_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@mipmap/trophy"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="@id/mainTop"
+        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/grass_shop_custom_view_button_design"
-        android:text="grass_dialog"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@mipmap/computer_desk"
+        app:layout_constraintBottom_toBottomOf="@+id/mainTop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"/>
-    <Button
-        android:id="@+id/option_dialog_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"/>
+
+    <ImageView
+        android:id="@+id/main_page_button_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/grass_shop_custom_view_button_design"
-        android:text="option_dialog"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@mipmap/settings"
+        app:layout_constraintBottom_toTopOf="@+id/topLine"
+        app:layout_constraintEnd_toEndOf="@+id/top"
+        app:layout_constraintTop_toTopOf="@+id/top" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/money"
+        app:layout_constraintBottom_toTopOf="@+id/topLine"
+        app:layout_constraintEnd_toEndOf="@+id/top"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"/>
+        app:layout_constraintTop_toTopOf="@+id/top" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/money"
+        app:layout_constraintBottom_toTopOf="@+id/topLine"
+        app:layout_constraintEnd_toEndOf="@+id/top"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toEndOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="@+id/top" />
+
+    <ImageButton
+        android:id="@+id/grass_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@mipmap/grass_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="@+id/bot"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <ImageButton
+        android:id="@+id/inventory_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/inventory_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/bot"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toEndOf="@+id/grass_btn"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <ImageButton
+        android:id="@+id/level_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/level_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/bot"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toEndOf="@+id/inventory_btn"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <ImageButton
+        android:id="@+id/private_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/personal_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/bot"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toEndOf="@+id/level_btn"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <ImageButton
+        android:id="@+id/shop_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/shop_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/bot"
+        app:layout_constraintEnd_toEndOf="@+id/bot"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toEndOf="@+id/private_btn"
+        app:layout_constraintWidth_percent="0.2" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
