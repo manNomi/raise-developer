@@ -15,4 +15,7 @@
     <color name="background_color">#7D9D9C</color>
     <color name="bright_brown">#AB9C12</color>
     <color name="dark_brown">#614a14</color>
+    // 재걸
+    <color name="deep_green">#22B14C</color>
+    <color name="deep_red">#ED1C24</color>
 </resources>

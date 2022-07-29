@@ -4,4 +4,24 @@
     <string name="title">개발자\n키우기</string>
     <string name="grass_explain">(잔디를 확인하자)\n-1년 12개월중 선택-</string>
     <string name="login">로그인</string>
+    //재걸
+    //공통
+    <string name="choice_purchase"><b>구매\n하시겠습니까?</b></string>
+    <string name="purchase_success"><b>구매\n성공했습니다!</b></string>
+    <string name="choice_logout"><b>로그아웃\n하시겠습니까?</b></string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="check_text"><b>확인</b></string>
+    //개인정보 확인 및 업데이트 페이지
+    <string name="inf_title">My Career</string>
+    <string name="inf_name">이름 : </string>
+    <string name="inf_annual_income">연봉 : </string>
+    <string name="inf_total_earning">지금까지 번 돈 : </string>
+    <string name="inf_total_commit">총 커밋 수 : </string>
+    <string name="inf_total_grass">총 잔디 수 : </string>
+    <string name="inf_most_consecutive_grass">최다 연속 잔디 수 : </string>
+    <string name="inf_update">정보 업데이트</string>
+    //레벨업 페이지
+    <string name="position_guidance">현재 개발자</string>
+
 </resources>

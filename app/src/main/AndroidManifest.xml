@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GrassCheckActivity"></activity>
+        <activity android:name=".GrassCheckActivity"/>
         <activity android:name=".GrassPageActivity"/>
         <activity android:name=".LoginActivity"/>
         <activity android:name=".RankingActivity"/>
