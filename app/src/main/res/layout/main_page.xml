@@ -70,8 +70,8 @@
         app:layout_constraintStart_toStartOf="@id/mainTop"
         app:layout_constraintTop_toBottomOf="@+id/topLine" />
 
-    <ImageView
-        android:id="@+id/imageView6"
+    <ImageButton
+        android:id="@+id/quiz_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/mark"
@@ -82,18 +82,18 @@
         app:layout_constraintTop_toBottomOf="@+id/topLine"
         app:layout_constraintVertical_bias="0.1" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/trophy_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@mipmap/trophy"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintBottom_toBottomOf="@+id/quiz_btn"
+        app:layout_constraintEnd_toStartOf="@+id/quiz_btn"
         app:layout_constraintHeight_percent="0.05"
         app:layout_constraintWidth_percent="0.1"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="@id/mainTop"
-        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintTop_toTopOf="@+id/quiz_btn"
         app:layout_constraintVertical_bias="0.1" />
 
     <ImageView

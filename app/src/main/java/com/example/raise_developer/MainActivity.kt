@@ -70,13 +70,13 @@ class MainActivity : AppCompatActivity() {
             isThreadStop = true
             Log.d("쓰레드 종료","isThreadStop = ${isThreadStop}")
         }
-// 상점 버튼
+//        상점 버튼
         val shopButton = findViewById<ImageView>(R.id.shop_btn)
         shopButton.setOnClickListener {
             val shopDialog = ShopDialog()
             shopDialog.show(supportFragmentManager,"shopDialog") // 다이알로그 생성
         }
-// 옵션 버튼
+//         옵션 버튼
         val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
         optionButton.setOnClickListener {
             val optionDialog = OptionDialog()
@@ -88,12 +88,17 @@ class MainActivity : AppCompatActivity() {
             val intent= Intent(this,RankingActivity::class.java)
             startActivity(intent)
         }
-
+//        인벤토리 버튼
         val inventoryButton = findViewById<ImageButton>(R.id.inventory_btn)
         inventoryButton.setOnClickListener{
             val inventoryDialog = InventoryDialog()
             inventoryDialog.show(supportFragmentManager,"inventoryDialog")
         }
+//        퀴즈 버튼
+        val quizButton = findViewById<ImageButton>(R.id.quiz_btn)
+        quizButton.setOnClickListener{
+        }
+
     }
 
 //    fun grassShopDialogButtonEvent(){ // 잔디 상점과 연결하면 됨
