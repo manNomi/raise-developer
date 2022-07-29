@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/border_square.xml" value="0.1" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_button_design.xml" value="0.1" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_image_view_design.xml" value="0.1" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/grass_shop_dialog_box_border.xml" value="0.1" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/inf_dialog.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/levelup_dialog.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/main_page.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/option_dialog.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/overlap_dialog_check.xml" value="0.25" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/overlap_dialog_choice.xml" value="0.17708333333333334" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1235" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/box_border.xml" value="0.1715" />
         <entry key="..\:/Users/joh9911/AndroidStudioProjects/raise_developer/app/src/main/res/drawable/box_without_bottom_border.xml" value="0.1225" />
