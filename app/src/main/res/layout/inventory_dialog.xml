@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/inventory_dialog_employ_shop_button"
+            android:id="@+id/inventory_dialog_inventory_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="인벤토리"
@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:background="@drawable/shop_category_selected_button"/>
         <Button
-            android:id="@+id/inventory_dialog_watch_shop_button"
+            android:id="@+id/inventory_dialog_employ_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="고용 직원"
@@ -59,7 +59,7 @@
 
     </TextView>
     <ScrollView
-        android:id="@+id/shop_scroll_view"
+        android:id="@+id/inventory_dialog_scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/shop_scroll_view_design"

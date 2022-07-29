@@ -35,10 +35,10 @@ class MainActivity : AppCompatActivity() {
         initEvent()
     }
 
-    inner class CalculateAnnualMoney: Runnable{ // 쓰레드 클래스 isThreadStop이 false일 때 돌아가며, 10초마다 handler에 메세지를 보내줌
+    inner class CalculateAnnualMoney: Runnable{ // 쓰레드 클래스 isThreadStop이 false일 때 돌아가며, 5초마다 handler에 메세지를 보내줌
         override fun run() {
             while(!isThreadStop){
-                Thread.sleep(10000)
+                Thread.sleep(5000)
                 handler.sendEmptyMessage(0)
             }
         }
@@ -70,14 +70,14 @@ class MainActivity : AppCompatActivity() {
             isThreadStop = true
             Log.d("쓰레드 종료","isThreadStop = ${isThreadStop}")
         }
-
+// 상점 버튼
         val shopButton = findViewById<ImageView>(R.id.shop_btn)
         shopButton.setOnClickListener {
             val shopDialog = ShopDialog()
             shopDialog.show(supportFragmentManager,"shopDialog") // 다이알로그 생성
         }
-
-        val optionButton = findViewById<ImageView>(R.id.main_page_button_option)
+// 옵션 버튼
+        val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
         optionButton.setOnClickListener {
             val optionDialog = OptionDialog()
             optionDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
@@ -87,6 +87,12 @@ class MainActivity : AppCompatActivity() {
         trophyBtn.setOnClickListener{
             val intent= Intent(this,RankingActivity::class.java)
             startActivity(intent)
+        }
+
+        val inventoryButton = findViewById<ImageButton>(R.id.inventory_btn)
+        inventoryButton.setOnClickListener{
+            val inventoryDialog = InventoryDialog()
+            inventoryDialog.show(supportFragmentManager,"inventoryDialog")
         }
     }
 
