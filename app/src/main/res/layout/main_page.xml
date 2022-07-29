@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/top"
+        android:id="@+id/main_page_top"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/dark_green"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/top"
+        app:layout_constraintTop_toBottomOf="@id/main_page_top"
         />
     <TextView
         android:id="@+id/mainTop"
@@ -105,35 +105,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.5"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/main_page_button_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/settings"
+        android:background="@color/dark_green"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toEndOf="@+id/top"
-        app:layout_constraintTop_toTopOf="@+id/top" />
+        app:layout_constraintEnd_toEndOf="@+id/main_page_top"
+        app:layout_constraintTop_toTopOf="@+id/main_page_top" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/main_page_image_view_personal_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/money"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toEndOf="@+id/top"
+        app:layout_constraintEnd_toEndOf="@+id/main_page_top"
         app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/top" />
+        app:layout_constraintTop_toTopOf="@+id/main_page_top" />
+
+    <TextView
+        android:id="@+id/main_page_text_view_personal_money"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="0원"
+        android:textSize="20dp"
+        android:gravity="right"
+        app:layout_constraintBottom_toTopOf="@+id/topLine"
+        app:layout_constraintEnd_toEndOf="@+id/main_page_top"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/main_page_top"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/money"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toEndOf="@+id/top"
+        app:layout_constraintEnd_toEndOf="@+id/main_page_top"
         app:layout_constraintHorizontal_bias="0.01"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="@+id/top" />
+        app:layout_constraintStart_toEndOf="@+id/main_page_image_view_personal_money"
+        app:layout_constraintTop_toTopOf="@+id/main_page_top" />
 
     <ImageButton
         android:id="@+id/grass_btn"
