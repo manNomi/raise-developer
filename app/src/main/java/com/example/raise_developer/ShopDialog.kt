@@ -9,10 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ScrollView
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 
 class ShopDialog(personalMoney: Int) : DialogFragment() {
@@ -26,12 +23,10 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.shop_dialog,container,false)
-
+        isCancelable = false
         linearLayout = view.findViewById(R.id.shop_scroll_view_linear_layout) // 스크롤 뷰의 linear layout - 여기다 커스텀 뷰를 추가해줌
         addCustomView()
-        employShopButtonEvent(view)
-        watchShopButtonEvent(view)
-        carShopButtonEvent(view)
+        initEvent(view)
 
         return view
     }
@@ -64,6 +59,13 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
 
     interface CustomViewClickListener{ // 메인 페이지로 값을 전달하기 위한 인터페이스
         fun purchaseSuccess(price: String)
+    }
+
+    fun initEvent(view: View){
+        employShopButtonEvent(view)
+        watchShopButtonEvent(view)
+        carShopButtonEvent(view)
+        closeButtonEvent(view)
     }
 
     fun setDialogListener(listener: CustomViewClickListener){ // 인터페이스의 함수 초기화
@@ -107,6 +109,13 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
             watchButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
             carButton.setBackgroundResource(R.drawable.shop_category_selected_button)
             scrollView.fullScroll(ScrollView.FOCUS_UP) // 스크롤 맨 위로 이동
+        }
+    }
+
+    fun closeButtonEvent(view: View){
+        val closeButton = view.findViewById<ImageButton>(R.id.close_button)
+        closeButton.setOnClickListener {
+            dismiss()
         }
     }
 
