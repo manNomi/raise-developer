@@ -31,7 +31,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         return view
     }
 
-    fun addCustomView(){ // 커스텀 뷰 추가
+    fun addCustomView(){ // 커스텀 뷰 추가 하하하하하하ㅏ하ㅏㅎ하
 
         for(index in 1 until 20){
             val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
