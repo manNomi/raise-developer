@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,10 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import androidx.fragment.app.DialogFragment
 
-class ShopDialog : DialogFragment() {
+class ShopDialog(personalMoney: Int) : DialogFragment() {
     lateinit var linearLayout: LinearLayout
+    var myPersonalMoney = personalMoney
+    lateinit var customViewClickListener: CustomViewClickListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,17 +37,39 @@ class ShopDialog : DialogFragment() {
     }
 
     fun addCustomView(){ // 커스텀 뷰 추가
-        val childCount = linearLayout.childCount // linear layout의 할당된 뷰들의 수
 
-        if (childCount == 0){
-            for(index in 0 until 10){ // 나중에 사진이랑 금액 값 넣을거임
-                val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
-                shopCustomView.findViewById<ImageView>(R.id.shop_custom_view_image_view)
-                shopCustomView.findViewById<Button>(R.id.shop_custom_view_buy_button)
-                linearLayout.addView(shopCustomView)
+        for(index in 1 until 20){
+            val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
+            val customViewImage = shopCustomView.findViewById<ImageView>(R.id.shop_custom_view_image_view)
+            val customViewButton = shopCustomView.findViewById<Button>(R.id.shop_custom_view_buy_button)
+            //이미지들이 character1,  character2로 되어 있어서 각각의 id를 가져오도록 했음
+            val id = resources.getIdentifier("character${index}","mipmap",activity?.packageName)
+            customViewImage.setImageResource(id)
+            customViewButton.text = "200000" // 일단은 각각 200000원이라고 했음
+            customViewButton.setOnClickListener {
+
+                if (myPersonalMoney >= 200000){
+                    customViewClickListener.purchaseSuccess(customViewButton.text.toString()) // 값 전달
+                    Log.d("구매여부","구매성공")
+                    myPersonalMoney -= 200000
+                }
+
+                else {
+                    Log.d("구매여부","구매실패")
+                }
             }
+            linearLayout.addView(shopCustomView)
         }
     }
+
+    interface CustomViewClickListener{ // 메인 페이지로 값을 전달하기 위한 인터페이스
+        fun purchaseSuccess(price: String)
+    }
+
+    fun setDialogListener(listener: CustomViewClickListener){ // 인터페이스의 함수 초기화
+        customViewClickListener = listener
+    }
+
 
     fun employShopButtonEvent(view: View){
         val employButton = view.findViewById<Button>(R.id.shop_dialog_employ_shop_button)

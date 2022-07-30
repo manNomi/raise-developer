@@ -25,8 +25,11 @@ class GrassCheckActivity: AppCompatActivity()  {
         nextBtn.setOnClickListener{
             nextEvent()
         }
-        var grassBtn : MutableList<Int>
-
+        var grassBtn = findViewById<ImageView>(R.id.btn2)
+        grassBtn.setOnClickListener {
+            val intent= Intent(this,GrassPageActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
