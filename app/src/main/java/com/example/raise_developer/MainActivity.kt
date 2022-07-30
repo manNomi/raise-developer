@@ -14,7 +14,7 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
     var personalMoney = 0  // 개인 자산
-    var annualMoney = 2000 // 연봉. 일단 실험식으로 2000원으로 설정함 실행시켜서 10초씩 2000원이 올라가는지 확인해볼것
+    var annualMoney = 2000 // 연봉. 10분에 한번 씩 올라가는거로 바꾸는게 나을듯
     lateinit var thread: Thread
     var isThreadStop = false
 
@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     fun plusAnnualMoneyToPersonalMoney(){ // 개인 자산에 연봉 값을 더해주는 함수
         personalMoney += annualMoney
         findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원"
-
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean { // 터치할 때마다 개인 자산의 TextView가 만원 씩 증가
@@ -73,7 +72,13 @@ class MainActivity : AppCompatActivity() {
 //        상점 버튼
         val shopButton = findViewById<ImageView>(R.id.shop_btn)
         shopButton.setOnClickListener {
-            val shopDialog = ShopDialog()
+            val shopDialog = ShopDialog(personalMoney)
+            shopDialog.setDialogListener(object: ShopDialog.CustomViewClickListener{ // 인터페이스 상속받음
+                override fun purchaseSuccess(price: String) { // price 라는 아이템의 가격값을 전달 받음
+                    personalMoney -= price.toInt() // 빼주고
+                    findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원" //적용
+                }
+            })
             shopDialog.show(supportFragmentManager,"shopDialog") // 다이알로그 생성
         }
 //         옵션 버튼

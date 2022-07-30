@@ -4,18 +4,18 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ScrollView
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 
-class ShopDialog : DialogFragment() {
+class ShopDialog(personalMoney: Int) : DialogFragment() {
     lateinit var linearLayout: LinearLayout
+    var myPersonalMoney = personalMoney
+    lateinit var customViewClickListener: CustomViewClickListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,28 +23,55 @@ class ShopDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.shop_dialog,container,false)
-
+        isCancelable = false
         linearLayout = view.findViewById(R.id.shop_scroll_view_linear_layout) // 스크롤 뷰의 linear layout - 여기다 커스텀 뷰를 추가해줌
         addCustomView()
-        employShopButtonEvent(view)
-        watchShopButtonEvent(view)
-        carShopButtonEvent(view)
+        initEvent(view)
 
         return view
     }
 
-    fun addCustomView(){ // 커스텀 뷰 추가
-        val childCount = linearLayout.childCount // linear layout의 할당된 뷰들의 수
+    fun addCustomView(){ // 커스텀 뷰 추가 하하하하하하ㅏ하ㅏㅎ하
 
-        if (childCount == 0){
-            for(index in 0 until 10){ // 나중에 사진이랑 금액 값 넣을거임
-                val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
-                shopCustomView.findViewById<ImageView>(R.id.shop_custom_view_image_view)
-                shopCustomView.findViewById<Button>(R.id.shop_custom_view_buy_button)
-                linearLayout.addView(shopCustomView)
+        for(index in 1 until 20){
+            val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
+            val customViewImage = shopCustomView.findViewById<ImageView>(R.id.shop_custom_view_image_view)
+            val customViewButton = shopCustomView.findViewById<Button>(R.id.shop_custom_view_buy_button)
+            //이미지들이 character1,  character2로 되어 있어서 각각의 id를 가져오도록 했음
+            val id = resources.getIdentifier("character${index}","mipmap",activity?.packageName)
+            customViewImage.setImageResource(id)
+            customViewButton.text = "200000" // 일단은 각각 200000원이라고 했음
+            customViewButton.setOnClickListener {
+
+                if (myPersonalMoney >= 200000){
+                    customViewClickListener.purchaseSuccess(customViewButton.text.toString()) // 값 전달
+                    Log.d("구매여부","구매성공")
+                    myPersonalMoney -= 200000
+                }
+
+                else {
+                    Log.d("구매여부","구매실패")
+                }
             }
+            linearLayout.addView(shopCustomView)
         }
     }
+
+    interface CustomViewClickListener{ // 메인 페이지로 값을 전달하기 위한 인터페이스
+        fun purchaseSuccess(price: String)
+    }
+
+    fun initEvent(view: View){
+        employShopButtonEvent(view)
+        watchShopButtonEvent(view)
+        carShopButtonEvent(view)
+        closeButtonEvent(view)
+    }
+
+    fun setDialogListener(listener: CustomViewClickListener){ // 인터페이스의 함수 초기화
+        customViewClickListener = listener
+    }
+
 
     fun employShopButtonEvent(view: View){
         val employButton = view.findViewById<Button>(R.id.shop_dialog_employ_shop_button)
@@ -82,6 +109,13 @@ class ShopDialog : DialogFragment() {
             watchButton.setBackgroundResource(R.drawable.shop_category_not_selected_button)
             carButton.setBackgroundResource(R.drawable.shop_category_selected_button)
             scrollView.fullScroll(ScrollView.FOCUS_UP) // 스크롤 맨 위로 이동
+        }
+    }
+
+    fun closeButtonEvent(view: View){
+        val closeButton = view.findViewById<ImageButton>(R.id.close_button)
+        closeButton.setOnClickListener {
+            dismiss()
         }
     }
 
