@@ -22,6 +22,7 @@ import android.view.ViewDebug
 import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.setMargins
 import java.lang.System.load
 import java.time.Duration
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         setTypingSound()
         }
 
-    fun setTypingSound()  {
+    fun setTypingSound()  { // 터치 시 소리 세팅
         soundPool = SoundPool.Builder()
             .setMaxStreams(1)
             .build()
@@ -58,14 +59,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page)
         initEvent()
-
-        MotionEvent.ACTION_DOWN
-//        characterMove()
-
+        characterMove()
+//         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
+//         좀더 알아봐야함 뷰 위치 설정
+//        val param = GridLayout.LayoutParams(GridLayout.spec(0,5),GridLayout.spec(0,5))
+//        param.setMargins(13)
+//        characterView.layoutParams = param
     }
     fun characterMove() {
         val character = findViewById<LinearLayout>(R.id.main_page_character)
-        val noteMark = findViewById<ImageView>(R.id.music_note)
+        val characterNoteMark = findViewById<ImageView>(R.id.music_note)
 
         ObjectAnimator.ofFloat(character, "translationY", -600f).apply{ // y축 이동
             duration = 700
@@ -79,12 +82,12 @@ class MainActivity : AppCompatActivity() {
                         addListener(object: AnimatorListenerAdapter(){
 
                             override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
-                            noteMark.visibility = View.VISIBLE
-                                ObjectAnimator.ofFloat(noteMark, "translationY", 15f).apply{
+                            characterNoteMark.visibility = View.VISIBLE
+                                ObjectAnimator.ofFloat(characterNoteMark, "translationY", 15f).apply{
                                     duration = 800
                                     repeatCount = ValueAnimator.INFINITE
                                     repeatMode = ValueAnimator.REVERSE
-                                    target = noteMark
+                                    target = characterNoteMark
                                     start()
                                 }
                             }
@@ -98,28 +101,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addCharacterAndMove(index: Int, positionX: Float, positionY: Float){
-        Log.d("Add","실행")
-
-        val linearLayout = findViewById<FrameLayout>(R.id.main_page_character_grid_layout)
-        val characterView = layoutInflater.inflate(R.layout.main_page_character_view,linearLayout,false)
-
+        val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
+        // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
+        val characterView = layoutInflater.inflate(R.layout.main_page_character_view,frameLayout,false)
+        //캐릭터 커스텀뷰 내의 뷰들
         val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
         val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
         val characterName = characterView.findViewById<TextView>(R.id.character_name)
-        val noteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
-//         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
-//         좀더 알아봐야함 뷰 위치 설정
-//        val param = GridLayout.LayoutParams(GridLayout.spec(0,5),GridLayout.spec(0,5))
-//        param.setMargins(13)
-//        characterView.layoutParams = param
+        val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
 
         val id = resources.getIdentifier("character${index}","mipmap",packageName)
         characterImage.setImageResource(id)
-        var startX = 0f
-        var startY = 0f
+
         ObjectAnimator.ofFloat(character, "translationY", positionY).apply{ // y축 이동
-            duration = 700
-            interpolator = LinearInterpolator()
+            duration = 700 // 애니메이션중 걸리는 시간
+            interpolator = LinearInterpolator() // 애니메이션 효과
             addListener(object: AnimatorListenerAdapter(){
                 override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
 
@@ -129,12 +125,12 @@ class MainActivity : AppCompatActivity() {
                         addListener(object: AnimatorListenerAdapter(){
 
                             override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
-                                noteMark.visibility = View.VISIBLE
-                                ObjectAnimator.ofFloat(noteMark, "translationY", 15f).apply{
+                                characterNoteMark.visibility = View.VISIBLE
+                                ObjectAnimator.ofFloat(characterNoteMark, "translationY", 15f).apply{
                                     duration = 800
-                                    repeatCount = ValueAnimator.INFINITE
+                                    repeatCount = ValueAnimator.INFINITE // 무한반복
                                     repeatMode = ValueAnimator.REVERSE
-                                    target = noteMark
+                                    target = characterNoteMark
                                     start()
                                 }
                             }
@@ -145,30 +141,8 @@ class MainActivity : AppCompatActivity() {
             })
             start()
         }
-
-        character.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    Log.d("ACTION DOWN", "d")
-                    startX = event.x
-                    startY = event.y
-                    true
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    Log.d("ACTION UP", "d")
-                    val movedX: Float = event.x - startX
-                    val movedY: Float = event.y - startY
-
-                    v.x = v.x + movedX
-                    v.y = v.y + movedY
-                    true
-                }
-                else -> true
-            }
-        }
-        linearLayout.addView(characterView)
+        frameLayout.addView(characterView)
     }
-
 
     inner class CalculateAnnualMoney: Runnable{ // 쓰레드 클래스 isThreadStop이 false일 때 돌아가며, 5초마다 handler에 메세지를 보내줌
         override fun run() {
