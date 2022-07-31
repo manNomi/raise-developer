@@ -118,19 +118,17 @@
         app:layout_constraintTop_toTopOf="@+id/top"
         android:background="@color/bright_green"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/prev_btn"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="0dp"
         android:src="@mipmap/prev"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHeight_percent="0.09"
+        app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainBot"
-        android:background="@color/bright_green"/>
+        app:layout_constraintTop_toBottomOf="@+id/mainBot" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/next_btn"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
