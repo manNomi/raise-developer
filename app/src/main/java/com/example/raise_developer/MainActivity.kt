@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.PointerIcon.load
 import android.view.View
+import android.view.ViewDebug
 import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.*
@@ -58,7 +59,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_page)
         initEvent()
 
-        characterMove()
+        MotionEvent.ACTION_DOWN
+//        characterMove()
 
     }
     fun characterMove() {
@@ -95,32 +97,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addCharacterAndMove(index: Int, x: Float, y: Float){
+    fun addCharacterAndMove(index: Int, positionX: Float, positionY: Float){
         Log.d("Add","실행")
-        val gridLayout = findViewById<GridLayout>(R.id.main_page_character_grid_layout)
-        val characterView = layoutInflater.inflate(R.layout.main_page_character_view,gridLayout,false)
+
+        val linearLayout = findViewById<FrameLayout>(R.id.main_page_character_grid_layout)
+        val characterView = layoutInflater.inflate(R.layout.main_page_character_view,linearLayout,false)
 
         val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
         val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
         val characterName = characterView.findViewById<TextView>(R.id.character_name)
         val noteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
+//         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
+//         좀더 알아봐야함 뷰 위치 설정
+//        val param = GridLayout.LayoutParams(GridLayout.spec(0,5),GridLayout.spec(0,5))
+//        param.setMargins(13)
+//        characterView.layoutParams = param
 
         val id = resources.getIdentifier("character${index}","mipmap",packageName)
         characterImage.setImageResource(id)
-        // GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
-        // 좀더 알아봐야함 뷰 위치 설정
-//        val param = LinearLayout.LayoutParams(360,1000)
-//        param.setMargins(13)
-//        characterView.layoutParams = param
-        gridLayout.addView(characterView)
-
-        ObjectAnimator.ofFloat(character, "translationY", -y).apply{ // y축 이동
+        var startX = 0f
+        var startY = 0f
+        ObjectAnimator.ofFloat(character, "translationY", positionY).apply{ // y축 이동
             duration = 700
             interpolator = LinearInterpolator()
             addListener(object: AnimatorListenerAdapter(){
                 override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
 
-                    ObjectAnimator.ofFloat(character, "translationX", x).apply{ // x축 이동
+                    ObjectAnimator.ofFloat(character, "translationX", positionX).apply{ // x축 이동
                         duration = 700
                         interpolator = LinearInterpolator()
                         addListener(object: AnimatorListenerAdapter(){
@@ -142,7 +145,30 @@ class MainActivity : AppCompatActivity() {
             })
             start()
         }
+
+        character.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    Log.d("ACTION DOWN", "d")
+                    startX = event.x
+                    startY = event.y
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    Log.d("ACTION UP", "d")
+                    val movedX: Float = event.x - startX
+                    val movedY: Float = event.y - startY
+
+                    v.x = v.x + movedX
+                    v.y = v.y + movedY
+                    true
+                }
+                else -> true
+            }
+        }
+        linearLayout.addView(characterView)
     }
+
 
     inner class CalculateAnnualMoney: Runnable{ // 쓰레드 클래스 isThreadStop이 false일 때 돌아가며, 5초마다 handler에 메세지를 보내줌
         override fun run() {
@@ -164,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                 personalMoney += 10000
                 findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원"
                 Log.d("좌표", "${event.x}, ${event.y}")
-                soundPool.play(soundId, 1f, 1f, 1, 0, 1f)
+                soundPool.play(soundId, 1f, 1f, 1, 0, 1f) // 터치할 때마다 타자 소리
             }
             MotionEvent.ACTION_UP -> {
 
@@ -191,7 +217,8 @@ class MainActivity : AppCompatActivity() {
                     personalMoney -= price.toInt() // 빼주고
                     findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원" //적용
                     shopDialog.dismiss()
-                    addCharacterAndMove(index, Random.nextInt(500).toFloat(),Random.nextInt(500).toFloat())
+
+                    addCharacterAndMove(index, Random.nextInt(-500,500).toFloat(),Random.nextInt(500).toFloat())
                 }
             })
             shopDialog.show(supportFragmentManager,"shopDialog") // 다이알로그 생성

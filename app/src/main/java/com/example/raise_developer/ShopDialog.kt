@@ -5,10 +5,7 @@ import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 
@@ -25,13 +22,13 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         val view = inflater.inflate(R.layout.shop_dialog,container,false)
         isCancelable = false
         linearLayout = view.findViewById(R.id.shop_scroll_view_linear_layout) // 스크롤 뷰의 linear layout - 여기다 커스텀 뷰를 추가해줌
-        addCustomView()
+        addCustomView(view)
         initEvent(view)
 
         return view
     }
 
-    fun addCustomView(){ // 커스텀 뷰 추가
+    fun addCustomView(view:View){ // 커스텀 뷰 추가
 
         for(index in 1 until 20){
             val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
@@ -40,13 +37,14 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
             //이미지들이 character1,  character2로 되어 있어서 각각의 id를 가져오도록 했음
             val id = resources.getIdentifier("character${index}","mipmap",activity?.packageName)
             customViewImage.setImageResource(id)
-            customViewButton.text = "200000" // 일단은 각각 200000원이라고 했음
+            customViewButton.text = "200" // 일단은 각각 200000원이라고 했음
             customViewButton.setOnClickListener {
 
-                if (myPersonalMoney >= 200000){
+                if (myPersonalMoney >= 200){
+
                     customViewClickListener.purchaseSuccess(customViewButton.text.toString(), index) // 값 전달
                     Log.d("구매여부","구매성공")
-                    myPersonalMoney -= 200000
+                    myPersonalMoney -= 200
                 }
 
                 else {
