@@ -3,6 +3,7 @@ package com.example.raise_developer
 import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
@@ -21,6 +22,8 @@ class GrassPageActivity: AppCompatActivity() {
     fun gridLayoutSetting() {
         val gridLayout = findViewById<GridLayout>(R.id.gridLayout)
         for (index in 0 until 31) {
+            Log.d("호호","하하")
+            val customView = layoutInflater.inflate(R.layout.grass_page_custom_view,gridLayout,false)
             val imageButton = ImageButton(this) // 이미지 버튼 생성
 
             val param = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -39,7 +42,8 @@ class GrassPageActivity: AppCompatActivity() {
             else {
                 imageButton.setBackgroundResource(R.mipmap.in_grass)
             }
-            gridLayout.addView(imageButton)
+
+            gridLayout.addView(customView)
         }
     }
 }

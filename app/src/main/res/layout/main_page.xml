@@ -20,46 +20,79 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/main_page_top"
-        />
+        app:layout_constraintTop_toBottomOf="@id/main_page_top" />
+
     <TextView
         android:id="@+id/mainTop"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/grey"
-        app:layout_constraintTop_toBottomOf="@id/topLine"
         app:layout_constraintHeight_percent="0.3"
-        />
+        app:layout_constraintTop_toBottomOf="@id/topLine" />
+
     <TextView
         android:id="@+id/mainTopLine"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/mainTop"
-        />
-    <TextView
-        android:id="@+id/mainBot"
+        app:layout_constraintTop_toBottomOf="@id/mainTop" />
+
+
+    <GridLayout
+        android:id="@+id/main_page_character_grid_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/dark_yellow"
-        app:layout_constraintTop_toBottomOf="@id/mainTopLine"
-        app:layout_constraintHeight_percent="0.492"
-        />
-    <TextView
-        android:id="@+id/mainBotLine"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/mainBot"
-        />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/bot"
+        app:layout_constraintHeight_percent="0.5">
+
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/main_page_character"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8">
+
+        <ImageView
+            android:id="@+id/music_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_music_note_24"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="조성민"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/character1" />
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/bot"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/bright_green"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.1"
-        />
+        app:layout_constraintHeight_percent="0.1" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -86,16 +119,16 @@
         android:id="@+id/trophy_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@mipmap/trophy"
         android:scaleType="fitXY"
+        android:src="@mipmap/trophy"
         app:layout_constraintBottom_toBottomOf="@+id/quiz_btn"
         app:layout_constraintEnd_toStartOf="@+id/quiz_btn"
         app:layout_constraintHeight_percent="0.09"
-        app:layout_constraintWidth_percent="0.15"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="@id/mainTop"
         app:layout_constraintTop_toTopOf="@+id/quiz_btn"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintWidth_percent="0.15" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -103,15 +136,15 @@
         android:src="@mipmap/computer_desk"
         app:layout_constraintBottom_toBottomOf="@+id/mainTop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/main_page_button_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/settings"
         android:background="@color/dark_green"
+        android:src="@mipmap/settings"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
         app:layout_constraintEnd_toEndOf="@+id/main_page_top"
         app:layout_constraintTop_toTopOf="@+id/main_page_top" />
@@ -131,14 +164,14 @@
         android:id="@+id/main_page_text_view_personal_money"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:gravity="right"
         android:text="0원"
         android:textSize="20dp"
-        android:gravity="right"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
         app:layout_constraintEnd_toEndOf="@+id/main_page_top"
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/main_page_top"/>
+        app:layout_constraintTop_toTopOf="@+id/main_page_top" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -204,7 +237,6 @@
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toEndOf="@+id/private_btn"
         app:layout_constraintWidth_percent="0.2" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

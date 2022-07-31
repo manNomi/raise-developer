@@ -31,7 +31,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         return view
     }
 
-    fun addCustomView(){ // 커스텀 뷰 추가 하하하하하하ㅏ하ㅏㅎ하
+    fun addCustomView(){ // 커스텀 뷰 추가
 
         for(index in 1 until 20){
             val shopCustomView = layoutInflater.inflate(R.layout.shop_custom_view,linearLayout,false)
@@ -44,7 +44,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
             customViewButton.setOnClickListener {
 
                 if (myPersonalMoney >= 200000){
-                    customViewClickListener.purchaseSuccess(customViewButton.text.toString()) // 값 전달
+                    customViewClickListener.purchaseSuccess(customViewButton.text.toString(), index) // 값 전달
                     Log.d("구매여부","구매성공")
                     myPersonalMoney -= 200000
                 }
@@ -58,7 +58,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
     }
 
     interface CustomViewClickListener{ // 메인 페이지로 값을 전달하기 위한 인터페이스
-        fun purchaseSuccess(price: String)
+        fun purchaseSuccess(price: String, id: Int)
     }
 
     fun initEvent(view: View){
