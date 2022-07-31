@@ -109,9 +109,9 @@ class MainActivity : AppCompatActivity() {
         characterImage.setImageResource(id)
         // GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
         // 좀더 알아봐야함 뷰 위치 설정
-        val param = LinearLayout.LayoutParams(360,1000)
-        param.setMargins(13)
-        characterView.layoutParams = param
+//        val param = LinearLayout.LayoutParams(360,1000)
+//        param.setMargins(13)
+//        characterView.layoutParams = param
         gridLayout.addView(characterView)
 
         ObjectAnimator.ofFloat(character, "translationY", -y).apply{ // y축 이동
