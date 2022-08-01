@@ -167,7 +167,6 @@ class MainActivity : AppCompatActivity() {
                 soundPool.play(soundId, 1f, 1f, 1, 0, 1f) // 터치할 때마다 타자 소리
             }
             MotionEvent.ACTION_UP -> {
-
             }
         }
         return super.onTouchEvent(event)
@@ -187,9 +186,7 @@ class MainActivity : AppCompatActivity() {
         shopButton.setOnClickListener {
             val shopDialog = ShopDialog(personalMoney)
             shopDialog.setDialogListener(object: ShopDialog.CustomViewClickListener{ // 인터페이스 상속받음
-
                 override fun purchaseSuccess(price: String, menuName:String ,type: String) { // price 라는 아이템의 가격값을 전달 받음
-
                     personalMoney -= price.toInt() // 빼주고
                     findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원" //적용
                     shopDialog.dismiss()
@@ -224,7 +221,14 @@ class MainActivity : AppCompatActivity() {
         quizButton.setOnClickListener{
         }
 
+//    레벨 버튼
+        val levelButton = findViewById<ImageButton>(R.id.level_btn)
+        levelButton.setOnClickListener{
+            val levelDialog = LevelUpDialog()
+            levelDialog.show(supportFragmentManager,"levelDialog")
+        }
     }
+}
 
 //    fun grassShopDialogButtonEvent(){ // 잔디 상점과 연결하면 됨
 //        val grassShopDialogButton = findViewById<Button>(R.id.grass_shop_dialog_button)
@@ -238,4 +242,3 @@ class MainActivity : AppCompatActivity() {
 
 
 
-}

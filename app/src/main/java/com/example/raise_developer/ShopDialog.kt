@@ -8,99 +8,24 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.DialogFragment
+import com.example.raise_developer.DataBase.cartList
+import com.example.raise_developer.DataBase.cartNameList
+import com.example.raise_developer.DataBase.employName
+import com.example.raise_developer.DataBase.employType
+import com.example.raise_developer.DataBase.watchList
+import com.example.raise_developer.DataBase.watchNameList
 
 class ShopDialog(personalMoney: Int) : DialogFragment() {
     lateinit var linearLayout: LinearLayout
     var myPersonalMoney = personalMoney
     lateinit var customViewClickListener: CustomViewClickListener
-    var watchList= mutableListOf<String>()
-
-    var cartList= mutableListOf<String>()
-
-
-    var watchNameList= mutableListOf<String>()
-
 
     var presentType = "empoloy"
 
-    var employName= arrayListOf(
-        "힙합을 즐겨듣는 고등학생",
-        "10년째 공무원 준비하는 미대생",
-        "게으른 4차원 디자이너",
-        "대입 떨어진 재수생",
-        "동네 컴퓨터 수리집 사장님",
-        "하벌드 AI 박사 학위를 취득한 인마대 김병X 교수님",
-        "네카라쿠베”스”의 최만석 CEO",
-        "빌게이쯔(마이크로소프트콘 CEO)",
-        "일론 마스크(테술라 CEO)",
-        "은퇴한 70대 IT 대기업 개발자 할아버지",
-        "애니와 애니노래를 좋아하는 백수",
-        "하루 왠종일 게임만 하는 내 친구",
-        "힙합에 푹빠진 사운드 디렉터",
-        "문서작업은 누구보다 자신 있는 사무직의 달인",
-        "사회생활을 잘 못하는 해킹 대회 우승자",
-        "한국어를 잘못하는 유학파 출신 디자이너",
-        "쌀국수를 즐겨먹는 디렉터",
-        "포켓몬 로켓단의 프로그래머",
-        "조성민"
-        )
-    var employType= arrayListOf(
-        "사운드 디렉터",
-        "디자이너",
-        "디자이너",
-        "개발자",
-        "엔지니어",
-        "교수",
-        "CEO",
-        "CEO",
-        "CEO",
-        "슈퍼 개발자",
-        "사운드 디렉터",
-        "개발자",
-        "사운드 디렉터",
-        "비서",
-        "해커",
-        "디자이너",
-        "사운드 디렉터",
-        "개발자"
-    )
-    var cartNameList= arrayListOf(
-        "기안 모닌",
-        "기안 레위",
-        "현도 아반테",
-        "기안 K33",
-        "BWW X33",
-        "페리리 489GTC",
-        "람머르기니 아빤타도르",
-        "롤러로이스 KING"
-    )
     companion object {
         lateinit var prefs: PreferenceInventory
     }
-    fun watchInit(){
-        for (index in 0 until 6) {
-            watchList.add("apple_watch_${index+1}")
-            watchNameList.add("사과시계 ${index+1}")
-        }
-        for (index in 0 until 6) {
-            watchList.add("gx_watch_${index+1}")
-            watchNameList.add("은하시계 ${index+1}")
-        }
-        for (index in 0 until 7) {
-            watchList.add("watch${index+1}")
-            watchNameList.add("보통시계 ${index+1}")
-        }
-        for (index in 0 until 3) {
-            watchList.add("rolex${index+1}")
-            watchNameList.add("로렉스 ${index+1}")
-        }
-    }
 
-    fun cartInit() {
-        for (index in 0 until 8) {
-            cartList.add("cart${index + 1}")
-        }
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -109,13 +34,11 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         val view = inflater.inflate(R.layout.shop_dialog,container,false)
         isCancelable = false
         linearLayout = view.findViewById(R.id.shop_scroll_view_linear_layout) // 스크롤 뷰의 linear layout - 여기다 커스텀 뷰를 추가해줌
-
         prefs = PreferenceInventory(requireContext())
-        watchInit()
-        cartInit()
+        DataBase.watchInit()
+        DataBase.cartInit()
         addCustomView("empoly")
         initEvent(view)
-
         return view
     }
 

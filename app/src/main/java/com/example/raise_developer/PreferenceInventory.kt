@@ -88,17 +88,21 @@ class PreferenceInventory(context: Context) {
             val data = Gson().fromJson(jsonText, InventoryCategory::class.java)
             inventory.clear()
             inventoryName.clear()
-            for (index in 0 until data.inventory_list.size) {
-                inventory.add(data.inventory_list[index].image)
-                inventoryName.add(data.inventory_list[index].name)
+            if (data.inventory_list!=null) {
+                for (index in 0 until data.inventory_list.size) {
+                    inventory.add(data.inventory_list[index].image)
+                    inventoryName.add(data.inventory_list[index].name)
+                }
             }
             employ.clear()
             employName.clear()
             employType.clear()
-            for (index in 0 until data.employ_list.size) {
-                employ.add(data.employ_list[index].image)
-                employName.add(data.employ_list[index].name)
-                employType.add(data.employ_list[index].type)
+            if (data.employ_list!=null) {
+                for (index in 0 until data.employ_list.size) {
+                    employ.add(data.employ_list[index].image)
+                    employName.add(data.employ_list[index].name)
+                    employType.add(data.employ_list[index].type)
+                }
             }
         }
         if (key=="item"){

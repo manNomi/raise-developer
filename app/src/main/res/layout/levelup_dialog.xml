@@ -25,16 +25,27 @@
             android:text="@string/position_guidance"
             android:textColor="@color/black"
             android:autoSizeTextType="uniform"
+            android:gravity="center"
             />
-
+        <TextView
+            android:id="@+id/lv_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="LV"
+            android:textColor="@color/black"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:autoSizeTextType="uniform"
             android:gravity="right"
-            android:text="- 주니어 개발자"
-            android:textColor="@color/black" />
+            android:text="| 주니어 |\n| 개발자 |"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
@@ -124,60 +135,13 @@
             android:layout_height="0dp"
             android:layout_weight="6"
             android:background="@drawable/border_square"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:padding="5dp">
             <LinearLayout
+                android:id="@+id/levelup_dialog_scrollview_linear"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:background="@drawable/border_square"
-                        android:src="@mipmap/developer"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_square"
-                        android:text="Lv1 공무원"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:paddingTop="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:background="@drawable/border_square"
-                        android:src="@mipmap/designer"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_square"
-                        android:text="Lv1 공무원"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:paddingTop="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"/>
-                </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
@@ -207,60 +171,13 @@
             android:layout_height="0dp"
             android:layout_weight="6"
             android:background="@drawable/border_square"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:padding="5dp">
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:background="@drawable/border_square"
-                        android:src="@mipmap/developer"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_square"
-                        android:text="공무원"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:paddingTop="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:background="@drawable/border_square"
-                        android:src="@mipmap/designer"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_square"
-                        android:text="디자이너"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:paddingTop="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"/>
-                </LinearLayout>
+                android:id="@+id/levelup_dialog_can_scrollview_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
             </LinearLayout>
         </HorizontalScrollView>
 
