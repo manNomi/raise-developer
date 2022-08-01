@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addCharacterAndMove(index: Int, positionX: Float, positionY: Float){
+    fun addCharacterAndMove(name: String, positionX: Float, positionY: Float){
         val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
         // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
         val characterView = layoutInflater.inflate(R.layout.main_page_character_view,frameLayout,false)
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         val characterName = characterView.findViewById<TextView>(R.id.character_name)
         val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
 
-        val id = resources.getIdentifier("character${index}","mipmap",packageName)
+        val id = resources.getIdentifier(name,"mipmap",packageName)
         characterImage.setImageResource(id)
 
         ObjectAnimator.ofFloat(character, "translationY", positionY).apply{ // y축 이동
@@ -187,12 +187,16 @@ class MainActivity : AppCompatActivity() {
         shopButton.setOnClickListener {
             val shopDialog = ShopDialog(personalMoney)
             shopDialog.setDialogListener(object: ShopDialog.CustomViewClickListener{ // 인터페이스 상속받음
-                override fun purchaseSuccess(price: String, index: Int) { // price 라는 아이템의 가격값을 전달 받음
+
+                override fun purchaseSuccess(price: String, menuName:String ,type: String) { // price 라는 아이템의 가격값을 전달 받음
+
                     personalMoney -= price.toInt() // 빼주고
                     findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원" //적용
                     shopDialog.dismiss()
-
-                    addCharacterAndMove(index, Random.nextInt(-500,500).toFloat(),Random.nextInt(500).toFloat())
+                    if (type == "employ"){
+                        addCharacterAndMove(menuName, Random.nextInt(-500,500).toFloat(),Random.nextInt(500).toFloat())
+                    }
+                    else{}
                 }
             })
             shopDialog.show(supportFragmentManager,"shopDialog") // 다이알로그 생성
