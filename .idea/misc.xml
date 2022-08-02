@@ -33,6 +33,9 @@
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/layout/shop_custom_view.xml" value="0.16312056737588654" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/layout/shop_dialog.xml" value="0.16312056737588654" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/layout/splash_page.xml" value="0.16312056737588654" />
+        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/drawable/border_square.xml" value="0.199" />
+        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/drawable/border_square_yellow.xml" value="0.199" />
+        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_button_design.xml" value="0.199" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_image_view_design.xml" value="0.147" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_text_view_design.xml" value="0.147" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.147" />
@@ -45,10 +48,10 @@
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/inventory_custom_view.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/inventory_dialog.xml" value="0.1609375" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/level_dialog_custom.xml" value="0.19322916666666667" />
-        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/levelup_dialog.xml" value="0.6" />
-        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/levelup_dialog_custom_view.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/levelup_dialog.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/levelup_dialog_custom_view.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/login_page.xml" value="0.19427083333333334" />
-        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/main_page.xml" value="0.1609375" />
+        <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/main_page.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/main_page_character_view.xml" value="0.19427083333333334" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/option_dialog.xml" value="0.19427083333333334" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stageus_team_project/raise-developer-android/app/src/main/res/layout/overlap_dialog_check.xml" value="0.1609375" />

@@ -12,13 +12,17 @@ class PreferenceInventory(context: Context) {
     var employ = mutableListOf<String>()
     var employName = mutableListOf<String>()
     var employType = mutableListOf<String>()
+    var employLevel = mutableListOf<String>()
+
     private val prefs: SharedPreferences =
         context.getSharedPreferences("prefs_name", Context.MODE_PRIVATE)
 
     data class EmployData(
         val image : String,
         val name : String,
-        val type : String
+        val type : String,
+        val level : String
+
     )
     data class InventoryData(
         val image : String,
@@ -33,11 +37,15 @@ class PreferenceInventory(context: Context) {
 //    프리퍼런스에 Json String 으로 만들어서 저장 하기
 //    매개변수로 키값 받고 키값에 따라 저장 형태가 달라짐
 //    json 데이터는 수정이 불가하므로 그냥 프리퍼런스 clear 후 다시 만드는 방식
-    fun setString(key: String, str: String , name :String , type:String) {
+
+    fun clearString()
+    {
         prefs.edit().clear().apply()
+    }
 
+    fun setString(key: String, str: String , name :String , type:String , level:String) {
+        prefs.edit().clear().apply()
         Log.d("type",name)
-
         if(key=="item"){
             inventory.add(str)
             inventoryName.add(name)
@@ -48,6 +56,7 @@ class PreferenceInventory(context: Context) {
             employ.add(str)
             employName.add(name)
             employType.add(type)
+            employLevel.add(level)
         }
         var gsonText = "{"
         gsonText+="'inventory_list':["
@@ -69,12 +78,15 @@ class PreferenceInventory(context: Context) {
             gsonText += "{"
             gsonText += "'image': '${employ[index]}' ,"
             gsonText += "'type': '${employType[index]}' ,"
-            gsonText += "'name': '${employName[index]}' }"
+            gsonText += "'name': '${employName[index]}' ,"
+            gsonText += "'level': '${employLevel[index]}' }"
         }
         gsonText += "]}"
 
         Log.d("gson", gsonText)
         prefs.edit().putString("inventory", gsonText).apply()
+
+
     }
 
 
@@ -102,6 +114,7 @@ class PreferenceInventory(context: Context) {
                     employ.add(data.employ_list[index].image)
                     employName.add(data.employ_list[index].name)
                     employType.add(data.employ_list[index].type)
+                    employLevel.add(data.employ_list[index].level)
                 }
             }
         }
@@ -109,7 +122,7 @@ class PreferenceInventory(context: Context) {
             return arrayListOf(inventory,inventoryName)
         }
         else{
-            return arrayListOf(employ,employName,employType)
+            return arrayListOf(employ,employName,employType,employLevel)
         }
     }
 

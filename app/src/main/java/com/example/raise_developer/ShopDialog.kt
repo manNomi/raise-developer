@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.example.raise_developer.DataBase.cartList
 import com.example.raise_developer.DataBase.cartNameList
+import com.example.raise_developer.DataBase.employLevel
 import com.example.raise_developer.DataBase.employName
 import com.example.raise_developer.DataBase.employType
 import com.example.raise_developer.DataBase.watchList
@@ -21,6 +22,8 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
     lateinit var customViewClickListener: CustomViewClickListener
 
     var presentType = "empoloy"
+
+    var presentLevel= mutableListOf<String>()
 
     companion object {
         lateinit var prefs: PreferenceInventory
@@ -53,6 +56,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         val existItem = prefs.getString("item", "")
         val existEmploy =
             prefs.getString("employ", "") // empoloy로 되어있어서  employ로 바꿨음  preference 값 확인할 것
+        presentLevel=existEmploy[3]
 //        네임 값
         var nameList = mutableListOf<String>()
 //        매개변수로 받은 type에 따라서 갈림길 중복코드 방지용
@@ -91,15 +95,13 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
                 }
             }
         }
-        for (index in 1 until image.size) {
-
+        for (index in 0 until image.size) {
             val shopCustomView =
                 layoutInflater.inflate(R.layout.shop_custom_view, linearLayout, false)
             val customViewImage =
                 shopCustomView.findViewById<ImageView>(R.id.shop_custom_view_image_view)
             val customViewButton =
                 shopCustomView.findViewById<Button>(R.id.shop_custom_view_buy_button)
-
             val imageChange =
                 resources.getIdentifier(image[index], "mipmap", activity?.packageName)
             customViewImage.setImageResource(imageChange)
@@ -111,6 +113,22 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
                 if (index == imageIndex[i]) {
                     customViewButton.text = "구매완료"
                     purchaseCheck = true
+                    if (presentType=="employ"){
+                        val customViewLevelText =
+                            shopCustomView.findViewById<TextView>(R.id.level_text)
+                        customViewLevelText.text="현재 LV"
+                        if (presentLevel[i]==null){
+                            presentLevel[i]="0"
+                            customViewButton.text = presentLevel[i]
+                            employLevel[index]=presentLevel[i].toInt()
+                            Log.d("구매",presentLevel[i])
+                        }
+                        else {
+                            customViewButton.text = presentLevel[i]
+                            employLevel[index]=presentLevel[i].toInt() + 1
+
+                        }
+                    }
                 }
             }
             customViewButton.setOnClickListener {
@@ -127,13 +145,12 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
                         presentType,
                         image[index],
                         nameList[index],
-                        employType[index]
+                        employType[index],
+                        employLevel[index].toString()
                     )
-
                     customViewButton.text = "구매완료"
                     purchaseCheck = true
                     Toast.makeText(context, "구매성공", Toast.LENGTH_SHORT).show()
-
                 } else {
                     Log.d("구매여부", "구매실패")
                     Toast.makeText(context, "구매할 수 없습니다", Toast.LENGTH_SHORT).show()
@@ -142,13 +159,8 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
             linearLayout.addView(shopCustomView)
         }
     }
-
-
-
     interface CustomViewClickListener{ // 메인 페이지로 값을 전달하기 위한 인터페이스
-
         fun purchaseSuccess(price: String, id:String, type: String)
-
     }
 
     fun initEvent(view: View){
@@ -220,27 +232,18 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         if (Build.VERSION.SDK_INT < 30) {
-
             val display = windowManager.defaultDisplay
             val size = Point()
-
             display.getSize(size)
-
             val window = dialogFragment.dialog?.window
-
             val x = (size.x * width).toInt()
             val y = (size.y * height).toInt()
             window?.setLayout(x, y)
-
         } else {
-
             val rect = windowManager.currentWindowMetrics.bounds
-
             val window = dialogFragment.dialog?.window
-
             val x = (rect.width() * width).toInt()
             val y = (rect.height() * height).toInt()
-
             window?.setLayout(x, y)
         }
     }

@@ -19,6 +19,21 @@
 
         />
 
+    <TextView
+        android:id="@+id/level_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shop_scroll_view_design"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/shop_custom_view_buy_button"
+        app:layout_constraintStart_toEndOf="@+id/shop_custom_view_image_view"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        app:layout_constraintHorizontal_bias="1"
+        />
+
     <Button
         android:id="@+id/shop_custom_view_buy_button"
         android:layout_width="wrap_content"

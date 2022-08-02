@@ -98,7 +98,7 @@
         android:id="@+id/btn_update"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="레벨업 버튼"
+        android:text="레벨업"
         android:textColor="@color/black"
         android:backgroundTint="@color/deep_green"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -115,7 +115,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintHeight_percent="0.24"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintVertical_bias="0.1"
         app:layout_constraintTop_toBottomOf="@+id/btn_update"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,15 +125,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="레벨업 조건"
+            android:layout_weight="0.1"
+            android:text="레벨업에 필요한 직원 명단"
             android:textColor="@color/black"
             android:autoSizeTextType="uniform"
             />
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6"
+            android:layout_weight="0.9"
             android:background="@drawable/border_square"
             android:layout_marginTop="10dp"
             android:padding="5dp">
@@ -144,43 +144,6 @@
                 android:orientation="horizontal">
             </LinearLayout>
         </HorizontalScrollView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/levelup_shop_effect"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintHeight_percent="0.24"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@+id/levelup_condition"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="10레벨 달성 시 구입 가능"
-            android:textColor="@color/black"
-            android:autoSizeTextType="uniform"
-            />
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6"
-            android:background="@drawable/border_square"
-            android:layout_marginTop="10dp"
-            android:padding="5dp">
-            <LinearLayout
-                android:id="@+id/levelup_dialog_can_scrollview_linear"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-            </LinearLayout>
-        </HorizontalScrollView>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

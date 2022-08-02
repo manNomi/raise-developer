@@ -45,6 +45,27 @@ object DataBase {
         "사운드 디렉터",
         "개발자"
     )
+
+    var employLevel= arrayListOf(
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+       0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    )
     var cartNameList= arrayListOf(
         "기안 모닌",
         "기안 레위",
@@ -55,31 +76,36 @@ object DataBase {
         "람머르기니 아빤타도르",
         "롤러로이스 KING"
     )
-
     val levelUp1to2Name= arrayListOf(
         "대입 떨어진 재수생",
         "동네 컴퓨터 수리집 사장님",
         "하루 왠종일 게임만 하는 내 친구",
         )
-
     val levelUp1to2Image= arrayListOf(
         "character4",
         "character5",
         "character12",
     )
-
+    val levelUp1to2Level= arrayListOf(
+        0,
+        0,
+        0
+    )
     val levelUp2to3Name= arrayListOf(
         "힙합을 즐겨듣는 고등학생",
         "10년째 공무원 준비하는 미대생",
         "게으른 4차원 디자이너",
         )
-
     val levelUp2to3Image= arrayListOf(
         "character1",
         "character2",
         "character3",
     )
-
+    val levelUp2to3Level= arrayListOf(
+        0,
+        0,
+        0
+    )
     val levelUp3to4Image= arrayListOf(
         "character11",
         "character17",
@@ -87,6 +113,10 @@ object DataBase {
     val levelUp3to4Name= arrayListOf(
         "애니와 애니노래를 좋아하는 백수",
         "쌀국수를 즐겨먹는 디렉터",
+    )
+    val levelUp3to4Level= arrayListOf(
+        0,
+        0
     )
 
     val levelUp4to5Image= arrayListOf(
@@ -99,7 +129,11 @@ object DataBase {
         "사회생활을 잘 못하는 해킹 대회 우승자",
         "포켓몬 로켓단의 프로그래머",
     )
-
+    val levelUp4to5Level= arrayListOf(
+        0,
+        0,
+        0
+    )
     val levelUp5to6Image= arrayListOf(
         "character14",
         "character16",
@@ -108,19 +142,25 @@ object DataBase {
         "문서작업은 누구보다 자신 있는 사무직의 달인",
         "한국어를 잘못하는 유학파 출신 디자이너",
     )
-
+    val levelUp5to6Level= arrayListOf(
+        0,
+        0
+    )
     val levelUp6to7Image= arrayListOf(
         "character6",
         "character7",
         "character10",
         )
-
     val levelUp6to7Name= arrayListOf(
         "하벌드 AI 박사 학위를 취득한 인마대 김병X 교수님",
         "네카라쿠베”스”의 최만석 CEO",
         "은퇴한 70대 IT 대기업 개발자 할아버지",
     )
-
+    val levelUp6to7Level= arrayListOf(
+        0,
+        0,
+        0
+    )
     val levelUp7to8Image= arrayListOf(
         "character8",
         "character9",
@@ -129,8 +169,12 @@ object DataBase {
         "빌게이쯔(마이크로소프트콘 CEO)",
         "일론 마스크(테술라 CEO)"
     )
-
+    val levelUp7to8Level= arrayListOf(
+        0,
+        0
+    )
     fun watchInit(){
+        watchList.clear()
         for (index in 0 until 6) {
             watchList.add("apple_watch_${index+1}")
             watchNameList.add("사과시계 ${index+1}")
@@ -149,6 +193,7 @@ object DataBase {
         }
     }
     fun cartInit() {
+        cartList.clear()
         for (index in 0 until 8) {
             cartList.add("cart${index + 1}")
         }
