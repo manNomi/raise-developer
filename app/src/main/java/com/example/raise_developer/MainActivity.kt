@@ -5,34 +5,30 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Intent
-import android.icu.lang.UCharacter
-import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.SoundPool
-import android.os.Build
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
-import android.view.PointerIcon.load
 import android.view.View
-import android.view.ViewDebug
 import android.view.animation.LinearInterpolator
-import android.view.animation.OvershootInterpolator
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.setMargins
-import java.lang.System.load
-import java.time.Duration
-import kotlin.coroutines.CoroutineContext
+import androidx.lifecycle.lifecycleScope
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.http.HttpRequest
+import com.apollographql.apollo3.api.http.HttpResponse
+import com.apollographql.apollo3.network.http.HttpInterceptor
+import com.apollographql.apollo3.network.http.HttpInterceptorChain
+import com.example.graphqlsample.queries.GithubCommitQuery
 import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity() {
     var personalMoney = 0  // 개인 자산
     var annualMoney = 2000 // 연봉. 10분에 한번 씩 올라가는거로 바꾸는게 나을듯
     lateinit var thread: Thread
+    lateinit var animationThread: Thread
     var isThreadStop = false
     val handler = Handler(Looper.getMainLooper()){ // 메시지를 받을 때 마다 plusAnnualMoneyToPersonalMoney() 이 함수 실행
         plusAnnualMoneyToPersonalMoney()
@@ -41,12 +37,19 @@ class MainActivity : AppCompatActivity() {
     lateinit var soundPool: SoundPool
     var soundId = 0
 
+    inner class AuthorizationInterceptor(val token: String) : HttpInterceptor {
+        override suspend fun intercept(request: HttpRequest, chain: HttpInterceptorChain): HttpResponse {
+            return chain.proceed(request.newBuilder().addHeader("Authorization", "Bearer $token").build())
+        }
+    }
     override fun onStart() { // 일단 시작 할 때 쓰레드를 실행하게 해줬음 잔디 버튼 누르면 쓰레드 종료
         super.onStart()
         thread = Thread(CalculateAnnualMoney())
         thread.start()
         setTypingSound()
-        }
+
+    }
+
 
     fun setTypingSound()  { // 터치 시 소리 세팅
         soundPool = SoundPool.Builder()
@@ -54,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             .build()
         soundId = soundPool.load(this, R.raw.typing_sound, 1)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,11 +69,11 @@ class MainActivity : AppCompatActivity() {
 //        val param = GridLayout.LayoutParams(GridLayout.spec(0,5),GridLayout.spec(0,5))
 //        param.setMargins(13)
 //        characterView.layoutParams = param
+
     }
     fun characterMove() {
         val character = findViewById<LinearLayout>(R.id.main_page_character)
         val characterNoteMark = findViewById<ImageView>(R.id.music_note)
-
         ObjectAnimator.ofFloat(character, "translationY", -600f).apply{ // y축 이동
             duration = 700
             interpolator = LinearInterpolator()
@@ -100,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addCharacterAndMove(name: String, positionX: Float, positionY: Float){
+    fun addCharacter(name: String){
         val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
         // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
         val characterView = layoutInflater.inflate(R.layout.main_page_character_view,frameLayout,false)
@@ -112,37 +116,44 @@ class MainActivity : AppCompatActivity() {
 
         val id = resources.getIdentifier(name,"mipmap",packageName)
         characterImage.setImageResource(id)
+        setAnimation(character)
 
-        ObjectAnimator.ofFloat(character, "translationY", positionY).apply{ // y축 이동
-            duration = 700 // 애니메이션중 걸리는 시간
-            interpolator = LinearInterpolator() // 애니메이션 효과
-            addListener(object: AnimatorListenerAdapter(){
-                override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
-
-                    ObjectAnimator.ofFloat(character, "translationX", positionX).apply{ // x축 이동
-                        duration = 700
-                        interpolator = LinearInterpolator()
-                        addListener(object: AnimatorListenerAdapter(){
-
-                            override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
-                                characterNoteMark.visibility = View.VISIBLE
-                                ObjectAnimator.ofFloat(characterNoteMark, "translationY", 15f).apply{
-                                    duration = 800
-                                    repeatCount = ValueAnimator.INFINITE // 무한반복
-                                    repeatMode = ValueAnimator.REVERSE
-                                    target = characterNoteMark
-                                    start()
-                                }
-                            }
-                        })
-                        start()
-                    }
-                }
-            })
-            start()
-        }
         frameLayout.addView(characterView)
     }
+
+    fun setAnimation(character: View) { // x: 20~ 1050  y: 900 ~ 1530
+        var isAnimationCanceled = false
+
+        val animationOne = ObjectAnimator.ofFloat(character, "translationY", Random.nextInt(-200,200).toFloat()
+        )
+        animationOne.duration = 700
+        animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+        animationOne.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                val animationTwo = ObjectAnimator.ofFloat(character, "translationX", Random.nextInt(-500,500).toFloat())
+                animationTwo.duration = 700
+                animationTwo.interpolator = LinearInterpolator()
+//                animationTwo.addListener(object : AnimatorListenerAdapter() {
+//                    override fun onAnimationStart(animation: Animator?) {
+//                        isAnimationCanceled = false
+//                    }
+//
+//                    override fun onAnimationCancel(animation: Animator?) {
+//                        isAnimationCanceled = true
+//                    }
+//
+//                    override fun onAnimationEnd(animation: Animator?) {
+//                        if (!isAnimationCanceled) {
+////                            setAnimation(character)
+//                        }
+//                    }
+//                })
+                animationTwo.start()
+            }
+        })
+    animationOne.start()
+    }
+
 
     inner class CalculateAnnualMoney: Runnable{ // 쓰레드 클래스 isThreadStop이 false일 때 돌아가며, 5초마다 handler에 메세지를 보내줌
         override fun run() {
@@ -150,6 +161,12 @@ class MainActivity : AppCompatActivity() {
                 Thread.sleep(5000)
                 handler.sendEmptyMessage(0)
             }
+        }
+    }
+
+    inner class AnimationThread: Runnable{
+        override fun run() {
+
         }
     }
 
@@ -177,10 +194,27 @@ class MainActivity : AppCompatActivity() {
 //        잔디버튼
         val grassBtn=findViewById<ImageButton>(R.id.grass_btn)
         grassBtn.setOnClickListener{
-            val intent= Intent(this,GrassCheckActivity::class.java)
-            startActivity(intent)
+//            val intent= Intent(this,GrassCheckActivity::class.java)
+//            startActivity(intent)
             isThreadStop = true
             Log.d("쓰레드 종료","isThreadStop = ${isThreadStop}")
+            val apolloClient = ApolloClient.builder()
+                .addHttpInterceptor(AuthorizationInterceptor("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"))
+                .serverUrl("https://api.github.com/graphql")
+                .build()
+
+            lifecycleScope.launchWhenResumed {
+
+                val response = apolloClient.query(GithubCommitQuery("joh9911")).execute()
+
+                Log.d("LaunchList", "Success ${response.data}")
+                val view = layoutInflater.inflate(R.layout.commit_dialog,null)
+                val dialog = AlertDialog.Builder(this@MainActivity)
+                    .setView(view)
+                    .create()
+                view.findViewById<TextView>(R.id.text).text = response.data?.user?.contributionsCollection?.contributionCalendar.toString()
+                dialog.show()
+            }
         }
 //        상점 버튼
         val shopButton = findViewById<ImageView>(R.id.shop_btn)
@@ -194,7 +228,7 @@ class MainActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원" //적용
                     shopDialog.dismiss()
                     if (type == "employ"){
-                        addCharacterAndMove(menuName, Random.nextInt(-500,500).toFloat(),Random.nextInt(500).toFloat())
+                        addCharacter(menuName, )
                     }
                     else{}
                 }

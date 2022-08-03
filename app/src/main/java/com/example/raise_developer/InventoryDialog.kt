@@ -81,7 +81,7 @@ class InventoryDialog: DialogFragment() {
                 customViewText.text=viewName[index]
             }
             else{
-                customViewText.text=viewName[index]+"(${viewType[index]})"
+                customViewText.text="(${viewType[index]})\n" + viewName[index]
             }
             linearLayout.addView(shopCustomView)
         }

@@ -21,7 +21,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
     var watchNameList= mutableListOf<String>()
 
 
-    var presentType = "empoloy"
+    var presentType = "employ"
 
     var employName= arrayListOf(
         "힙합을 즐겨듣는 고등학생",
@@ -42,7 +42,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         "한국어를 잘못하는 유학파 출신 디자이너",
         "쌀국수를 즐겨먹는 디렉터",
         "포켓몬 로켓단의 프로그래머",
-        "조성민"
+        "무직 백수"
         )
     var employType= arrayListOf(
         "사운드 디렉터",
@@ -62,7 +62,8 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         "해커",
         "디자이너",
         "사운드 디렉터",
-        "개발자"
+        "개발자",
+        "무직 백수"
     )
     var cartNameList= arrayListOf(
         "기안 모닌",
@@ -113,7 +114,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         prefs = PreferenceInventory(requireContext())
         watchInit()
         cartInit()
-        addCustomView("empoly")
+        addCustomView("employ")
         initEvent(view)
 
         return view
@@ -290,7 +291,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        context?.dialogFragmentResize(this,0.95f,0.7f) // 다이알로그 크기 조정
+        context?.dialogFragmentResize(this,1f,0.9f) // 다이알로그 크기 조정
     }
 
     fun Context.dialogFragmentResize(dialogFragment: DialogFragment, width: Float, height: Float) {// 다이알로그 크기 설정하는 함수
