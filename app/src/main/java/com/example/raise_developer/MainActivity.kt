@@ -21,6 +21,8 @@ import com.apollographql.apollo3.api.http.HttpResponse
 import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_page)
         initEvent()
         characterMove()
+
 //         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
 //         좀더 알아봐야함 뷰 위치 설정
 //        val param = GridLayout.LayoutParams(GridLayout.spec(0,5),GridLayout.spec(0,5))
@@ -199,12 +202,12 @@ class MainActivity : AppCompatActivity() {
             isThreadStop = true
             Log.d("쓰레드 종료","isThreadStop = ${isThreadStop}")
             val apolloClient = ApolloClient.builder()
-                .addHttpInterceptor(AuthorizationInterceptor("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"))
+                .addHttpInterceptor(AuthorizationInterceptor("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"))
                 .serverUrl("https://api.github.com/graphql")
                 .build()
 
             lifecycleScope.launchWhenResumed {
-
+                Log.d("이건 실행 됨?", "제발")
                 val response = apolloClient.query(GithubCommitQuery("joh9911")).execute()
 
                 Log.d("LaunchList", "Success ${response.data}")
@@ -215,6 +218,8 @@ class MainActivity : AppCompatActivity() {
                 view.findViewById<TextView>(R.id.text).text = response.data?.user?.contributionsCollection?.contributionCalendar.toString()
                 dialog.show()
             }
+
+
         }
 //        상점 버튼
         val shopButton = findViewById<ImageView>(R.id.shop_btn)
