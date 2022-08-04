@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.4"
         android:text="현재 가지고 있는 돈의 - 5%"
         android:gravity="center"
-        android:textColor="@color/deep_red"
+        android:textColor="#00ff00"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:autoSizeTextType="uniform"

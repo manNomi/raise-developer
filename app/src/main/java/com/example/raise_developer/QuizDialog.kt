@@ -13,6 +13,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 class QuizDialog : DialogFragment() {
     // 퀴즈 목록 (0번 값이 문제, 1번 값이 답)
@@ -80,6 +82,19 @@ class QuizDialog : DialogFragment() {
         }
     }
 
+    fun btnEventResultChoice() {
+        for(index in 0 until 4) {
+            if(index == answerNum) {
+                btnList[index].setOnClickListener {
+                    Log.d("result","correct")
+                }
+            }else {
+                btnList[index].setOnClickListener {
+                    Log.d("result","incorrect")
+                }
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.quiz_dialog_problem,container,false)
@@ -92,6 +107,7 @@ class QuizDialog : DialogFragment() {
     }
 
     fun initEvent(view: View){
+        btnEventResultChoice()
         closeButtonEvent(view)
     }
     fun initSet(view: View) {
