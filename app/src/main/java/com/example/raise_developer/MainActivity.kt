@@ -33,18 +33,29 @@ class MainActivity : AppCompatActivity() {
     var personalMoney = 0  // 개인 자산
     var annualMoney = 2000 // 연봉. 10분에 한번 씩 올라가는거로 바꾸는게 나을듯
     lateinit var thread: Thread
+    lateinit var quizTimeThread: Thread
     var isThreadStop = false
     val handler = Handler(Looper.getMainLooper()){ // 메시지를 받을 때 마다 plusAnnualMoneyToPersonalMoney() 이 함수 실행
         plusAnnualMoneyToPersonalMoney()
         true
     }
+    val quizTimeHandler = Handler(Looper.getMainLooper()){
+        canSolveQuiz()
+        true
+    }
     lateinit var soundPool: SoundPool
     var soundId = 0
+
+    var solveQuiz = false // 퀴즈를 풀 수 있는 상태를 나타내는 값
 
     override fun onStart() { // 일단 시작 할 때 쓰레드를 실행하게 해줬음 잔디 버튼 누르면 쓰레드 종료
         super.onStart()
         thread = Thread(CalculateAnnualMoney())
         thread.start()
+
+        quizTimeThread = Thread(QuizTimer())
+        quizTimeThread.start()
+
         setTypingSound()
         }
 
@@ -153,6 +164,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    inner class QuizTimer: Runnable{
+        override fun run() {
+            while(!isThreadStop){
+                Thread.sleep(10000)
+                quizTimeHandler.sendEmptyMessage(0)
+            }
+        }
+    }
+
     fun plusAnnualMoneyToPersonalMoney(){ // 개인 자산에 연봉 값을 더해주는 함수
         personalMoney += annualMoney
         findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원"
@@ -171,6 +191,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onTouchEvent(event)
+    }
+
+    fun canSolveQuiz() {
+        solveQuiz = true
+    }
+
+    fun btnEventQuizLogic() {
+        val quizButton = findViewById<ImageButton>(R.id.quiz_btn)
+        quizButton.setOnClickListener{
+            if(solveQuiz) {
+                val quizDialog = QuizDialog()
+                quizDialog.show(supportFragmentManager,"quizDialog")
+                solveQuiz = false
+            }else {
+                Toast.makeText(this, "퀴즈가 도착하지 않았습니다!", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     fun initEvent(){
@@ -219,13 +256,8 @@ class MainActivity : AppCompatActivity() {
             val inventoryDialog = InventoryDialog()
             inventoryDialog.show(supportFragmentManager,"inventoryDialog")
         }
-//        퀴즈 버튼
-        val quizButton = findViewById<ImageButton>(R.id.quiz_btn)
-        quizButton.setOnClickListener{
-            val quizDialog = QuizDialog()
-            quizDialog.show(supportFragmentManager,"quizDialog")
-        }
 
+        btnEventQuizLogic()
     }
 
 //    fun grassShopDialogButtonEvent(){ // 잔디 상점과 연결하면 됨
