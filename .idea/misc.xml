@@ -3,16 +3,41 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.216" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/border_square.xml" value="0.1" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_button_design.xml" value="0.1" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_image_view_design.xml" value="0.1" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/grass_shop_custom_view_text_view_design.xml" value="0.216" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/grass_shop_dialog_box_border.xml" value="0.1" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/ic_baseline_music_note_24.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/inventory_dialog_box_design.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/option_dialog_contents_background.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/option_dialog_middle_background.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/option_dialog_top_background.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/shop_category_not_selected_button.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/shop_category_selected_button.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/shop_dialog_box_without_top_border.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/drawable/shop_scroll_view_design.xml" value="0.216" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/grass_page.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/grass_page_custom_view.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/grass_shop_custom_view.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/grass_shop_dialog.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/inf_dialog.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/inventory_custom_view.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/inventory_dialog.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/levelup_dialog.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/login_page.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/main_page.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/main_page_character_view.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/option_dialog.xml" value="0.17708333333333334" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/overlap_dialog_check.xml" value="0.25" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/overlap_dialog_choice.xml" value="0.17708333333333334" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/quiz_dialog_problem.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/quiz_dialog_result.xml" value="0.2078125" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/quiz_dialog_solve.xml" value="0.2" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/shop_custom_view.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/drawable/grass_shop_dialog_box_border.xml" value="0.1" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/drawable/option_dialog_contents_background.xml" value="0.118" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/drawable/option_dialog_middle_background.xml" value="0.118" />

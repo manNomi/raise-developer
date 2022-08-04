@@ -222,6 +222,8 @@ class MainActivity : AppCompatActivity() {
 //        퀴즈 버튼
         val quizButton = findViewById<ImageButton>(R.id.quiz_btn)
         quizButton.setOnClickListener{
+            val quizDialog = QuizDialog()
+            quizDialog.show(supportFragmentManager,"quizDialog")
         }
 
     }
