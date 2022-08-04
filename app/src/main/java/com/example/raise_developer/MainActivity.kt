@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
             isThreadStop = true
             Log.d("쓰레드 종료","isThreadStop = ${isThreadStop}")
             val apolloClient = ApolloClient.builder()
-                .addHttpInterceptor(AuthorizationInterceptor("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"))
+                .addHttpInterceptor(AuthorizationInterceptor("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"))
                 .serverUrl("https://api.github.com/graphql")
                 .build()
 
