@@ -37,7 +37,10 @@
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/quiz_dialog_problem.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/quiz_dialog_result.xml" value="0.2078125" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/quiz_dialog_solve.xml" value="0.2" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/ranking_page.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/shop_custom_view.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/shop_dialog.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/flyin/Desktop/RaiseDeveloper/raise-developer-android/app/src/main/res/layout/splash_page.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/drawable/grass_shop_dialog_box_border.xml" value="0.1" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/drawable/option_dialog_contents_background.xml" value="0.118" />
         <entry key="..\:/Users/hanmw/AndroidStudioProjects/stage us team project/raise-developer-android/app/src/main/res/drawable/option_dialog_middle_background.xml" value="0.118" />
@@ -125,7 +128,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.2" />
+        <option name="scale" value="0.20885416666666667" />
       </ProjectState>
     </option>
   </component>
