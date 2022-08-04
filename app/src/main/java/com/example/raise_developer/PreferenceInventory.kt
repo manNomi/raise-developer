@@ -50,13 +50,23 @@ class PreferenceInventory(context: Context) {
             inventory.add(str)
             inventoryName.add(name)
             Log.d("type",inventoryName.toString())
-
         }
         else{
-            employ.add(str)
-            employName.add(name)
-            employType.add(type)
-            employLevel.add(level)
+
+            var check= "비존재"
+            for (index in 0 until employ.size) {
+                if (employ[index]==str){
+                    employLevel[index]=(level.toInt()+1).toString()
+                    check="이미존재"
+                    break
+                }
+            }
+            if(check== "비존재") {
+                employ.add(str)
+                employName.add(name)
+                employType.add(type)
+                employLevel.add(level)
+            }
         }
         var gsonText = "{"
         gsonText+="'inventory_list':["
@@ -85,7 +95,7 @@ class PreferenceInventory(context: Context) {
 
         Log.d("gson", gsonText)
         prefs.edit().putString("inventory", gsonText).apply()
-
+//        prefs.edit().clear().apply()
 
     }
 
@@ -109,6 +119,7 @@ class PreferenceInventory(context: Context) {
             employ.clear()
             employName.clear()
             employType.clear()
+            employLevel.clear()
             if (data.employ_list!=null) {
                 for (index in 0 until data.employ_list.size) {
                     employ.add(data.employ_list[index].image)

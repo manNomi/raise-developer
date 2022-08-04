@@ -152,14 +152,15 @@
 
     <ImageView
         android:id="@+id/main_page_image_view_personal_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/money"
-        app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toEndOf="@+id/main_page_top"
-        app:layout_constraintHorizontal_bias="0.045"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@mipmap/money_big"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/main_page_top" />
+        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
         android:id="@+id/main_page_text_view_personal_money"
@@ -170,18 +171,19 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
         app:layout_constraintEnd_toEndOf="@+id/main_page_top"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintHorizontal_bias="0.30"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/main_page_top" />
 
     <ImageView
+        android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/money"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toEndOf="@+id/main_page_top"
-        app:layout_constraintHorizontal_bias="0.01"
-        app:layout_constraintStart_toEndOf="@+id/main_page_image_view_personal_money"
+        app:layout_constraintEnd_toStartOf="@+id/main_page_button_option"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="@+id/main_page_top"
         app:layout_constraintTop_toTopOf="@+id/main_page_top" />
 
     <ImageButton
