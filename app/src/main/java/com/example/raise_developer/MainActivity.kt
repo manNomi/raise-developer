@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity() {
                                             "나중 캐릭터의 위치 조성민",
                                             "${afterLocation[0]},${afterLocation[1]}"
                                         )
+                                        character.x = 0f
                                     }
                             }
                         })
@@ -114,7 +115,6 @@ class MainActivity : AppCompatActivity() {
             })
             start()
         }
-
     }
 
     fun addCharacter(name: String) {
@@ -130,72 +130,120 @@ class MainActivity : AppCompatActivity() {
 
         val id = resources.getIdentifier(name, "mipmap", packageName)
         characterImage.setImageResource(id)
-        setAnimation(character)
+
+        val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
+        animationOne.duration = 700
+        animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+        animationOne.start()
+
         val thread = Thread(AnimationThread(character))
         thread.start()
         frameLayout.addView(characterView)
-        var locationArray = IntArray(2)
-        character.getLocationInWindow(locationArray)
-        Log.d(" 캐릭터의 위치add", "${locationArray[0]},${locationArray[1]}")
-
     }
 
-    fun setAnimation(character: View) { // x: 20~ 1050  y: 900 ~ 1530
 
-        var locationArray = IntArray(2)
-        character.getLocationOnScreen(locationArray)
-        Log.d("원래 캐릭터의 위치1", "${locationArray[0]},${locationArray[1]}")
-//        Random.nextInt(-200,200).toFloat()
-//        Random.nextInt(-500,500).toFloat()
-//        val myThread = thread{
-//            Log.d("ㅅ","스레드실행중")
-//            Thread.sleep(2000)
-//            runOnUiThread{
-//                Animation(character)
-//            }
-//        }
-//        myThread.start()
-//        val animationOne = ObjectAnimator.ofFloat(character, "translationX", 300f)
-//        animationOne.duration = 700
-//        animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-//
-//        val animationTwo = ObjectAnimator.ofFloat(character, "translationY", 300f)
-//        animationTwo.duration = 700
-//        animationTwo.interpolator = LinearInterpolator()
-//
-//
-//        animationOne.start()
-//        animationTwo.start()
-        val afterLocation = IntArray(2)
-        character.getLocationOnScreen(afterLocation)
-        Log.d("나중 캐릭터의 위치", "${afterLocation[0]},${afterLocation[1]}")
-    }
-    fun Animation(character: View){
+    fun setAnimation(character: View, option: Int){// x: 20~ 1050  y: 710 ~ 1530
         Log.d("Animation","df")
-        val animationOne = ObjectAnimator.ofFloat(character, "translationX", Random.nextInt(-200,200).toFloat())
-        animationOne.duration = 700
-        animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-        animationOne.addListener(object: AnimatorListenerAdapter(){
-            override fun onAnimationEnd(animation: Animator?) {
-//                Log.d("")
-            }
-        })
+        if (option == 0) {
+            var random = Random.nextInt(-500,500).toFloat()
+            Log.d("option","${random}")
+            val animationOne = ObjectAnimator.ofFloat(character, "translationX", random)
+            animationOne.duration = 700
 
-        animationOne.start()
+            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+            animationOne.addListener(object: AnimatorListenerAdapter(){
+                override fun onAnimationEnd(animation: Animator?) {
+                    var locationArray = IntArray(2)
+                    character.getLocationInWindow(locationArray)
+                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
+                    if (locationArray[0] < 20 ) {
+                        character.x = -80f
+                    }
+                    else if (locationArray[0] > 1050) {
+                        character.x = 990f
+                    }
+                }
+            })
+            animationOne.start()
+        }
+        else if(option == 1){
+            Log.d("option","${option}")
+            var random = Random.nextInt(-800,0).toFloat()
+            Log.d("random","${random}")
+            val animationOne = ObjectAnimator.ofFloat(character, "translationY", random)
+            animationOne.duration = 700
+            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+            animationOne.addListener(object: AnimatorListenerAdapter(){
+                override fun onAnimationEnd(animation: Animator?) {
+                    var locationArray = IntArray(2)
+                    character.getLocationInWindow(locationArray)
+                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
+                    if (locationArray[1] < 710 ) {
+                        character.y = 100f
+                        Log.d("if문1","${character.y}")
+                    }
+                    else if (locationArray[1] > 1530) {
+                        character.y = 870f
+                        Log.d("if문2","${character.y}")
+                    }
+                }
+            })
+            animationOne.start()
+        }
+        else if(option == 2){
+            var randomX = Random.nextInt(-200,200).toFloat()
+            var randomY = Random.nextInt(-800,0).toFloat()
+            val animationOne = ObjectAnimator.ofFloat(character, "translationX", randomX)
+            animationOne.duration = 700
+            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+            animationOne.addListener(object: AnimatorListenerAdapter(){
+                override fun onAnimationEnd(animation: Animator?) {
+                    var locationArray = IntArray(2)
+                    character.getLocationInWindow(locationArray)
+                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
+                    if (locationArray[0] < 20 ) {
+                        character.x = -80f
+                    }
+                    else if (locationArray[0] > 1050) {
+                        character.x = 990f
+                    }
+                }
+            })
+
+            val animationTwo = ObjectAnimator.ofFloat(character, "translationY", randomY)
+            animationTwo.duration = 700
+            animationTwo.interpolator = LinearInterpolator() // 애니메이션 효과
+            animationOne.addListener(object: AnimatorListenerAdapter(){
+                override fun onAnimationEnd(animation: Animator?) {
+                    var locationArray = IntArray(2)
+                    character.getLocationInWindow(locationArray)
+                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
+                    if (locationArray[1] < 710 ) {
+                        character.y = 100f
+                        Log.d("if문1","${character.y}")
+                    }
+                    else if (locationArray[1] > 1530) {
+                        character.y = 870f
+                        Log.d("if문2","${character.y}")
+                    }
+                }
+            })
+
+            animationOne.start()
+            animationTwo.start()
+        }
     }
-
-
-
-    inner class AnimationThread(character: View): Runnable{ //쓰레드 클래스 isThreadStop이 false일 때 돌아가며, 5초마다 handler에 메세지를 보내줌
+    inner class AnimationThread(character: View): Runnable{ //쓰레드 클래스 isAnimationThreadStop가 false일 때 멈춤
         val myCharacter = character
         override fun run() {
             while(!isAnimationThreadStop){
-                Log.d("스리도","도는중")
+                var option = Random.nextInt(0,3)
+//                Log.d("option값","${option}")
                 Thread.sleep(2000)
                 runOnUiThread {
-                    Animation(myCharacter)
+                    setAnimation(myCharacter, option)
                 }
-//                handler.sendMessage(myCharacter)
+
             }
         }
     }
