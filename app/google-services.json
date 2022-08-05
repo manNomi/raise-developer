@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "894512889152",
+    "project_id": "rasiedeveloper",
+    "storage_bucket": "rasiedeveloper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894512889152:android:e81dac5d1bc1cc97aa4ea5",
+        "android_client_info": {
+          "package_name": "com.example.raise_developer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894512889152-r5m26b7qrakod6ema26gunsbn6jjr6ug.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.raise_developer",
+            "certificate_hash": "c074c09f46636122031fadd3adc83a38e12eeb9b"
+          }
+        },
+        {
+          "client_id": "894512889152-vshmqs2igqq5f9gh9qfos4ote1sh3eqo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVeOkVZNl-UatGZgRq5c-XDdE67dLk4kU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894512889152-vshmqs2igqq5f9gh9qfos4ote1sh3eqo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

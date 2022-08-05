@@ -44,4 +44,11 @@ dependencies {
     implementation("commons-io:commons-io:2.8.0")
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation("commons-io:commons-io:2.8.0")
+
+    // firebase 설치
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
+// 구글 서비스 추가
+apply plugin: 'com.google.gms.google-services'
