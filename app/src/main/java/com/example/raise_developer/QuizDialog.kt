@@ -73,7 +73,7 @@ class QuizDialog : DialogFragment() {
         textProblem.setText(quizList[quizNum][0])
         var wrongAnswerCount = 0
         for(index in 0 until 4) {
-            if(index == answerNum) {
+            if(index == answerNum - 1) {
                 btnList[index].text = quizList[quizNum][1]
             }else {
                 btnList[index].text = quizList[wrongAnswerNum[wrongAnswerCount]][1]

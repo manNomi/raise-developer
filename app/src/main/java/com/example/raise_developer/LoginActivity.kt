@@ -2,6 +2,7 @@ package com.example.raise_developer
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,9 @@ class LoginActivity: AppCompatActivity() {
                             authResult -> auth.signInWithCredential(authResult.credential!!)
                         .addOnCompleteListener(this@LoginActivity) {task ->
                             if(task.isSuccessful) {
+                                val user = Firebase.auth.currentUser
+                                val id = user!!.providerData
+                                Log.d("inf",id.toString())
                                 val intent= Intent(this,MainActivity::class.java)
                                 startActivity(intent)
                             }
