@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "671367747092",
+    "project_id": "raisedeveloper-43499",
+    "storage_bucket": "raisedeveloper-43499.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671367747092:android:850eb508158bce5c26f901",
+        "android_client_info": {
+          "package_name": "com.example.raise_developer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "671367747092-v0ijbruhkmf6ata6iofliiefum3hibib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMvGKIP9cSXzgvJPLMuW-JKJX7WS8YSUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "671367747092-v0ijbruhkmf6ata6iofliiefum3hibib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
