@@ -75,7 +75,8 @@
             android:background="@color/background_color"
             android:gravity="center"
             android:text="로그아웃"
-            android:textSize="20dp">
+            android:textSize="20dp"
+            android:layout_gravity="center">
 
         </Button>
 

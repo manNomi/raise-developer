@@ -4,7 +4,10 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.media.SoundPool
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
@@ -32,8 +35,6 @@ class MainActivity : AppCompatActivity() {
     var personalMoney = 0  // 개인 자산
     var annualMoney = 2000 // 연봉. 10분에 한번 씩 올라가는거로 바꾸는게 나을듯
 
-    var isMoneyThreadStop = false
-    var threadArray = arrayListOf<Thread>()
     var isAnimationThreadStop = false
 
     lateinit var thread: Thread
@@ -48,6 +49,22 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var soundPool: SoundPool
     var soundId = 0
+
+    var myService : MyService? = null
+    var isConService = false
+    val serviceConnection = object : ServiceConnection{
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            Log.d("서비스","실행됨")
+            val b = p1 as MyService.LocalBinder
+            myService = b.getService()
+            isConService = true
+            myService?.musicStart()
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            isConService = false
+        }
+    }
 
     inner class AuthorizationInterceptor(val token: String) : HttpInterceptor {
         override suspend fun intercept(
@@ -65,8 +82,8 @@ class MainActivity : AppCompatActivity() {
         quizTimeThread = Thread(QuizTimer())
         quizTimeThread.start()
         setTypingSound()
-        }
 
+        }
 
 
     fun setTypingSound() { // 터치 시 소리 세팅
@@ -115,14 +132,10 @@ class MainActivity : AppCompatActivity() {
                                         repeatMode = ValueAnimator.REVERSE
                                         target = characterNoteMark
                                         start()
-                                        val afterLocation = IntArray(2)
-                                        character.getLocationInWindow(afterLocation)
-                                        Log.d(
-                                            "나중 캐릭터의 위치 조성민",
-                                            "${afterLocation[0]},${afterLocation[1]}"
-                                        )
-                                        character.x = 0f
+
                                     }
+                                val tutorialDialog = TutorialDialog()
+                                tutorialDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
                             }
                         })
                         start()
@@ -273,10 +286,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun plusAnnualMoneyToPersonalMoney(){ // 개인 자산에 연봉 값을 더해주는 함수
-        personalMoney += annualMoney
-        findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원"
-    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean { // 터치할 때마다 개인 자산의 TextView가 만원 씩 증가
         when(event?.action){
@@ -360,6 +369,12 @@ class MainActivity : AppCompatActivity() {
         val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
         optionButton.setOnClickListener {
             val optionDialog = OptionDialog()
+            optionDialog.setBgmOnButtonEvent(object: OptionDialog.BgmOnButtonClickListener{
+                override fun bgmOnButtonEvent() {
+                    Log.d("버튼","눌림")
+                    serviceBind()
+                }
+            })
             optionDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
         }
 //        트로피 버튼
@@ -387,6 +402,21 @@ class MainActivity : AppCompatActivity() {
 //        }
 //
 //    }
+    fun serviceBind(){
+        val bindService = Intent(this,MyService::class.java)
+        bindService(bindService, serviceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    fun serviceUnBind(){
+        if (isConService) {
+            unbindService(serviceConnection)
+            isConService = false
+        }
+    }
+    override fun onStop() {
+        super.onStop()
+        serviceUnBind()
+    }
 
 
 
