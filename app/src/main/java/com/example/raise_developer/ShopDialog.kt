@@ -25,15 +25,11 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
     lateinit var linearLayout: LinearLayout
     var myPersonalMoney = personalMoney
     lateinit var customViewClickListener: CustomViewClickListener
-
     var presentType = "empoloy"
-
     var presentLevel= mutableListOf<String>()
-
     companion object {
         lateinit var prefs: PreferenceInventory
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/border_square_white"
+    >
+
+    <LinearLayout
+        android:id="@+id/layout_position"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintHeight_percent="0.15"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/position_guidance"
+            android:textColor="@color/black"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/lv_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="LV"
+            android:textColor="@color/black"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:autoSizeTextType="uniform"
+            android:gravity="right"
+            android:text="| 주니어 |\n| 개발자 |"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_effect"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintHeight_percent="0.12"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintTop_toBottomOf="@id/layout_position"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="연봉 + XXXX"
+            android:textColor="@color/black"
+            android:autoSizeTextType="uniform"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="터치수당 + XXX"
+            android:textColor="@color/black"
+            android:autoSizeTextType="uniform"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/user_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintVertical_bias="0.04"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/layout_position"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/border_square_white"
+        android:src="@mipmap/developer"/>
+
+
+    <LinearLayout
+        android:id="@+id/levelup_condition"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_effect"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintWidth_percent="0.85">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="-내 상태-"
+            android:textColor="@color/black" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.9"
+            android:background="@drawable/border_square_white"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="플레이 91일째 \n목표 한강뷰 살기"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/stage_us_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/border_square_white"
+        android:src="@mipmap/stage_us_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
