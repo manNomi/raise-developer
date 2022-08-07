@@ -82,9 +82,7 @@ class MainActivity : AppCompatActivity() {
         quizTimeThread = Thread(QuizTimer())
         quizTimeThread.start()
         setTypingSound()
-
         }
-
 
     fun setTypingSound() { // 터치 시 소리 세팅
         soundPool = SoundPool.Builder()
@@ -146,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addCharacter(name: String) {
+    fun addCharacterAndMove(name: String, positionX: Float, positionY: Float) {
         val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
         // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
         val characterView =
@@ -262,45 +260,45 @@ class MainActivity : AppCompatActivity() {
             animationTwo.start()
         }
     }
-    inner class AnimationThread(character: View): Runnable{ //쓰레드 클래스 isAnimationThreadStop가 false일 때 멈춤
+    inner class AnimationThread(character: View): Runnable { //쓰레드 클래스 isAnimationThreadStop가 false일 때 멈춤
         val myCharacter = character
         override fun run() {
-            while(!isAnimationThreadStop){
-                var option = Random.nextInt(0,3)
+            while (!isAnimationThreadStop) {
+                var option = Random.nextInt(0, 3)
 //                Log.d("option값","${option}")
                 Thread.sleep(2000)
                 runOnUiThread {
                     setAnimation(myCharacter, option)
                 }
-
             }
         }
     }
 
-    inner class QuizTimer: Runnable{
+
+    inner class QuizTimer: Runnable {
         override fun run() {
-            while(!isThreadStop){
+            while (!isThreadStop) {
                 Thread.sleep(10000)
                 quizTimeHandler.sendEmptyMessage(0)
             }
         }
     }
 
-
     override fun onTouchEvent(event: MotionEvent?): Boolean { // 터치할 때마다 개인 자산의 TextView가 만원 씩 증가
-        when(event?.action){
+        when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 personalMoney += 10000
-                findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원"
+                findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
+                    "${personalMoney}원"
                 Log.d("좌표", "${event.x}, ${event.y}")
                 soundPool.play(soundId, 1f, 1f, 1, 0, 1f) // 터치할 때마다 타자 소리
             }
             MotionEvent.ACTION_UP -> {
-
             }
         }
         return super.onTouchEvent(event)
     }
+
 
     fun canSolveQuiz() {
         solveQuiz = true
@@ -319,105 +317,129 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun initEvent(){
+    fun initEvent() {
 //        잔디버튼
-        val grassBtn=findViewById<ImageButton>(R.id.grass_btn)
-        grassBtn.setOnClickListener{
+        val grassBtn = findViewById<ImageButton>(R.id.grass_btn)
+        grassBtn.setOnClickListener {
 //            val intent= Intent(this,GrassCheckActivity::class.java)
 //            startActivity(intent)
-            Log.d("쓰레드 종료","isThreadStop = ")
+            Log.d("쓰레드 종료", "isThreadStop = ")
             val apolloClient = ApolloClient.builder()
-                .addHttpInterceptor(AuthorizationInterceptor("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"))
+                .addHttpInterceptor(AuthorizationInterceptor("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"))
                 .serverUrl("https://api.github.com/graphql")
                 .build()
 
             lifecycleScope.launchWhenResumed {
                 Log.d("이건 실행 됨?", "제발")
-                val response = apolloClient.query(GithubCommitQuery("joh9911")).execute()
+                val response = apolloClient.query(GithubCommitQuery("manNomi")).execute()
 
                 Log.d("LaunchList", "Success ${response.data}")
-                val view = layoutInflater.inflate(R.layout.commit_dialog,null)
+                val view = layoutInflater.inflate(R.layout.commit_dialog, null)
                 val dialog = AlertDialog.Builder(this@MainActivity)
                     .setView(view)
                     .create()
-                view.findViewById<TextView>(R.id.text).text = response.data?.user?.contributionsCollection?.contributionCalendar.toString()
+                view.findViewById<TextView>(R.id.text).text =
+                    response.data?.user?.contributionsCollection?.contributionCalendar.toString()
                 dialog.show()
+            }
+        }
+
+
+//        상점 버튼
+            val shopButton = findViewById<ImageView>(R.id.shop_btn)
+            shopButton.setOnClickListener {
+                val shopDialog = ShopDialog(personalMoney)
+                shopDialog.setDialogListener(object :
+                    ShopDialog.CustomViewClickListener { // 인터페이스 상속받음
+                    override fun purchaseSuccess(
+                        price: String,
+                        menuName: String,
+                        type: String
+                    ) { // price 라는 아이템의 가격값을 전달 받음
+                        personalMoney -= price.toInt() // 빼주고
+                        findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
+                            "${personalMoney}원" //적용
+                        shopDialog.dismiss()
+                        if (type == "employ") {
+                            addCharacterAndMove(
+                                menuName,
+                                Random.nextInt(-500, 500).toFloat(),
+                                Random.nextInt(500).toFloat()
+                            )
+                        } else {
+                        }
+                    }
+                })
+                shopDialog.show(supportFragmentManager, "shopDialog") // 다이알로그 생성
+            }
+//         옵션 버튼
+            val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
+            optionButton.setOnClickListener {
+                val optionDialog = OptionDialog()
+                optionDialog.setBgmOnButtonEvent(object :
+                    OptionDialog.BgmOnButtonClickListener {
+                    override fun bgmOnButtonEvent() {
+                        Log.d("버튼", "눌림")
+                        serviceBind()
+                    }
+                })
+                optionDialog.show(supportFragmentManager, "optionDialog") // 다이알로그 생성
+
+            }
+//        트로피 버튼
+            val trophyBtn = findViewById<ImageView>(R.id.trophy_btn)
+            trophyBtn.setOnClickListener {
+                val intent = Intent(this, RankingActivity::class.java)
+                startActivity(intent)
+            }
+//        인벤토리 버튼
+            val inventoryButton = findViewById<ImageButton>(R.id.inventory_btn)
+            inventoryButton.setOnClickListener {
+                val inventoryDialog = InventoryDialog()
+                inventoryDialog.show(supportFragmentManager, "inventoryDialog")
             }
 
 
-        }
-//        상점 버튼
-        val shopButton = findViewById<ImageView>(R.id.shop_btn)
-        shopButton.setOnClickListener {
-            val shopDialog = ShopDialog(personalMoney)
-            shopDialog.setDialogListener(object: ShopDialog.CustomViewClickListener{ // 인터페이스 상속받음
+            val quizButton = findViewById<ImageButton>(R.id.quiz_btn)
+            quizButton.setOnClickListener {
+                btnEventQuizLogic()
+            }
 
-                override fun purchaseSuccess(price: String, menuName:String ,type: String) { // price 라는 아이템의 가격값을 전달 받음
-
-                    personalMoney -= price.toInt() // 빼주고
-                    findViewById<TextView>(R.id.main_page_text_view_personal_money).text = "${personalMoney}원" //적용
-                    shopDialog.dismiss()
-                    if (type == "employ"){
-                        addCharacter(menuName)
-                    }
-                    else{}
-                }
-            })
-            shopDialog.show(supportFragmentManager,"shopDialog") // 다이알로그 생성
-        }
-//         옵션 버튼
-        val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
-        optionButton.setOnClickListener {
-            val optionDialog = OptionDialog()
-            optionDialog.setBgmOnButtonEvent(object: OptionDialog.BgmOnButtonClickListener{
-                override fun bgmOnButtonEvent() {
-                    Log.d("버튼","눌림")
-                    serviceBind()
-                }
-            })
-            optionDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
-        }
-//        트로피 버튼
-        val trophyBtn=findViewById<ImageView>(R.id.trophy_btn)
-        trophyBtn.setOnClickListener{
-            val intent= Intent(this,RankingActivity::class.java)
-            startActivity(intent)
-        }
-//        인벤토리 버튼
-        val inventoryButton = findViewById<ImageButton>(R.id.inventory_btn)
-        inventoryButton.setOnClickListener{
-            val inventoryDialog = InventoryDialog()
-            inventoryDialog.show(supportFragmentManager,"inventoryDialog")
+//    레벨 버튼
+            val levelButton = findViewById<ImageButton>(R.id.level_btn)
+            levelButton.setOnClickListener {
+                val levelDialog = LevelUpDialog()
+                levelDialog.show(supportFragmentManager, "levelDialog")
+            }
+            val personalInformationButton = findViewById<ImageButton>(R.id.private_btn)
+            personalInformationButton.setOnClickListener {
+                val pIDialog = PersonalDialog()
+                pIDialog.show(supportFragmentManager, "personalInformationDialog")
+            }
         }
 
-        btnEventQuizLogic()
+    override fun onStop() {
+        super.onStop()
+        serviceUnBind()
+        isThreadStop = true
+        isAnimationThreadStop = true
     }
 
-//    fun grassShopDialogButtonEvent(){ // 잔디 상점과 연결하면 됨
-//        val grassShopDialogButton = findViewById<Button>(R.id.grass_shop_dialog_button)
-//        grassShopDialogButton.setOnClickListener {
-//            val grassShopDialog = GrassShopDialog()
-//
-//            grassShopDialog.show(supportFragmentManager,"grassShopDialg")
-//        }
-//
-//    }
-    fun serviceBind(){
-        val bindService = Intent(this,MyService::class.java)
+    fun serviceBind() {
+        val bindService = Intent(this, MyService::class.java)
         bindService(bindService, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
-    fun serviceUnBind(){
+    fun serviceUnBind() {
         if (isConService) {
             unbindService(serviceConnection)
             isConService = false
         }
     }
-    override fun onStop() {
-        super.onStop()
-        serviceUnBind()
-    }
-
-
-
 }
+
+
+
+
+
+

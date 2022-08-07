@@ -28,11 +28,11 @@ class InventoryDialog: DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.inventory_dialog, container, false)
-        linearLayout = view.findViewById(R.id.inventory_dialog_scroll_view_linear_layout)
         prefs = PreferenceInventory(requireContext())
+
+        linearLayout = view.findViewById(R.id.inventory_dialog_scroll_view_linear_layout)
         existItem = prefs.getString("item", "")[0]
         existItemName = prefs.getString("item", "")[1]
-
         empoloy= prefs.getString("empoloy", "")[0]
         empoloyName= prefs.getString("empoloy", "")[1]
         empoloyType= prefs.getString("empoloy", "")[2]

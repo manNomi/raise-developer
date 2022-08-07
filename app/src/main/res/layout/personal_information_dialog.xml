@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_color">
+    android:background="@drawable/border_square_white"
+    >
 
     <LinearLayout
         android:id="@+id/layout_position"
@@ -91,59 +92,63 @@
         app:layout_constraintStart_toEndOf="@+id/layout_position"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/border_square"
+        android:background="@drawable/border_square_white"
         android:src="@mipmap/developer"/>
 
-    <Button
-        android:id="@+id/btn_update"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="레벨업"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/deep_green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.15"
-        app:layout_constraintHorizontal_bias="0.421"
-        app:layout_constraintStart_toEndOf="@+id/layout_effect"
-        app:layout_constraintTop_toBottomOf="@+id/user_image"
-        app:layout_constraintVertical_bias="0.033"
-        app:layout_constraintWidth_percent="0.4" />
 
     <LinearLayout
         android:id="@+id/levelup_condition"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintTop_toBottomOf="@+id/btn_update"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_effect"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintWidth_percent="0.85">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:text="레벨업에 필요한 직원 명단"
-            android:textColor="@color/black"
             android:autoSizeTextType="uniform"
-            />
-        <HorizontalScrollView
+            android:gravity="center"
+            android:text="-내 상태-"
+            android:textColor="@color/black" />
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.9"
-            android:background="@drawable/border_square"
             android:layout_marginTop="10dp"
+            android:layout_weight="0.9"
+            android:background="@drawable/border_square_white"
             android:padding="5dp">
-            <LinearLayout
-                android:id="@+id/levelup_dialog_scrollview_linear"
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-            </LinearLayout>
-        </HorizontalScrollView>
+                android:layout_height="0dp"
+                android:text="플레이 91일째 \n목표 한강뷰 살기"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+        </ScrollView>
+
+
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/stage_us_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/border_square_white"
+        android:src="@mipmap/stage_us_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

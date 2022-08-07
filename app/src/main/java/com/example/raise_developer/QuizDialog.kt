@@ -50,7 +50,7 @@ class QuizDialog : DialogFragment() {
 
     fun randomQuizNumSet() {  //퀴즈에 필요한 인덱스 값 셋팅
         quizNum = (0..(quizList.size-1)).random()
-        answerNum = (1..4).random()
+        answerNum = (0..3).random()
         while(wrongAnswerNum.size != 3) {
             val randomNum = (0..(quizList.size-1)).random()
             if(randomNum != quizNum) {wrongAnswerNum.add(randomNum)}
@@ -73,7 +73,7 @@ class QuizDialog : DialogFragment() {
         textProblem.setText(quizList[quizNum][0])
         var wrongAnswerCount = 0
         for(index in 0 until 4) {
-            if(index == answerNum - 1) {
+            if(index == answerNum) {
                 btnList[index].text = quizList[quizNum][1]
             }else {
                 btnList[index].text = quizList[wrongAnswerNum[wrongAnswerCount]][1]

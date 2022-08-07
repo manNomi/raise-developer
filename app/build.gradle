@@ -51,7 +51,7 @@ dependencies {
     implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
 // firebase 설치
-    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
@@ -62,6 +62,7 @@ dependencies {
 
 
 // 구글 서비스 추가
+apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apollo {
     packageName.set("com.example.graphqlsample.queries")

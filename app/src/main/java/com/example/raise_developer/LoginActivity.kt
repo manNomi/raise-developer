@@ -29,8 +29,6 @@ class LoginActivity: AppCompatActivity() {
 //        로그인버튼
         val loginBtn=findViewById<TextView>(R.id.login_btn)
         loginBtn.setOnClickListener{
-            provider.addCustomParameter("login", "your-email@gmail.com")
-
             auth.startActivityForSignInWithProvider(this, provider.build())
                 .addOnSuccessListener(
                     OnSuccessListener<AuthResult?> {
