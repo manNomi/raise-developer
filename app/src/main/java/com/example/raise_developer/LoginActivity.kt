@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -37,8 +38,10 @@ class LoginActivity: AppCompatActivity() {
                             if(task.isSuccessful) {
                                 val user = Firebase.auth.currentUser
                                 val id = user!!.providerData
-                                Log.d("inf",id.toString())
+                                val userId = authResult.additionalUserInfo?.username.toString() // 유저의 아이디
+                                Log.d("if Login success", userId)
                                 val intent= Intent(this,MainActivity::class.java)
+                                intent.putExtra("userId",userId) // 유저 아이디 전달
                                 startActivity(intent)
                             }
                             else {
@@ -53,6 +56,7 @@ class LoginActivity: AppCompatActivity() {
                 )
         }
         }
+
 
     }
 

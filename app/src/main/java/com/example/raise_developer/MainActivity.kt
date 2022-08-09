@@ -27,6 +27,7 @@ import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.security.cert.PKIXRevocationChecker
 import kotlin.concurrent.thread
 import kotlin.random.Random
 
@@ -58,7 +59,8 @@ class MainActivity : AppCompatActivity() {
             val b = p1 as MyService.LocalBinder
             myService = b.getService()
             isConService = true
-            myService?.musicStart()
+            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+            getGithubContributionInfo(id)
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
@@ -77,11 +79,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() { // 일단 시작 할 때 쓰레드를 실행하게 해줬음 잔디 버튼 누르면 쓰레드 종료
+    override fun onStart() {
         super.onStart()
         quizTimeThread = Thread(QuizTimer())
         quizTimeThread.start()
         setTypingSound()
+        serviceBind()
         }
 
     fun setTypingSound() { // 터치 시 소리 세팅
@@ -96,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page)
         initEvent()
-        characterMove()
+        mainCharacterMove(470f, -550f)
 
 //         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
 //         좀더 알아봐야함 뷰 위치 설정
@@ -106,17 +109,20 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun characterMove() {
+    fun mainCharacterMove(positionX: Float, positionY: Float) { // 내 캐릭터의 애니메이션
         val character = findViewById<LinearLayout>(R.id.main_page_character)
+        val characterName = findViewById<TextView>(R.id.main_page_character_name)
         val characterNoteMark = findViewById<ImageView>(R.id.music_note)
+        val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+        characterName.text = id
 
-        ObjectAnimator.ofFloat(character, "translationY", -600f).apply { // y축 이동
+        ObjectAnimator.ofFloat(character, "translationY", positionY).apply { // y축 이동
             duration = 700
             interpolator = LinearInterpolator()
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
 
-                    ObjectAnimator.ofFloat(character, "translationX", 300f).apply { // x축 이동
+                    ObjectAnimator.ofFloat(character, "translationX", positionX).apply { // x축 이동
                         duration = 700
                         interpolator = LinearInterpolator()
                         addListener(object : AnimatorListenerAdapter() {
@@ -130,7 +136,6 @@ class MainActivity : AppCompatActivity() {
                                         repeatMode = ValueAnimator.REVERSE
                                         target = characterNoteMark
                                         start()
-
                                     }
                                 val tutorialDialog = TutorialDialog()
                                 tutorialDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
@@ -144,7 +149,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addCharacterAndMove(name: String, positionX: Float, positionY: Float) {
+    fun soundDirectorCharacterMove(character: View, characterNoteMark: View , positionX: Float, positionY: Float) { //피아노 치는 얘 애니메이션
+        Log.d("애니메이션","두번 되야 하는데?")
+        ObjectAnimator.ofFloat(character, "translationY", positionY).apply { // y축 이동
+            duration = 700
+            interpolator = LinearInterpolator()
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
+
+                    ObjectAnimator.ofFloat(character, "translationX", positionX).apply { // x축 이동
+                        duration = 700
+                        interpolator = LinearInterpolator()
+                        addListener(object : AnimatorListenerAdapter() {
+
+                            override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
+                                characterNoteMark.visibility = View.VISIBLE
+                                ObjectAnimator.ofFloat(characterNoteMark, "translationY", 30f)
+                                    .apply {
+                                        duration = 800
+                                        repeatCount = ValueAnimator.INFINITE
+                                        repeatMode = ValueAnimator.REVERSE
+                                        target = characterNoteMark
+                                        start()
+                                    }
+                                myService?.musicStart()
+                            }
+                        })
+                        start()
+                    }
+                }
+            })
+            start()
+        }
+    }
+
+    fun addCharacterAndMove(name: String) {
         val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
         // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
         val characterView =
@@ -168,98 +207,101 @@ class MainActivity : AppCompatActivity() {
         frameLayout.addView(characterView)
     }
 
+    fun xMoveAnimation(character: View){
+        var randomNumber = Random.nextInt(-500,500).toFloat()
+        Log.d("option","${randomNumber}")
+        val animationOne = ObjectAnimator.ofFloat(character, "translationX", randomNumber)
+        animationOne.duration = 700
+
+        animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+        animationOne.addListener(object: AnimatorListenerAdapter(){
+            override fun onAnimationEnd(animation: Animator?) {
+                var locationArray = IntArray(2)
+                character.getLocationInWindow(locationArray)
+                if (locationArray[0] < 20 ) {
+                    character.x = -80f
+                }
+                else if (locationArray[0] > 1050) {
+                    character.x = 990f
+                }
+            }
+        })
+        animationOne.start()
+    }
+
+    fun yMoveAnimation(character: View){
+        var randomNumber = Random.nextInt(-800,0).toFloat()
+        Log.d("yMoveAnimation()","${randomNumber}")
+        val animationOne = ObjectAnimator.ofFloat(character, "translationY", randomNumber)
+        animationOne.duration = 700
+        animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+        animationOne.addListener(object: AnimatorListenerAdapter(){
+            override fun onAnimationEnd(animation: Animator?) {
+                var locationArray = IntArray(2)
+                character.getLocationInWindow(locationArray)
+                Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
+                if (locationArray[1] < 710 ) {
+                    character.y = 100f
+                }
+                else if (locationArray[1] > 1530) {
+                    character.y = 870f
+                }
+            }
+        })
+        animationOne.start()
+
+    }
+    fun xyMoveAnimation(character: View){
+        var randomX = Random.nextInt(-200,200).toFloat()
+        var randomY = Random.nextInt(-800,0).toFloat()
+        val animationOne = ObjectAnimator.ofFloat(character, "translationX", randomX)
+        animationOne.duration = 700
+        animationOne.interpolator = LinearInterpolator()
+        animationOne.addListener(object: AnimatorListenerAdapter(){
+            override fun onAnimationEnd(animation: Animator?) {
+                var locationArray = IntArray(2)
+                character.getLocationInWindow(locationArray)
+                if (locationArray[0] < 20 ) {
+                    character.x = -80f
+                }
+                else if (locationArray[0] > 1050) {
+                    character.x = 990f
+                }
+            }
+        })
+        val animationTwo = ObjectAnimator.ofFloat(character, "translationY", randomY)
+        animationTwo.duration = 700
+        animationTwo.interpolator = LinearInterpolator() // 애니메이션 효과
+        animationOne.addListener(object: AnimatorListenerAdapter(){
+            override fun onAnimationEnd(animation: Animator?) {
+                var locationArray = IntArray(2)
+                character.getLocationInWindow(locationArray)
+                if (locationArray[1] < 710 ) {
+                    character.y = 100f
+                }
+                else if (locationArray[1] > 1530) {
+                    character.y = 870f
+                }
+            }
+        })
+        animationOne.start()
+        animationTwo.start()
+    }
+
 
     fun setAnimation(character: View, option: Int){// x: 20~ 1050  y: 710 ~ 1530
-        Log.d("Animation","df")
+        Log.d("setAnimation()","${option}")
         if (option == 0) {
-            var random = Random.nextInt(-500,500).toFloat()
-            Log.d("option","${random}")
-            val animationOne = ObjectAnimator.ofFloat(character, "translationX", random)
-            animationOne.duration = 700
-
-            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-            animationOne.addListener(object: AnimatorListenerAdapter(){
-                override fun onAnimationEnd(animation: Animator?) {
-                    var locationArray = IntArray(2)
-                    character.getLocationInWindow(locationArray)
-                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
-                    if (locationArray[0] < 20 ) {
-                        character.x = -80f
-                    }
-                    else if (locationArray[0] > 1050) {
-                        character.x = 990f
-                    }
-                }
-            })
-            animationOne.start()
+            xMoveAnimation(character)
         }
         else if(option == 1){
-            Log.d("option","${option}")
-            var random = Random.nextInt(-800,0).toFloat()
-            Log.d("random","${random}")
-            val animationOne = ObjectAnimator.ofFloat(character, "translationY", random)
-            animationOne.duration = 700
-            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-            animationOne.addListener(object: AnimatorListenerAdapter(){
-                override fun onAnimationEnd(animation: Animator?) {
-                    var locationArray = IntArray(2)
-                    character.getLocationInWindow(locationArray)
-                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
-                    if (locationArray[1] < 710 ) {
-                        character.y = 100f
-                        Log.d("if문1","${character.y}")
-                    }
-                    else if (locationArray[1] > 1530) {
-                        character.y = 870f
-                        Log.d("if문2","${character.y}")
-                    }
-                }
-            })
-            animationOne.start()
+            yMoveAnimation(character)
         }
         else if(option == 2){
-            var randomX = Random.nextInt(-200,200).toFloat()
-            var randomY = Random.nextInt(-800,0).toFloat()
-            val animationOne = ObjectAnimator.ofFloat(character, "translationX", randomX)
-            animationOne.duration = 700
-            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-            animationOne.addListener(object: AnimatorListenerAdapter(){
-                override fun onAnimationEnd(animation: Animator?) {
-                    var locationArray = IntArray(2)
-                    character.getLocationInWindow(locationArray)
-                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
-                    if (locationArray[0] < 20 ) {
-                        character.x = -80f
-                    }
-                    else if (locationArray[0] > 1050) {
-                        character.x = 990f
-                    }
-                }
-            })
-
-            val animationTwo = ObjectAnimator.ofFloat(character, "translationY", randomY)
-            animationTwo.duration = 700
-            animationTwo.interpolator = LinearInterpolator() // 애니메이션 효과
-            animationOne.addListener(object: AnimatorListenerAdapter(){
-                override fun onAnimationEnd(animation: Animator?) {
-                    var locationArray = IntArray(2)
-                    character.getLocationInWindow(locationArray)
-                    Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
-                    if (locationArray[1] < 710 ) {
-                        character.y = 100f
-                        Log.d("if문1","${character.y}")
-                    }
-                    else if (locationArray[1] > 1530) {
-                        character.y = 870f
-                        Log.d("if문2","${character.y}")
-                    }
-                }
-            })
-
-            animationOne.start()
-            animationTwo.start()
+           xyMoveAnimation(character)
         }
     }
+
     inner class AnimationThread(character: View): Runnable { //쓰레드 클래스 isAnimationThreadStop가 false일 때 멈춤
         val myCharacter = character
         override fun run() {
@@ -273,7 +315,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     inner class QuizTimer: Runnable {
         override fun run() {
@@ -290,7 +331,6 @@ class MainActivity : AppCompatActivity() {
                 personalMoney += 10000
                 findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
                     "${personalMoney}원"
-                Log.d("좌표", "${event.x}, ${event.y}")
                 soundPool.play(soundId, 1f, 1f, 1, 0, 1f) // 터치할 때마다 타자 소리
             }
             MotionEvent.ACTION_UP -> {
@@ -298,7 +338,6 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onTouchEvent(event)
     }
-
 
     fun canSolveQuiz() {
         solveQuiz = true
@@ -317,31 +356,34 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun getGithubContributionInfo(id: String?){
+        val apolloClient = ApolloClient.builder()
+            .addHttpInterceptor(AuthorizationInterceptor("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"))
+            .serverUrl("https://api.github.com/graphql")
+            .build()
+
+        lifecycleScope.launchWhenResumed {
+            Log.d("이건 실행 됨?", "제발")
+            val response = apolloClient.query(GithubCommitQuery("${id}")).execute()
+            //바인드 서비스로 깃허브 정보 데이터 전달
+            myService?.githubInfoMainActivityToService(response.data?.user?.contributionsCollection?.contributionCalendar?.weeks.toString())
+//            val view = layoutInflater.inflate(R.layout.commit_dialog, null)
+//            val dialog = AlertDialog.Builder(this@MainActivity)
+//                .setView(view)
+//                .create()
+//            view.findViewById<TextView>(R.id.text).text =
+//                response.data?.user?.contributionsCollection?.contributionCalendar?.weeks.toString()
+//            dialog.show()
+        }
+    }
+
     fun initEvent() {
 //        잔디버튼
         val grassBtn = findViewById<ImageButton>(R.id.grass_btn)
         grassBtn.setOnClickListener {
-//            val intent= Intent(this,GrassCheckActivity::class.java)
-//            startActivity(intent)
-            Log.d("쓰레드 종료", "isThreadStop = ")
-            val apolloClient = ApolloClient.builder()
-                .addHttpInterceptor(AuthorizationInterceptor("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"))
-                .serverUrl("https://api.github.com/graphql")
-                .build()
-
-            lifecycleScope.launchWhenResumed {
-                Log.d("이건 실행 됨?", "제발")
-                val response = apolloClient.query(GithubCommitQuery("manNomi")).execute()
-
-                Log.d("LaunchList", "Success ${response.data}")
-                val view = layoutInflater.inflate(R.layout.commit_dialog, null)
-                val dialog = AlertDialog.Builder(this@MainActivity)
-                    .setView(view)
-                    .create()
-                view.findViewById<TextView>(R.id.text).text =
-                    response.data?.user?.contributionsCollection?.contributionCalendar.toString()
-                dialog.show()
-            }
+            val intent= Intent(this,GrassPageActivity::class.java)
+            startActivity(intent)
+//            getGithubContributionInfo()
         }
 
 
@@ -361,11 +403,7 @@ class MainActivity : AppCompatActivity() {
                             "${personalMoney}원" //적용
                         shopDialog.dismiss()
                         if (type == "employ") {
-                            addCharacterAndMove(
-                                menuName,
-                                Random.nextInt(-500, 500).toFloat(),
-                                Random.nextInt(500).toFloat()
-                            )
+                            addCharacterAndMove(menuName)
                         } else {
                         }
                     }
@@ -376,13 +414,41 @@ class MainActivity : AppCompatActivity() {
             val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
             optionButton.setOnClickListener {
                 val optionDialog = OptionDialog()
-                optionDialog.setBgmOnButtonEvent(object :
-                    OptionDialog.BgmOnButtonClickListener {
+                optionDialog.setBgmOnButtonEvent(object : OptionDialog.BgmOnButtonClickListener {
                     override fun bgmOnButtonEvent() {
                         Log.d("버튼", "눌림")
-                        serviceBind()
+                        val soundDirectorCharacter = findViewById<LinearLayout>(R.id.main_page_sound_director)
+                        soundDirectorCharacter.visibility = View.VISIBLE
+                        val soundDirectorCharacterNoteMark = findViewById<ImageView>(R.id.music_note1)
+                        soundDirectorCharacterMove(soundDirectorCharacter, soundDirectorCharacterNoteMark, 300f, -640f)
                     }
                 })
+                optionDialog.setBgmOffButtonEvent(object: OptionDialog.BgmOffButtonClickListener{
+                    override fun bgmOffButtonEvent() {
+                        myService?.musicStop()
+                    }
+                })
+                optionDialog.setSoundEffectOnButtonEvent(object: OptionDialog.SoundEffectOnButtonClickListener{
+                    override fun soundEffectOnButtonEvent() {
+                        setTypingSound()
+                    }
+                })
+                optionDialog.setSoundEffectOffButtonEvent(object: OptionDialog.SoundEffectOffButtonClickListener{
+                    override fun soundEffectOffButtonEvent() {
+                        soundPool.release()
+                    }
+                })
+                optionDialog.setLogoutButtonEvent(object: OptionDialog.LogOutButtonClickListener{
+                    override fun logoutButtonEvent() {
+                        Log.d("로그아웃 버튼","눌림")
+                    }
+                })
+                optionDialog.setSaveAndCloseButtonEvent(object: OptionDialog.SaveAndCloseButtonClickListener{
+                    override fun saveAndCloseButtonEvent() {
+                        Log.d("저장하고 나가기 버튼","눌림")
+                    }
+                })
+
                 optionDialog.show(supportFragmentManager, "optionDialog") // 다이알로그 생성
 
             }
@@ -398,7 +464,6 @@ class MainActivity : AppCompatActivity() {
                 val inventoryDialog = InventoryDialog()
                 inventoryDialog.show(supportFragmentManager, "inventoryDialog")
             }
-
 
             val quizButton = findViewById<ImageButton>(R.id.quiz_btn)
             quizButton.setOnClickListener {

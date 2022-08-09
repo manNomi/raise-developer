@@ -16,11 +16,11 @@ import androidx.fragment.app.DialogFragment
 
 class OptionDialog: DialogFragment() {
     lateinit var bgmOnButtonClickListener: BgmOnButtonClickListener
-//    lateinit var bgmOffButtonClickListener: BgmOffButtonClickListener
-//    lateinit var soundEffectOffButtonClickListener: SoundEffectOffButtonClickListener
-//    lateinit var soundEffectOnButtonClickListener: SoundEffectOnButtonClickListener
-//    lateinit var logOutButtonClickListener: LogOutButtonClickListener
-//    lateinit var saveAndCloseButtonClickListener: SaveAndCloseButtonClickListener
+    lateinit var bgmOffButtonClickListener: BgmOffButtonClickListener
+    lateinit var soundEffectOffButtonClickListener: SoundEffectOffButtonClickListener
+    lateinit var soundEffectOnButtonClickListener: SoundEffectOnButtonClickListener
+    lateinit var logOutButtonClickListener: LogOutButtonClickListener
+    lateinit var saveAndCloseButtonClickListener: SaveAndCloseButtonClickListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,26 +40,26 @@ class OptionDialog: DialogFragment() {
             bgmOnButtonClickListener.bgmOnButtonEvent()
             dismiss()
         }
-//        view.findViewById<Button>(R.id.option_dialog_bgm_off_button).setOnClickListener {
-//           bgmOffButtonClickListener.bgmOffButtonEvent()
-//            dismiss()
-//        }
-//        view.findViewById<Button>(R.id.option_dialog_sound_effect_on_button).setOnClickListener {
-//            soundEffectOnButtonClickListener.soundEffectOnButtonEvent()
-//            dismiss()
-//        }
-//        view.findViewById<Button>(R.id.option_dialog_sound_effect_off_button).setOnClickListener {
-//            soundEffectOffButtonClickListener.soundEffectOffButtonEvent()
-//            dismiss()
-//        }
-//        view.findViewById<Button>(R.id.option_dialog_logout_button).setOnClickListener {
-//            logOutButtonClickListener.logoutButtonEvent()
-//            dismiss()
-//        }
-//        view.findViewById<Button>(R.id.option_dialog_save_and_close_button).setOnClickListener {
-//            saveAndCloseButtonClickListener.saveAndCloseButtonEvent()
-//            dismiss()
-//        }
+        view.findViewById<Button>(R.id.option_dialog_bgm_off_button).setOnClickListener {
+           bgmOffButtonClickListener.bgmOffButtonEvent()
+            dismiss()
+        }
+        view.findViewById<Button>(R.id.option_dialog_sound_effect_on_button).setOnClickListener {
+            soundEffectOnButtonClickListener.soundEffectOnButtonEvent()
+            dismiss()
+        }
+        view.findViewById<Button>(R.id.option_dialog_sound_effect_off_button).setOnClickListener {
+            soundEffectOffButtonClickListener.soundEffectOffButtonEvent()
+            dismiss()
+        }
+        view.findViewById<Button>(R.id.option_dialog_logout_button).setOnClickListener {
+            logOutButtonClickListener.logoutButtonEvent()
+            dismiss()
+        }
+        view.findViewById<Button>(R.id.option_dialog_save_and_close_button).setOnClickListener {
+            saveAndCloseButtonClickListener.saveAndCloseButtonEvent()
+            dismiss()
+        }
 
     }
 
@@ -97,21 +97,21 @@ class OptionDialog: DialogFragment() {
     fun setBgmOnButtonEvent(listener: BgmOnButtonClickListener){
         bgmOnButtonClickListener = listener
     }
-//    fun setBgmOffButtonEvent(listener: BgmOffButtonClickListener){
-//        bgmOffButtonClickListener = listener
-//    }
-//    fun setSoundEffectOnButtonEvent(listener: SoundEffectOnButtonClickListener){
-//        soundEffectOnButtonClickListener = listener
-//    }
-//    fun setSoundEffectOffButtonEvent(listener: SoundEffectOffButtonClickListener){
-//        soundEffectOffButtonClickListener = listener
-//    }
-//    fun setLogoutButtonEvent(listener: LogOutButtonClickListener){
-//        logOutButtonClickListener = listener
-//    }
-//    fun setSaveAndCloseButtonEvent(listener: SaveAndCloseButtonClickListener){
-//        saveAndCloseButtonClickListener = listener
-//    }
+    fun setBgmOffButtonEvent(listener: BgmOffButtonClickListener){
+        bgmOffButtonClickListener = listener
+    }
+    fun setSoundEffectOnButtonEvent(listener: SoundEffectOnButtonClickListener){
+        soundEffectOnButtonClickListener = listener
+    }
+    fun setSoundEffectOffButtonEvent(listener: SoundEffectOffButtonClickListener){
+        soundEffectOffButtonClickListener = listener
+    }
+    fun setLogoutButtonEvent(listener: LogOutButtonClickListener){
+        logOutButtonClickListener = listener
+    }
+    fun setSaveAndCloseButtonEvent(listener: SaveAndCloseButtonClickListener){
+        saveAndCloseButtonClickListener = listener
+    }
 
     override fun onResume() {
         super.onResume()

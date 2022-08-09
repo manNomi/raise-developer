@@ -4,9 +4,12 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.os.PersistableBundle
 import android.os.SystemClock
 import android.util.Log
@@ -19,6 +22,26 @@ import java.util.ArrayList
 
 class GrassPageActivity: AppCompatActivity() {
 
+    var myService : MyService? = null
+    var isConService = false
+    val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            Log.d("서비스","실행됨")
+            val b = p1 as MyService.LocalBinder
+            myService = b.getService()
+            isConService = true
+            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            isConService = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        serviceBind()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +108,16 @@ class GrassPageActivity: AppCompatActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        Log.d("intent","실행되나?")
+    fun serviceBind() {
+        val bindService = Intent(this, MyService::class.java)
+        bindService(bindService, serviceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    fun serviceUnBind() {
+        if (isConService) {
+            unbindService(serviceConnection)
+            isConService = false
+        }
     }
 
 

@@ -9,8 +9,8 @@ import android.os.IBinder
 import android.util.Log
 
 class MyService : Service() {
-
-    lateinit var player: MediaPlayer
+    var githubContributionData: String? = null
+    var player: MediaPlayer? = null
 
     val binder = LocalBinder()
 
@@ -20,7 +20,7 @@ class MyService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        player = MediaPlayer.create(this,R.raw.peaches)
+        player = MediaPlayer.create(this,R.raw.cookie_inst)
 
     }
 
@@ -35,27 +35,33 @@ class MyService : Service() {
         return START_NOT_STICKY
     }
 
-    fun musicTimeSet(time:Int){ //음악 원하는 구간으로 이동
-        player.let{
-            it.pause()
-            it.seekTo(time)
-            it.start()
-        }
-    }
 
     fun musicStop(){ //음악 멈추기
-        player.pause()
+        player?.release()
+        player = null
     }
 
     fun musicStart(){ //음악 재생
         Log.d("음악","재생")
-        player.start()
+        if (player?.isPlaying == null){
+            player = MediaPlayer.create(this,R.raw.cookie_inst)
+        }
+        player?.start()
     }
 
     override fun onDestroy() {  //서비스 종료
         super.onDestroy()
-        player.stop()
+        player?.release()
+        player = null
+    }
 
+    fun githubInfoMainActivityToService(data: String){
+        githubContributionData = data
+        Log.d("MainActivityToService","${githubContributionData}")
+    }
+
+    fun githubInfoServiceToGrassPage() : String? {
+        return githubContributionData
     }
 
 
