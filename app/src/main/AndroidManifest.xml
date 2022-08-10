@@ -21,7 +21,7 @@
             android:exported="true"></service>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GrassCheckActivity" />
         <activity android:name=".GrassPageActivity" />
         <activity android:name=".RankingActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".SplashActivity" />
+        <activity android:name=".ScreenSlidePagerActivity"/>
     </application>
 
 </manifest>

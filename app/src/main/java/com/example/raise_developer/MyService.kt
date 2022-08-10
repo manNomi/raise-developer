@@ -7,9 +7,10 @@ import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import com.example.graphqlsample.queries.GithubCommitQuery
 
 class MyService : Service() {
-    var githubContributionData: String? = null
+    var githubContributionData: List<GithubCommitQuery.Week>? = null
     var player: MediaPlayer? = null
 
     val binder = LocalBinder()
@@ -55,12 +56,12 @@ class MyService : Service() {
         player = null
     }
 
-    fun githubInfoMainActivityToService(data: String){
+    fun githubInfoMainActivityToService(data: List<GithubCommitQuery.Week>?){
         githubContributionData = data
         Log.d("MainActivityToService","${githubContributionData}")
     }
 
-    fun githubInfoServiceToGrassPage() : String? {
+    fun githubInfoServiceToGrassPage() : List<GithubCommitQuery.Week>? {
         return githubContributionData
     }
 

@@ -18,19 +18,30 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
 import androidx.core.view.setMargins
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.example.graphqlsample.queries.GithubCommitQuery
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+import kotlinx.coroutines.*
+import org.w3c.dom.Text
 import java.util.ArrayList
 
-class GrassPageActivity: AppCompatActivity() {
+class GrassPageActivity: FragmentActivity() {
+    var month = arrayListOf("January","February","March","April","May","June","July","August","September","October","November","December")
+
+    var githubData: List<GithubCommitQuery.Week>? = null
 
     var myService : MyService? = null
     var isConService = false
     val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-            Log.d("서비스","실행됨")
+            Log.d("grass_page_service","실행됨")
             val b = p1 as MyService.LocalBinder
             myService = b.getService()
             isConService = true
-            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+            githubData = myService?.githubInfoServiceToGrassPage()
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
@@ -38,21 +49,48 @@ class GrassPageActivity: AppCompatActivity() {
         }
     }
 
+
     override fun onStart() {
         super.onStart()
-        serviceBind()
+        CoroutineScope(Dispatchers.Main).launch {
+            val bindSer = async { serviceBind() }
+            bindSer.await()
+            Log.d("커밋정보","${githubData?.get(0)?.contributionDays?.get(0)?.date}")
+            val arr = githubData?.get(0)?.contributionDays?.get(0)?.date.toString()
+            val arr1 = arr.split("-")
+            Log.d("배열","${arr1}")
+//            gridLayoutSetting()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.grass_page)
-        gridLayoutSetting()
+        val viewPager = findViewById<ViewPager2>(R.id.grass_page_view_pager2)
+        val pagerAdapter = ScreenSlidePagerAdapter(this)
+        viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        viewPager.adapter = pagerAdapter
+        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val monthText = findViewById<TextView>(R.id.grass_page_month_text)
+                monthText.text = "${position+1}월"
+            }
+        })
+
+    }
+    inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+
+        override fun getItemCount(): Int = month.size
+
+        override fun createFragment(position: Int): Fragment = GrassPageFragment(position)
+
     }
 
     fun gridLayoutSetting() {
+        Log.d("gridLayoutSetting","실행됨")
         val gridLayout = findViewById<GridLayout>(R.id.gridLayout)
         for (index in 0 until 20) {
-            Log.d("호호","하하")
             val customView = layoutInflater.inflate(R.layout.grass_page_custom_view,gridLayout,false)
             val grassImage = customView.findViewById<ImageView>(R.id.grass)
             val coinImage = customView.findViewById<ImageView>(R.id.coin)
@@ -107,20 +145,23 @@ class GrassPageActivity: AppCompatActivity() {
             }
         }
     }
-
     fun serviceBind() {
         val bindService = Intent(this, MyService::class.java)
         bindService(bindService, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
     fun serviceUnBind() {
+        Log.d("서비스","unbind")
         if (isConService) {
             unbindService(serviceConnection)
             isConService = false
         }
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        serviceUnBind()
+    }
 
 }
 

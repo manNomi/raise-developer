@@ -59,8 +59,8 @@ class MainActivity : AppCompatActivity() {
             val b = p1 as MyService.LocalBinder
             myService = b.getService()
             isConService = true
-            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
-            getGithubContributionInfo(id)
+//            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+            getGithubContributionInfo("manNomi")
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
@@ -357,8 +357,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getGithubContributionInfo(id: String?){
+        val token = BuildConfig.GITHUB_TOKEN
         val apolloClient = ApolloClient.builder()
-            .addHttpInterceptor(AuthorizationInterceptor("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"))
+            .addHttpInterceptor(AuthorizationInterceptor("${token}"))
             .serverUrl("https://api.github.com/graphql")
             .build()
 
@@ -366,14 +367,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("이건 실행 됨?", "제발")
             val response = apolloClient.query(GithubCommitQuery("${id}")).execute()
             //바인드 서비스로 깃허브 정보 데이터 전달
-            myService?.githubInfoMainActivityToService(response.data?.user?.contributionsCollection?.contributionCalendar?.weeks.toString())
-//            val view = layoutInflater.inflate(R.layout.commit_dialog, null)
-//            val dialog = AlertDialog.Builder(this@MainActivity)
-//                .setView(view)
-//                .create()
-//            view.findViewById<TextView>(R.id.text).text =
-//                response.data?.user?.contributionsCollection?.contributionCalendar?.weeks.toString()
-//            dialog.show()
+            myService?.githubInfoMainActivityToService(response.data?.user?.contributionsCollection?.contributionCalendar?.weeks)
         }
     }
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/grass_view_pager_text_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dung_guen_mo"
+            android:gravity="center"
+            android:text="Mon"
+            android:textSize="20dp"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dung_guen_mo"
+            android:gravity="center"
+            android:text="Sun"
+            android:textSize="20dp"
+            android:layout_gravity="right"/>
+    </LinearLayout>
+
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/grass_view_pager_text_linear_layout"
+        android:columnCount ="7"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal"
+
+        >
+
+    </GridLayout>
+    <Button
+        android:id="@+id/harvestCoinButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="수확"
+        android:textSize="20dp"
+        android:background="@color/bright_green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.8"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
