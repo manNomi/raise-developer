@@ -20,9 +20,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.setMargins
 import androidx.fragment.app.Fragment
+import com.example.graphqlsample.queries.GithubCommitQuery
 
-class GrassPageFragment(position: Int): Fragment() {
-    var fragmentPagePosition = position
+class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCommitQuery.Week>?): Fragment() {
+    var githubDataArray = githubDataArray
+    var githubData = githubData
+    var numberOfDateArray = ArrayList<String>()
+    var grassColorArray = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,21 +34,55 @@ class GrassPageFragment(position: Int): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.grass_page_view_pager_layout, container, false)
+        Log.d("githubDataArray","${githubDataArray}")
         gridLayoutSetting(view)
         return view
     }
+    fun divideGithubDataInfo(){
+        for(index in 0 until githubData?.size!!){
+            for (index1 in 0 until githubData?.get(index)?.contributionDays?.size!!){
+                var grassColor = githubData?.get(index)?.contributionDays?.get(index1)?.color.toString()
+                var date = githubData?.get(index)?.contributionDays?.get(index1)?.date.toString()
+                var dateArray = date.split("-")
+                var tempYear = dateArray[0]
+                var tempMonth = dateArray[1]
+                if (tempYear == githubDataArray[0] && tempMonth == githubDataArray[1]){
+                    numberOfDateArray.add(date)
+                    grassColorArray.add(grassColor)
+                }
+            }
+        }
+    }
+
+    fun getDeviceDpi(): Int {
+
+        val density = resources.displayMetrics.density
+        val result = when {
+            density >= 4.0 -> 640 // "xxxhdpi"
+            density >= 3.0 -> 480 // "xxhdpi"
+            density >= 2.0 -> 320 // "xhdpi"
+            density >= 1.5 -> 240 // "hdpi"
+            density >= 1.0 -> 160 // "mdpi"
+            else -> 120 // "ldpi"
+        }
+        return result
+    }
 
     fun gridLayoutSetting(view: View) {
-        Log.d("gridLayoutSetting","실행됨")
+        divideGithubDataInfo()
+        val month = githubDataArray[1].toInt()
+        Log.d("month ","${month}")
+        Log.d("잔디 개수","${numberOfDateArray.size}")
         val gridLayout = view.findViewById<GridLayout>(R.id.gridLayout)
-        for (index in 0 until 20) {
+        for (index in 0 until numberOfDateArray.size) {
             val customView = layoutInflater.inflate(R.layout.grass_page_custom_view,gridLayout,false)
             val grassImage = customView.findViewById<ImageView>(R.id.grass)
             val coinImage = customView.findViewById<ImageView>(R.id.coin)
             val param = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT)
-            param.setMargins(3) // 픽셀
+
+            param.setMargins(7*getDeviceDpi()/320) // 현 dpi 기준 7픽셀을 기준으로 잡음
             customView.layoutParams = param
 //            customView.setOnClickListener { // 클릭하면 잔디 상점 다이알로그 띄움
 //                val grassShopDialog = GrassShopDialog()
@@ -54,18 +92,28 @@ class GrassPageFragment(position: Int): Fragment() {
                 duration = 800
                 repeatCount = ValueAnimator.INFINITE
                 repeatMode = ValueAnimator.REVERSE
-
                 start()
             }
 
-            if(index %2 == 0){ // 나중에 깃허브 정보를 가져와서 if문으로 배경 이미지를 바꿀거임
+            if(grassColorArray[index] == "#9be9a8"){
+                grassImage.setImageResource(R.mipmap.grass_one)
+            }
+
+            else if(grassColorArray[index] == "#40c463"){
+                grassImage.setImageResource(R.mipmap.grass_two)
+            }
+
+            else if(grassColorArray[index] == "#30a14e"){
+                grassImage.setImageResource(R.mipmap.grass_three)
+            }
+
+            else if(grassColorArray[index] == "#216e39"){
+                grassImage.setImageResource(R.mipmap.grass_four)
+            }
+
+            else{
                 grassImage.setImageResource(R.mipmap.empty_grass)
             }
-
-            else {
-                grassImage.setImageResource(R.mipmap.in_grass)
-            }
-
             gridLayout.addView(customView)
         }
         val harvestCoinButton = view.findViewById<Button>(R.id.harvestCoinButton)
@@ -94,7 +142,6 @@ class GrassPageFragment(position: Int): Fragment() {
             }
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

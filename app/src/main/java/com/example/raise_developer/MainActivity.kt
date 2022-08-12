@@ -377,7 +377,6 @@ class MainActivity : AppCompatActivity() {
         grassBtn.setOnClickListener {
             val intent= Intent(this,GrassPageActivity::class.java)
             startActivity(intent)
-//            getGithubContributionInfo()
         }
 
 

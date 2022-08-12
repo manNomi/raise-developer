@@ -30,7 +30,7 @@ import java.util.ArrayList
 
 class GrassPageActivity: FragmentActivity() {
     var month = arrayListOf("January","February","March","April","May","June","July","August","September","October","November","December")
-
+    var githubDataArray = arrayListOf<List<String>>()
     var githubData: List<GithubCommitQuery.Week>? = null
 
     var myService : MyService? = null
@@ -52,38 +52,54 @@ class GrassPageActivity: FragmentActivity() {
 
     override fun onStart() {
         super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
-            val bindSer = async { serviceBind() }
-            bindSer.await()
-            Log.d("커밋정보","${githubData?.get(0)?.contributionDays?.get(0)?.date}")
-            val arr = githubData?.get(0)?.contributionDays?.get(0)?.date.toString()
-            val arr1 = arr.split("-")
-            Log.d("배열","${arr1}")
-//            gridLayoutSetting()
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.grass_page)
-        val viewPager = findViewById<ViewPager2>(R.id.grass_page_view_pager2)
-        val pagerAdapter = ScreenSlidePagerAdapter(this)
-        viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        viewPager.adapter = pagerAdapter
-        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                val monthText = findViewById<TextView>(R.id.grass_page_month_text)
-                monthText.text = "${position+1}월"
-            }
-        })
+        CoroutineScope(Dispatchers.Main).launch {
+            val bindSer = async { serviceBind() }
+            bindSer.await()
+            val divide = async { divideGithubDataInfo() }
+            divide.await()
 
+            val viewPager = findViewById<ViewPager2>(R.id.grass_page_view_pager2)
+            val pagerAdapter = ScreenSlidePagerAdapter(this@GrassPageActivity)
+            viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+            viewPager.adapter = pagerAdapter
+            viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    val yearText = findViewById<TextView>(R.id.grass_page_year_text)
+                    val monthText = findViewById<TextView>(R.id.grass_page_month_text)
+                yearText.text = "${githubDataArray[position][0]}년"
+                monthText.text = "${githubDataArray[position][1]}월"
+                }
+            })
+        }
+
+    }
+    fun divideGithubDataInfo(){
+        for(index in 0 until githubData?.size!!){
+            for (index1 in 0 until githubData?.get(index)?.contributionDays?.size!!){
+                var date = githubData?.get(index)?.contributionDays?.get(index1)?.date.toString()
+                var dateArray = date.split("-")
+                if (index == 0 && index1 == 0){
+                    githubDataArray.add(dateArray)
+                }
+                var tempMonth = dateArray[1]
+                val monthInArray = githubDataArray[githubDataArray.size-1][1]
+                if (tempMonth != monthInArray){
+                    githubDataArray.add(dateArray)
+                }
+            }
+        }
     }
     inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
-        override fun getItemCount(): Int = month.size
+        override fun getItemCount(): Int = githubDataArray.size
 
-        override fun createFragment(position: Int): Fragment = GrassPageFragment(position)
+        override fun createFragment(position: Int): Fragment = GrassPageFragment(githubDataArray[position], githubData)
 
     }
 

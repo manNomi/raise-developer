@@ -5,6 +5,7 @@ query GithubCommit($userName:String!) {
                 totalContributions
                 weeks {
                     contributionDays {
+                        color
                         contributionCount
                         date
                     }
