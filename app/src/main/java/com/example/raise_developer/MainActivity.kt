@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             myService = b.getService()
             isConService = true
 //            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
-            getGithubContributionInfo("manNomi")
+            getGithubContributionInfo("RipAGu")
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {

@@ -23,8 +23,10 @@ import androidx.fragment.app.Fragment
 import com.example.graphqlsample.queries.GithubCommitQuery
 
 class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCommitQuery.Week>?): Fragment() {
-    var githubDataArray = githubDataArray
-    var githubData = githubData
+    var githubDataArray = githubDataArray // grassPageActivity 에서 해당 페이지의 날짜 정보 배열을 가져옴 (22,08,12) 이런식으로
+    var githubData = githubData //깃허브 정보
+
+    // 해당 월의 날짜 정보 및 잔디 정보
     var numberOfDateArray = ArrayList<String>()
     var grassColorArray = ArrayList<String>()
 
@@ -34,18 +36,19 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.grass_page_view_pager_layout, container, false)
-        Log.d("githubDataArray","${githubDataArray}")
         gridLayoutSetting(view)
         return view
     }
-    fun divideGithubDataInfo(){
+
+    fun divideGithubDataInfo(){ //깃허브 정보 구분하기
         for(index in 0 until githubData?.size!!){
             for (index1 in 0 until githubData?.get(index)?.contributionDays?.size!!){
-                var grassColor = githubData?.get(index)?.contributionDays?.get(index1)?.color.toString()
-                var date = githubData?.get(index)?.contributionDays?.get(index1)?.date.toString()
+                var grassColor = githubData?.get(index)?.contributionDays?.get(index1)?.color.toString() // 해당일의 잔디 색깔
+                var date = githubData?.get(index)?.contributionDays?.get(index1)?.date.toString() // 해당일의 날짜
                 var dateArray = date.split("-")
-                var tempYear = dateArray[0]
-                var tempMonth = dateArray[1]
+                var tempYear = dateArray[0] // 해당일의 년도
+                var tempMonth = dateArray[1] // 해당일의 월
+                //grassPage에서 받은 날짜의 년도, 월을 비교해서 같은 정보만 배열에 저장
                 if (tempYear == githubDataArray[0] && tempMonth == githubDataArray[1]){
                     numberOfDateArray.add(date)
                     grassColorArray.add(grassColor)
@@ -54,8 +57,7 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
         }
     }
 
-    fun getDeviceDpi(): Int {
-
+    fun getDeviceDpi(): Int { // 현재 dpi 구하는 함수
         val density = resources.displayMetrics.density
         val result = when {
             density >= 4.0 -> 640 // "xxxhdpi"
@@ -69,10 +71,7 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
     }
 
     fun gridLayoutSetting(view: View) {
-        divideGithubDataInfo()
-        val month = githubDataArray[1].toInt()
-        Log.d("month ","${month}")
-        Log.d("잔디 개수","${numberOfDateArray.size}")
+        divideGithubDataInfo() // 각각 배열의 size는 8월이면 31, 2월이면 28, 이렇게 저장되어 있을 것임
         val gridLayout = view.findViewById<GridLayout>(R.id.gridLayout)
         for (index in 0 until numberOfDateArray.size) {
             val customView = layoutInflater.inflate(R.layout.grass_page_custom_view,gridLayout,false)
@@ -94,8 +93,8 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
                 repeatMode = ValueAnimator.REVERSE
                 start()
             }
-
-            if(grassColorArray[index] == "#9be9a8"){
+            // 잔디 색깔에 따라 이미지를 씌움움
+           if(grassColorArray[index] == "#9be9a8"){
                 grassImage.setImageResource(R.mipmap.grass_one)
             }
 

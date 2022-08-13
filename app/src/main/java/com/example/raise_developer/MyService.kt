@@ -22,9 +22,7 @@ class MyService : Service() {
     override fun onCreate() {
         super.onCreate()
         player = MediaPlayer.create(this,R.raw.cookie_inst)
-
     }
-
 
     inner class LocalBinder : Binder() {
         fun getService(): MyService {
@@ -35,7 +33,6 @@ class MyService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_NOT_STICKY
     }
-
 
     fun musicStop(){ //음악 멈추기
         player?.release()
