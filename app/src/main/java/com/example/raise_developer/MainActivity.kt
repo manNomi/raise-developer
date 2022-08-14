@@ -16,6 +16,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.animation.addListener
 import androidx.lifecycle.lifecycleScope
@@ -33,8 +36,12 @@ import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
+    var playTime = 0 // 플레이 시간
     var personalMoney = 0  // 개인 자산
     var annualMoney = 2000 // 연봉. 10분에 한번 씩 올라가는거로 바꾸는게 나을듯
+    var grassMoney = 0
+    var githubContributionData: List<GithubCommitQuery.Week>? = null
+    lateinit var getResultText: ActivityResultLauncher<Intent>
 
     var isAnimationThreadStop = false
 
@@ -60,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             myService = b.getService()
             isConService = true
 //            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
-            getGithubContributionInfo("RipAGu")
+            getGithubContributionInfo("manNomi")
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
@@ -81,10 +88,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        quizTimeThread = Thread(QuizTimer())
-        quizTimeThread.start()
+
         setTypingSound()
         serviceBind()
+
         }
 
     fun setTypingSound() { // 터치 시 소리 세팅
@@ -94,19 +101,31 @@ class MainActivity : AppCompatActivity() {
         soundId = soundPool.load(this, R.raw.typing_sound, 1)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page)
         initEvent()
         mainCharacterMove(470f, -550f)
+        activityResultLauncherInit()
+        val thread = Thread(PlayTime())
+        thread.start()
+        quizTimeThread = Thread(QuizTimer())
+        quizTimeThread.start()
+    }
 
-//         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
-//         좀더 알아봐야함 뷰 위치 설정
-//        val param = GridLayout.LayoutParams(GridLayout.spec(0,5),GridLayout.spec(0,5))
-//        param.setMargins(13)
-//        characterView.layoutParams = param
+    override fun onResume() {
+        super.onResume()
 
+    }
+
+    fun activityResultLauncherInit(){
+        getResultText = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            if(result.resultCode == RESULT_OK){
+                val data = result.data?.getStringExtra("grassMoney")
+                grassMoney = data?.toInt()!!
+                personalMoney += grassMoney
+            }
+        }
     }
 
     fun mainCharacterMove(positionX: Float, positionY: Float) { // 내 캐릭터의 애니메이션
@@ -325,6 +344,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    inner class PlayTime: Runnable {
+        override fun run() {
+            while (!isThreadStop) {
+                Log.d("main","${playTime}")
+                playTime+=1
+                Thread.sleep(1000)
+            }
+        }
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean { // 터치할 때마다 개인 자산의 TextView가 만원 씩 증가
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -367,6 +396,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("이건 실행 됨?", "제발")
             val response = apolloClient.query(GithubCommitQuery("${id}")).execute()
             //바인드 서비스로 깃허브 정보 데이터 전달
+            githubContributionData = response.data?.user?.contributionsCollection?.contributionCalendar?.weeks
             myService?.githubInfoMainActivityToService(response.data?.user?.contributionsCollection?.contributionCalendar?.weeks)
         }
     }
@@ -376,9 +406,9 @@ class MainActivity : AppCompatActivity() {
         val grassBtn = findViewById<ImageButton>(R.id.grass_btn)
         grassBtn.setOnClickListener {
             val intent= Intent(this,GrassPageActivity::class.java)
-            startActivity(intent)
+            intent.putExtra("playTime",playTime)
+            getResultText.launch(intent)
         }
-
 
 //        상점 버튼
             val shopButton = findViewById<ImageView>(R.id.shop_btn)
@@ -479,7 +509,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         serviceUnBind()
-        isThreadStop = true
         isAnimationThreadStop = true
     }
 
@@ -493,6 +522,11 @@ class MainActivity : AppCompatActivity() {
             unbindService(serviceConnection)
             isConService = false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isThreadStop = true
     }
 }
 

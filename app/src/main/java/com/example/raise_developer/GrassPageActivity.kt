@@ -26,10 +26,12 @@ import com.example.graphqlsample.queries.GithubCommitQuery
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.coroutines.*
 import org.w3c.dom.Text
+import java.lang.Runnable
 import java.util.ArrayList
 
 class GrassPageActivity: FragmentActivity() {
-    var month = arrayListOf("January","February","March","April","May","June","July","August","September","October","November","December")
+    var playTime = 0
+    var isThreadStop = false
     var githubDataArray = arrayListOf<List<String>>()
     var githubData: List<GithubCommitQuery.Week>? = null
 
@@ -54,6 +56,7 @@ class GrassPageActivity: FragmentActivity() {
         super.onStart()
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.grass_page)
@@ -77,8 +80,25 @@ class GrassPageActivity: FragmentActivity() {
                 }
             })
         }
-
     }
+
+    override fun onResume() {
+        super.onResume()
+        val thread = Thread(PlayTime())
+        thread.start()
+    }
+
+    inner class PlayTime: Runnable {
+        override fun run() {
+            playTime = intent.getIntExtra("playTime",0)
+            while (!isThreadStop) {
+                Log.d("grass","${playTime}")
+                playTime+=1
+                Thread.sleep(1000)
+            }
+        }
+    }
+
     fun divideGithubDataInfo(){
         for(index in 0 until githubData?.size!!){
             for (index1 in 0 until githubData?.get(index)?.contributionDays?.size!!){
@@ -99,7 +119,7 @@ class GrassPageActivity: FragmentActivity() {
 
         override fun getItemCount(): Int = githubDataArray.size
 
-        override fun createFragment(position: Int): Fragment = GrassPageFragment(githubDataArray[position], githubData)
+        override fun createFragment(position: Int): Fragment = GrassPageFragment(githubDataArray[position], githubData, playTime)
 
     }
 
@@ -177,6 +197,7 @@ class GrassPageActivity: FragmentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         serviceUnBind()
+        isThreadStop = true
     }
 
 }
