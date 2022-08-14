@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "59880303458",
-    "project_id": "inventory-a97fa",
-    "storage_bucket": "inventory-a97fa.appspot.com"
+    "project_number": "810689097208",
+    "project_id": "inventorydeveloper-dd4fc",
+    "storage_bucket": "inventorydeveloper-dd4fc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:59880303458:android:695b0fecf0926a894d1a3b",
+        "mobilesdk_app_id": "1:810689097208:android:32d65791ff093b1e103a0d",
         "android_client_info": {
           "package_name": "com.example.raise_developer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "59880303458-ajejfij0i3jmpdgrhtl893rhgv66idn8.apps.googleusercontent.com",
+          "client_id": "810689097208-daa491asvseiev0ckevkm00t5ma2opm6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD3Au4hBz0TGgjd3yRKv9cBf8hjWzvDZts"
+          "current_key": "AIzaSyA7sQ4Y9P4BiUZuInzO_MxHu8t8cdFt8U4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "59880303458-ajejfij0i3jmpdgrhtl893rhgv66idn8.apps.googleusercontent.com",
+              "client_id": "810689097208-daa491asvseiev0ckevkm00t5ma2opm6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -10,14 +10,15 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.media.SoundPool
 import android.os.*
-import androidx.appcompat.app.AppCompatActivity
+import android.provider.Browser.sendString
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.animation.addListener
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
@@ -25,9 +26,17 @@ import com.apollographql.apollo3.api.http.HttpResponse
 import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
-import kotlinx.coroutines.Dispatchers
+import com.example.raise_developer.FierStore.checkData
+import com.example.raise_developer.ShopDialog.Companion.prefs
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 import kotlin.random.Random
 
 
@@ -77,11 +86,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     override fun onStart() { // 일단 시작 할 때 쓰레드를 실행하게 해줬음 잔디 버튼 누르면 쓰레드 종료
         super.onStart()
         quizTimeThread = Thread(QuizTimer())
         quizTimeThread.start()
         setTypingSound()
+
+
         }
 
     fun setTypingSound() { // 터치 시 소리 세팅
@@ -92,11 +105,17 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    companion object {
+        lateinit var prefs: PreferenceInventory
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page)
         initEvent()
         characterMove()
+        prefs = PreferenceInventory(this)
+        checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs)
 
 //         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
 //         좀더 알아봐야함 뷰 위치 설정
@@ -105,6 +124,8 @@ class MainActivity : AppCompatActivity() {
 //        characterView.layoutParams = param
 
     }
+
+
 
     fun characterMove() {
         val character = findViewById<LinearLayout>(R.id.main_page_character)
@@ -133,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
                                     }
                                 val tutorialDialog = TutorialDialog()
-                                tutorialDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
+//                                tutorialDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
                             }
                         })
                         start()
@@ -389,8 +410,7 @@ class MainActivity : AppCompatActivity() {
 //        트로피 버튼
             val trophyBtn = findViewById<ImageView>(R.id.trophy_btn)
             trophyBtn.setOnClickListener {
-                val intent = Intent(this, RankingActivity::class.java)
-                startActivity(intent)
+                checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs)
             }
 //        인벤토리 버튼
             val inventoryButton = findViewById<ImageButton>(R.id.inventory_btn)
@@ -398,13 +418,10 @@ class MainActivity : AppCompatActivity() {
                 val inventoryDialog = InventoryDialog()
                 inventoryDialog.show(supportFragmentManager, "inventoryDialog")
             }
-
-
             val quizButton = findViewById<ImageButton>(R.id.quiz_btn)
             quizButton.setOnClickListener {
                 btnEventQuizLogic()
             }
-
 //    레벨 버튼
             val levelButton = findViewById<ImageButton>(R.id.level_btn)
             levelButton.setOnClickListener {
@@ -418,11 +435,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    var userID="GG"
+
+    var presentLV=1
+
     override fun onStop() {
         super.onStop()
         serviceUnBind()
         isThreadStop = true
         isAnimationThreadStop = true
+        prefs.sendjsonString(userID,presentLV.toString())
     }
 
     fun serviceBind() {

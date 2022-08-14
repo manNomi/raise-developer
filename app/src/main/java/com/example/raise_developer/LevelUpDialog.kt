@@ -51,6 +51,10 @@ class LevelUpDialog() : DialogFragment(){
         onClickListener = listener
     }
 
+    fun getPresentLV():Int{
+        return presentLv
+    }
+
 //    levelXuptoX 는 짝수가 이미지 홀수가 이름입니다
     fun initLevelCondition(view: View){
 //        val existEmpoloy = prefs.getString("item", "")

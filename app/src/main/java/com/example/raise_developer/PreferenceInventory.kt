@@ -3,7 +3,12 @@ package com.example.raise_developer
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.raise_developer.FierStore.checkData
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 class PreferenceInventory(context: Context) {
 
@@ -14,7 +19,7 @@ class PreferenceInventory(context: Context) {
     var employType = mutableListOf<String>()
     var employLevel = mutableListOf<String>()
 
-    private val prefs: SharedPreferences =
+    val prefs: SharedPreferences =
         context.getSharedPreferences("prefs_name", Context.MODE_PRIVATE)
 
     data class EmployData(
@@ -38,6 +43,18 @@ class PreferenceInventory(context: Context) {
 //    매개변수로 키값 받고 키값에 따라 저장 형태가 달라짐
 //    json 데이터는 수정이 불가하므로 그냥 프리퍼런스 clear 후 다시 만드는 방식
 
+//    온크리에이트 해줄때
+    fun resetString(jsonString:String){
+        prefs.edit().clear().apply()
+        prefs.edit().putString("inventory", jsonString).apply()
+    }
+
+//    꺼질때
+    fun sendjsonString(userID:String,level:String){
+        val jsonString=prefs.getString("inventory", "").toString()
+        checkData(userID,level,jsonString,prefs)
+    }
+
     fun clearString()
     {
         prefs.edit().clear().apply()
@@ -52,7 +69,6 @@ class PreferenceInventory(context: Context) {
             Log.d("type",inventoryName.toString())
         }
         else{
-
             var check= "비존재"
             for (index in 0 until employ.size) {
                 if (employ[index]==str){
@@ -95,6 +111,7 @@ class PreferenceInventory(context: Context) {
 
         Log.d("gson", gsonText)
         prefs.edit().putString("inventory", gsonText).apply()
+//        setValueDataEvent(gsonText)
 //        prefs.edit().clear().apply()
 
     }
@@ -103,32 +120,32 @@ class PreferenceInventory(context: Context) {
 //    프리퍼런스에 저장된 json String 가져와서 해석 하기
 //    이때 매개변수로 key를 받으며 key가 아이템이면 아이템 반환 , 그외의 것이면 고용 반환
     fun getString(key: String, defValue: String): ArrayList<MutableList<String>> {
-        val jsonText = prefs.getString("inventory", defValue).toString()
-        Log.d("gson", jsonText)
-        if (jsonText != "") {
-            Log.d("json", jsonText)
-            val data = Gson().fromJson(jsonText, InventoryCategory::class.java)
-            inventory.clear()
-            inventoryName.clear()
-            if (data.inventory_list!=null) {
-                for (index in 0 until data.inventory_list.size) {
-                    inventory.add(data.inventory_list[index].image)
-                    inventoryName.add(data.inventory_list[index].name)
-                }
-            }
-            employ.clear()
-            employName.clear()
-            employType.clear()
-            employLevel.clear()
-            if (data.employ_list!=null) {
-                for (index in 0 until data.employ_list.size) {
-                    employ.add(data.employ_list[index].image)
-                    employName.add(data.employ_list[index].name)
-                    employType.add(data.employ_list[index].type)
-                    employLevel.add(data.employ_list[index].level)
-                }
+    val jsonText = prefs.getString("inventory", defValue).toString()
+    Log.d("gson", jsonText)
+    if (jsonText != "") {
+        Log.d("json", jsonText)
+        val data = Gson().fromJson(jsonText, InventoryCategory::class.java)
+        inventory.clear()
+        inventoryName.clear()
+        if (data.inventory_list!=null) {
+            for (index in 0 until data.inventory_list.size) {
+                inventory.add(data.inventory_list[index].image)
+                inventoryName.add(data.inventory_list[index].name)
             }
         }
+        employ.clear()
+        employName.clear()
+        employType.clear()
+        employLevel.clear()
+        if (data.employ_list!=null) {
+            for (index in 0 until data.employ_list.size) {
+                employ.add(data.employ_list[index].image)
+                employName.add(data.employ_list[index].name)
+                employType.add(data.employ_list[index].type)
+                employLevel.add(data.employ_list[index].level)
+            }
+        }
+    }
         if (key=="item"){
             return arrayListOf(inventory,inventoryName)
         }
@@ -136,6 +153,4 @@ class PreferenceInventory(context: Context) {
             return arrayListOf(employ,employName,employType,employLevel)
         }
     }
-
-
 }
