@@ -3,6 +3,7 @@ package com.example.raise_developer
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.raise_developer.FireStore.checkUpdate
 import com.google.gson.Gson
 
 class PreferenceInventory(context: Context) {
@@ -14,7 +15,7 @@ class PreferenceInventory(context: Context) {
     var employType = mutableListOf<String>()
     var employLevel = mutableListOf<String>()
 
-    private val prefs: SharedPreferences =
+    val prefs: SharedPreferences =
         context.getSharedPreferences("prefs_name", Context.MODE_PRIVATE)
 
     data class EmployData(
@@ -33,10 +34,27 @@ class PreferenceInventory(context: Context) {
         val inventory_list : ArrayList<InventoryData>,
         val employ_list : ArrayList<EmployData>
     )
-
 //    프리퍼런스에 Json String 으로 만들어서 저장 하기
 //    매개변수로 키값 받고 키값에 따라 저장 형태가 달라짐
 //    json 데이터는 수정이 불가하므로 그냥 프리퍼런스 clear 후 다시 만드는 방식
+
+    //    온크리에이트 해줄때
+    fun resetJsonString(jsonString:String){
+        prefs.edit().clear().apply()
+        prefs.edit().putString("inventory", jsonString).apply()
+    }
+
+    fun resetMoneyString(money:String){
+        prefs.edit().clear().apply()
+        prefs.edit().putString("money", money).apply()
+    }
+
+    //    꺼질때
+    fun sendjsonString(userID:String,level:String,money:String){
+        val jsonString=prefs.getString("inventory", "").toString()
+        Log.d("센드제이슨",jsonString)
+         checkUpdate(userID,level,jsonString,prefs,money)
+    }
 
     fun clearString()
     {
@@ -52,7 +70,6 @@ class PreferenceInventory(context: Context) {
             Log.d("type",inventoryName.toString())
         }
         else{
-
             var check= "비존재"
             for (index in 0 until employ.size) {
                 if (employ[index]==str){
@@ -95,12 +112,9 @@ class PreferenceInventory(context: Context) {
 
         Log.d("gson", gsonText)
         prefs.edit().putString("inventory", gsonText).apply()
-//        prefs.edit().clear().apply()
-
     }
 
-
-//    프리퍼런스에 저장된 json String 가져와서 해석 하기
+    //    프리퍼런스에 저장된 json String 가져와서 해석 하기
 //    이때 매개변수로 key를 받으며 key가 아이템이면 아이템 반환 , 그외의 것이면 고용 반환
     fun getString(key: String, defValue: String): ArrayList<MutableList<String>> {
         val jsonText = prefs.getString("inventory", defValue).toString()
@@ -136,6 +150,4 @@ class PreferenceInventory(context: Context) {
             return arrayListOf(employ,employName,employType,employLevel)
         }
     }
-
-
 }

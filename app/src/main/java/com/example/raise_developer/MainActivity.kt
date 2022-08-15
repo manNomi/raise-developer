@@ -25,6 +25,8 @@ import com.apollographql.apollo3.api.http.HttpResponse
 import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
+import com.example.raise_developer.FireStore.checkData
+import com.example.raise_developer.ShopDialog.Companion.prefs
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -45,8 +47,13 @@ class MainActivity : AppCompatActivity() {
         "last" to "Hi",
         "born" to 19
     )
-    lateinit var pref: SharedPreferences
+
+    lateinit var grassPref: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
+
+    var userID="test"
+    var money=personalMoney.toString()
+    var presentLV=1
 
     var githubContributionData: List<GithubCommitQuery.Week>? = null
     lateinit var getResultText: ActivityResultLauncher<Intent>
@@ -83,6 +90,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        lateinit var prefs: PreferenceInventory
+    }
+
     inner class AuthorizationInterceptor(val token: String) : HttpInterceptor {
         override suspend fun intercept(
             request: HttpRequest,
@@ -96,17 +107,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         setTypingSound()
         serviceBind()
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w("TAG", "Error adding document", e)
-            }
         }
 
     fun setTypingSound() { // 터치 시 소리 세팅
@@ -121,13 +123,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_page)
         initEvent()
         mainCharacterMove(470f, -550f)
+        prefs = PreferenceInventory(this)
+        checkData(userID,
+            presentLV.toString(),
+            prefs.prefs)
+        val handler = android.os.Handler()
+        handler.postDelayed({
+            prefs.resetJsonString(FireStore.jsonData)
+            prefs.resetMoneyString(FireStore.presentMoney)
+            setMoneyText(FireStore.presentMoney)
+        }, 1000)
+
         val thread = Thread(PlayTime())
         thread.start()
         quizTimeThread = Thread(QuizTimer())
         quizTimeThread.start()
-        pref = getSharedPreferences("fragmentPlayTime",0)
-        editor = pref.edit()
+        grassPref = getSharedPreferences("fragmentPlayTime",0)
+        editor = grassPref.edit()
         setActivityResultInit()
+
     }
 
     override fun onResume() {
@@ -523,11 +537,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    fun setMoneyText(money:String){
+        if (prefs.prefs.getString("money", "")!=null && prefs.prefs.getString("money", "")!="") {
+            personalMoney = money.toInt()
+            findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
+                "${personalMoney}원"
+            Log.d("money",personalMoney.toString())
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         serviceUnBind()
         Log.d("activity","onstop")
-
+        money=personalMoney.toString()
+        Log.d("현재머니",money)
+        prefs.sendjsonString(userID,presentLV.toString(),money)
         isAnimationThreadStop = true
     }
 
