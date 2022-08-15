@@ -45,9 +45,14 @@ class PreferenceInventory(context: Context) {
 //    json 데이터는 수정이 불가하므로 그냥 프리퍼런스 clear 후 다시 만드는 방식
 
 //    온크리에이트 해줄때
-    fun resetString(jsonString:String){
+    fun resetJsonString(jsonString:String){
         prefs.edit().clear().apply()
         prefs.edit().putString("inventory", jsonString).apply()
+    }
+
+    fun resetMoneyString(money:String){
+        prefs.edit().clear().apply()
+        prefs.edit().putString("money", money).apply()
     }
 
 //    꺼질때

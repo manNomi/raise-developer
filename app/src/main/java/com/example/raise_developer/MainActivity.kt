@@ -9,8 +9,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.media.SoundPool
-import android.os.*
-import android.provider.Browser.sendString
+import android.os.Bundle
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -18,7 +20,6 @@ import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
@@ -27,16 +28,10 @@ import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
 import com.example.raise_developer.FierStore.checkData
-import com.example.raise_developer.ShopDialog.Companion.prefs
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
+import com.example.raise_developer.FierStore.returnMoney
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import kotlin.random.Random
 
 
@@ -93,8 +88,6 @@ class MainActivity : AppCompatActivity() {
         quizTimeThread = Thread(QuizTimer())
         quizTimeThread.start()
         setTypingSound()
-
-
         }
 
     fun setTypingSound() { // 터치 시 소리 세팅
@@ -115,7 +108,20 @@ class MainActivity : AppCompatActivity() {
         initEvent()
         characterMove()
         prefs = PreferenceInventory(this)
-        checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs,money)
+        checkData(userID,
+            presentLV.toString(),
+            prefs.prefs)
+        val handler = android.os.Handler()
+        handler.postDelayed({
+            prefs.resetJsonString(FierStore.jsonData)
+            prefs.resetMoneyString(FierStore.presentMoney)
+            setMoneyText(FierStore.presentMoney)
+        }, 1000)
+    }
+//        checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs)
+//        prefs.resetJsonString(FierStore.jsonData)
+//        prefs.resetMoneyString(FierStore.presentMoney)
+//        setMoneyText()
 
 //         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
 //         좀더 알아봐야함 뷰 위치 설정
@@ -123,9 +129,14 @@ class MainActivity : AppCompatActivity() {
 //        param.setMargins(13)
 //        characterView.layoutParams = param
 
+    fun setMoneyText(money:String){
+        if (prefs.prefs.getString("money", "")!=null && prefs.prefs.getString("money", "")!="") {
+            personalMoney = money.toInt()
+            findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
+                "${personalMoney}원"
+            Log.d("money",personalMoney.toString())
+        }
     }
-
-
 
     fun characterMove() {
         val character = findViewById<LinearLayout>(R.id.main_page_character)
@@ -136,12 +147,10 @@ class MainActivity : AppCompatActivity() {
             interpolator = LinearInterpolator()
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
-
                     ObjectAnimator.ofFloat(character, "translationX", 300f).apply { // x축 이동
                         duration = 700
                         interpolator = LinearInterpolator()
                         addListener(object : AnimatorListenerAdapter() {
-
                             override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
                                 characterNoteMark.visibility = View.VISIBLE
                                 ObjectAnimator.ofFloat(characterNoteMark, "translationY", 15f)
@@ -410,7 +419,7 @@ class MainActivity : AppCompatActivity() {
 //        트로피 버튼
             val trophyBtn = findViewById<ImageView>(R.id.trophy_btn)
             trophyBtn.setOnClickListener {
-                checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs,money)
+//                checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs)
             }
 //        인벤토리 버튼
             val inventoryButton = findViewById<ImageButton>(R.id.inventory_btn)
@@ -435,10 +444,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    var userID="rqwee"
-    var money="12341"
-
-
+    var userID="1231ewqe"
+    var money=personalMoney.toString()
     var presentLV=1
 
     override fun onStop() {
@@ -446,6 +453,8 @@ class MainActivity : AppCompatActivity() {
         serviceUnBind()
         isThreadStop = true
         isAnimationThreadStop = true
+        money=personalMoney.toString()
+        Log.d("현재머니",money)
         prefs.sendjsonString(userID,presentLV.toString(),money)
     }
 
