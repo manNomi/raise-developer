@@ -13,35 +13,22 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
-import com.example.raise_developer.DataBase.levelUp1to2Image
-import com.example.raise_developer.DataBase.levelUp1to2Level
-import com.example.raise_developer.DataBase.levelUp1to2Name
-import com.example.raise_developer.DataBase.levelUp2to3Image
-import com.example.raise_developer.DataBase.levelUp2to3Level
-import com.example.raise_developer.DataBase.levelUp2to3Name
-import com.example.raise_developer.DataBase.levelUp3to4Image
-import com.example.raise_developer.DataBase.levelUp3to4Level
-import com.example.raise_developer.DataBase.levelUp3to4Name
-import com.example.raise_developer.DataBase.levelUp4to5Image
-import com.example.raise_developer.DataBase.levelUp4to5Level
-import com.example.raise_developer.DataBase.levelUp4to5Name
-import com.example.raise_developer.DataBase.levelUp5to6Image
-import com.example.raise_developer.DataBase.levelUp5to6Level
-import com.example.raise_developer.DataBase.levelUp5to6Name
-import com.example.raise_developer.DataBase.levelUp6to7Image
-import com.example.raise_developer.DataBase.levelUp6to7Level
-import com.example.raise_developer.DataBase.levelUp6to7Name
-import com.example.raise_developer.DataBase.levelUp7to8Image
-import com.example.raise_developer.DataBase.levelUp7to8Level
-import com.example.raise_developer.DataBase.levelUp7to8Name
+import com.example.raise_developer.DataBase
+import com.example.raise_developer.DataBase.levelUpPrice
+import com.example.raise_developer.DataBase.levelupCondition
 
-class LevelUpDialog() : DialogFragment(){
+class LevelUpDialog(var userLv: Int, var personalMoney: Int, ) : DialogFragment(){
     private lateinit var onClickListener: DialogInterface.OnClickListener
-    lateinit var linearLayout: LinearLayout
-    var presentLv=1
-    var presentConditionImage= levelUp1to2Image
-    var presentConditionText= levelUp1to2Name
-    var presentConditionLevel= levelUp1to2Level
+
+    lateinit var linearLayout: LinearLayout // 커스텀뷰들을 닮을 레이아웃
+
+    var conditionName = arrayListOf("첫 번 째 이름", "두 번째 이름", "세 번째 이름")
+    var conditionImage = arrayListOf("첫 번 째 이미지", "두 번째 이미지", "세 번째 이미지")
+    var conditionLevel = arrayListOf(0, 0, 0)
+
+    var effectAnnualMoneyPlus = 0 //레벨업시 추가 연봉
+    var effectAnnaulMoneyMultiple = 0 //추가 연봉에 대한 기호
+    var effectTouchMoney = 0 //레벨업시 추가 터치수당
 
     companion object {
         lateinit var prefs: PreferenceInventory
@@ -50,104 +37,257 @@ class LevelUpDialog() : DialogFragment(){
     fun setOnClickListener(listener: DialogInterface.OnClickListener) {
         onClickListener = listener
     }
+    // 현재 레벨에 따른 조건 설정
+    fun setCondition() {
+        // 초기화
+        conditionName=arrayListOf()
+        conditionImage=arrayListOf()
+        conditionLevel=arrayListOf()
 
-//    levelXuptoX 는 짝수가 이미지 홀수가 이름입니다
-    fun initLevelCondition(view: View){
-//        val existEmpoloy = prefs.getString("item", "")
-
-    if (presentLv==1) {
-            presentConditionImage = levelUp1to2Image
-            presentConditionText= levelUp1to2Name
-            presentConditionLevel= levelUp1to2Level
+        if (userLv == 9) {
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=3
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[0][0].name)
+            conditionName.add(DataBase.levelupCondition[0][1].name)
+            conditionName.add(DataBase.levelupCondition[0][2].name)
+            conditionImage.add(DataBase.levelupCondition[0][0].image)
+            conditionImage.add(DataBase.levelupCondition[0][1].image)
+            conditionImage.add(DataBase.levelupCondition[0][2].image)
+            conditionLevel.add(DataBase.levelupCondition[0][0].level)
+            conditionLevel.add(DataBase.levelupCondition[0][1].level)
+            conditionLevel.add(DataBase.levelupCondition[0][2].level)
+        }
+        else if (userLv == 19) {
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=6
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[1][0].name)
+            conditionName.add(DataBase.levelupCondition[1][1].name)
+            conditionName.add(DataBase.levelupCondition[1][2].name)
+            conditionImage.add(DataBase.levelupCondition[1][0].image)
+            conditionImage.add(DataBase.levelupCondition[1][1].image)
+            conditionImage.add(DataBase.levelupCondition[1][2].image)
+            conditionLevel.add(DataBase.levelupCondition[1][0].level)
+            conditionLevel.add(DataBase.levelupCondition[1][1].level)
+            conditionLevel.add(DataBase.levelupCondition[1][2].level)
+        }
+        else if (userLv == 29) {
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=9
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[2][0].name)
+            conditionName.add(DataBase.levelupCondition[2][1].name)
+            conditionName.add(DataBase.levelupCondition[2][2].name)
+            conditionImage.add(DataBase.levelupCondition[2][0].image)
+            conditionImage.add(DataBase.levelupCondition[2][1].image)
+            conditionImage.add(DataBase.levelupCondition[2][2].image)
+            conditionLevel.add(DataBase.levelupCondition[2][0].level)
+            conditionLevel.add(DataBase.levelupCondition[2][1].level)
+            conditionLevel.add(DataBase.levelupCondition[2][2].level)
+        }
+        else if (userLv == 39) {
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=12
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[3][0].name)
+            conditionName.add(DataBase.levelupCondition[3][1].name)
+            conditionName.add(DataBase.levelupCondition[3][2].name)
+            conditionImage.add(DataBase.levelupCondition[3][0].image)
+            conditionImage.add(DataBase.levelupCondition[3][1].image)
+            conditionImage.add(DataBase.levelupCondition[3][2].image)
+            conditionLevel.add(DataBase.levelupCondition[3][0].level)
+            conditionLevel.add(DataBase.levelupCondition[3][1].level)
+            conditionLevel.add(DataBase.levelupCondition[3][2].level)
+        }
+        else if (userLv == 49) {
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=15
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[4][0].name)
+            conditionName.add(DataBase.levelupCondition[4][1].name)
+            conditionName.add(DataBase.levelupCondition[4][2].name)
+            conditionImage.add(DataBase.levelupCondition[4][0].image)
+            conditionImage.add(DataBase.levelupCondition[4][1].image)
+            conditionImage.add(DataBase.levelupCondition[4][2].image)
+            conditionLevel.add(DataBase.levelupCondition[4][0].level)
+            conditionLevel.add(DataBase.levelupCondition[4][1].level)
+            conditionLevel.add(DataBase.levelupCondition[4][2].level)
+        }
+        else if (userLv == 59) {
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=18
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[5][0].name)
+            conditionName.add(DataBase.levelupCondition[5][1].name)
+            conditionName.add(DataBase.levelupCondition[5][2].name)
+            conditionImage.add(DataBase.levelupCondition[5][0].image)
+            conditionImage.add(DataBase.levelupCondition[5][1].image)
+            conditionImage.add(DataBase.levelupCondition[5][2].image)
+            conditionLevel.add(DataBase.levelupCondition[5][0].level)
+            conditionLevel.add(DataBase.levelupCondition[5][1].level)
+            conditionLevel.add(DataBase.levelupCondition[5][2].level)
+        }
+        else if (userLv == 69){
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=21
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[6][0].name)
+            conditionName.add(DataBase.levelupCondition[6][1].name)
+            conditionName.add(DataBase.levelupCondition[6][2].name)
+            conditionImage.add(DataBase.levelupCondition[6][0].image)
+            conditionImage.add(DataBase.levelupCondition[6][1].image)
+            conditionImage.add(DataBase.levelupCondition[6][2].image)
+            conditionLevel.add(DataBase.levelupCondition[6][0].level)
+            conditionLevel.add(DataBase.levelupCondition[6][1].level)
+            conditionLevel.add(DataBase.levelupCondition[6][2].level)
+        }
+        else if (userLv == 79){
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=24
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[7][0].name)
+            conditionName.add(DataBase.levelupCondition[7][1].name)
+            conditionName.add(DataBase.levelupCondition[7][2].name)
+            conditionImage.add(DataBase.levelupCondition[7][0].image)
+            conditionImage.add(DataBase.levelupCondition[7][1].image)
+            conditionImage.add(DataBase.levelupCondition[7][2].image)
+            conditionLevel.add(DataBase.levelupCondition[7][0].level)
+            conditionLevel.add(DataBase.levelupCondition[7][1].level)
+            conditionLevel.add(DataBase.levelupCondition[7][2].level)
+        }
+        else if (userLv == 89){
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=27
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[8][0].name)
+            conditionName.add(DataBase.levelupCondition[8][1].name)
+            conditionName.add(DataBase.levelupCondition[8][2].name)
+            conditionImage.add(DataBase.levelupCondition[8][0].image)
+            conditionImage.add(DataBase.levelupCondition[8][1].image)
+            conditionImage.add(DataBase.levelupCondition[8][2].image)
+            conditionLevel.add(DataBase.levelupCondition[8][0].level)
+            conditionLevel.add(DataBase.levelupCondition[8][1].level)
+            conditionLevel.add(DataBase.levelupCondition[8][2].level)
+        }
+        else if (userLv == 99){
+            effectAnnualMoneyPlus=0
+            effectAnnaulMoneyMultiple=3
+            effectTouchMoney=3
+            conditionName.add(DataBase.levelupCondition[9][0].name)
+            conditionName.add(DataBase.levelupCondition[9][1].name)
+            conditionName.add(DataBase.levelupCondition[9][2].name)
+            conditionImage.add(DataBase.levelupCondition[9][0].image)
+            conditionImage.add(DataBase.levelupCondition[9][1].image)
+            conditionImage.add(DataBase.levelupCondition[9][2].image)
+            conditionLevel.add(DataBase.levelupCondition[9][0].level)
+            conditionLevel.add(DataBase.levelupCondition[9][1].level)
+            conditionLevel.add(DataBase.levelupCondition[9][2].level)
+        }
+        else{
+            effectAnnualMoneyPlus=100
+            effectTouchMoney=1
+            conditionName=arrayListOf()
+            conditionImage=arrayListOf()
+            conditionLevel=arrayListOf()
+        }
     }
-        else if (presentLv==2) {
-            presentConditionImage = levelUp2to3Image
-            presentConditionText= levelUp2to3Name
-            presentConditionLevel= levelUp2to3Level
+    // 뷰 설정
+    fun setView(view: View){
+        setCondition()
+        //지움
+        linearLayout.removeAllViews()
+        //커스텀 뷰 설정
+        for (index in 0 until conditionName.size) {
+            val customView = layoutInflater.inflate(R.layout.levelup_dialog_custom_view,linearLayout,false)
+            val customViewImage=customView.findViewById<ImageView>(R.id.levelup_custom_view_image)
+            val customViewName=customView.findViewById<TextView>(R.id.levelup_custom_view_text)
+            val customViewLevel=customView.findViewById<TextView>(R.id.condition_level_text)
+            val imageChange = resources.getIdentifier(conditionImage[index], "mipmap", activity?.packageName)
+            customViewImage.setImageResource(imageChange)
+            customViewName.text=conditionName[index]
+            customViewLevel.text=conditionLevel[index].toString()
+            linearLayout.addView(customView)
+        }
+        //몇 레벨 업 조건인지 설명하는 텍스트 작성
+        val conditionNumText = view.findViewById<TextView>(R.id.levelup_condition_num)
+        conditionNumText.text = "LV${userLv+1}에 도달하기 위한 조건"
+        //현재 유저의 레벨 설정
+        val levelText=view.findViewById<TextView>(R.id.lv_text)
+        levelText.text="LV ${userLv}"
+        //레벨업 시 효과 및 레벨업 버튼 설정
+        val effectAnnualMoneyText=view.findViewById<TextView>(R.id.effect_annual_money)
+        val effectTouchMoneyText=view.findViewById<TextView>(R.id.effect_touch_money)
+        val levelUpBtn=view.findViewById<Button>(R.id.btn_level_up)
+        if(userLv % 10 == 9) {
+            effectAnnualMoneyText.text = "연봉 + ${effectAnnaulMoneyMultiple}0%"
+            effectTouchMoneyText.text = "터치수당 + ${effectTouchMoney}0000"
+            levelUpBtn.text = "LV${userLv} -> LV${userLv+1}\n${DataBase.levelUpPrice[userLv]}만원"
+        }
+        else if(userLv == 100) {
+            effectAnnualMoneyText.text = ""
+            effectTouchMoneyText.text = ""
+            levelUpBtn.text="최대레벨"
+        }
+        else {
+            effectAnnualMoneyText.text = "연봉 + ${effectAnnualMoneyPlus}0000"
+            effectTouchMoneyText.text = "터치수당 + ${effectTouchMoney}0000"
+            levelUpBtn.text = "LV${userLv} -> LV${userLv+1}\n${DataBase.levelUpPrice[userLv]}만원"
+        }
     }
-        else if (presentLv==3) {
-            presentConditionImage = levelUp3to4Image
-            presentConditionText= levelUp3to4Name
-            presentConditionLevel= levelUp3to4Level
-
-    }
-        else if (presentLv==4) {
-            presentConditionImage = levelUp4to5Image
-            presentConditionText= levelUp4to5Name
-            presentConditionLevel= levelUp4to5Level
-
-    }
-        else if (presentLv==5) {
-            presentConditionImage = levelUp5to6Image
-            presentConditionText= levelUp5to6Name
-            presentConditionLevel= levelUp5to6Level
-
-    }
-        else if (presentLv==6) {
-            presentConditionImage = levelUp6to7Image
-            presentConditionText= levelUp6to7Name
-            presentConditionLevel= levelUp6to7Level
-
-    }
-        else if (presentLv==7){
-            presentConditionImage = levelUp7to8Image
-            presentConditionText= levelUp7to8Name
-            presentConditionLevel= levelUp7to8Level
-    }
-    else{
-            presentConditionImage= arrayListOf()
-            presentConditionText= arrayListOf()
-            presentConditionLevel= arrayListOf()
-    }
-    linearLayout.removeAllViews()
-    for (index in 0 until  presentConditionImage.size) {
-        val customView = layoutInflater.inflate(R.layout.levelup_dialog_custom_view,linearLayout,false)
-        val customViewImage=customView.findViewById<ImageView>(R.id.levelup_custom_view_image)
-        val customViewText=customView.findViewById<TextView>(R.id.levelup_custom_view_text)
-        val customViewLevelText=customView.findViewById<TextView>(R.id.condition_level_text)
-        val imageChange =
-            resources.getIdentifier(presentConditionImage[index], "mipmap", activity?.packageName)
-        customViewImage.setImageResource(imageChange)
-        customViewText.text=presentConditionText[index]
-        linearLayout.addView(customView)
-        customViewLevelText.text=presentConditionLevel[index].toString()
-    }
-    val levelText=view.findViewById<TextView>(R.id.lv_text)
-    levelText.text="LV ${presentLv}"
-}
-
+    //레벨 업 버튼
     fun initBtnEvent(view: View){
-        val levelUpBtn=view.findViewById<Button>(R.id.btn_update)
+        val levelUpBtn=view.findViewById<Button>(R.id.btn_level_up)
         levelUpBtn.setOnClickListener {
-            existCheck()
-            if (purchaseTrue){
-            if (presentLv<7){
-                presentLv+=1
+            if(userLv % 10 == 9) {
+                if(personalMoney >= DataBase.levelUpPrice[userLv]) {
+                    existCheck()
+                    if (purchaseTrue){
+                        personalMoney-=DataBase.levelUpPrice[userLv]
+                        userLv+=1
+                        val dataInterface = context as LevelUpInterface
+                        dataInterface.setUserLvLogic(userLv)
+                        dataInterface.setMultipleAnnualMoneyLogic(effectAnnaulMoneyMultiple)
+                        dataInterface.plusTouchMoneyLogic(effectTouchMoney)
+                        dataInterface.setPersonalMoneyLogic(personalMoney)
+
+                        setView(view)
+                    }
+                    else{
+                        Toast.makeText(context, "레벨업 조건 미충족", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    Toast.makeText(context, "돈이 부족합니다!", Toast.LENGTH_SHORT).show()
+                }
             }
-            else if (presentLv==7){
-                levelUpBtn.text="최대레벨"
-                presentLv+=1
-            }
-            else{
-                levelUpBtn.text="최대레벨"
-            }
-            initLevelCondition(view)
-            Toast.makeText(context, "축하드립니다 레벨업 LV${presentLv}", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                Toast.makeText(context, "레벨업 조건 미충족", Toast.LENGTH_SHORT).show()
+            else if(userLv == 100) {Toast.makeText(context, "최대 레벨입니다!", Toast.LENGTH_SHORT).show()}
+            else {
+                if(personalMoney >= DataBase.levelUpPrice[userLv]) {
+                    personalMoney-=DataBase.levelUpPrice[userLv]
+                    userLv+=1
+                    val dataInterface = context as LevelUpInterface
+                    dataInterface.setUserLvLogic(userLv)
+                    dataInterface.plusTouchMoneyLogic(effectTouchMoney)
+                    dataInterface.plusAnnualMoneyLogic(effectAnnualMoneyPlus)
+                    dataInterface.setPersonalMoneyLogic(personalMoney)
+
+                    setView(view)
+                }
+                else{
+                    Toast.makeText(context, "돈이 부족합니다!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
+
     var existEmpoloy= mutableListOf<String>()
     var existEmpoloyLevel= mutableListOf<String>()
-
 
     fun initPresentData(){
         prefs = PreferenceInventory(requireContext())
         existEmpoloy= prefs.getString("empoloy", "")[1]
         existEmpoloyLevel= prefs.getString("empoloy", "")[3]
-
     }
 
     var existCheckList= mutableListOf<String>()
@@ -157,37 +297,31 @@ class LevelUpDialog() : DialogFragment(){
         existCheckList.clear()
         purchaseTrue=false
         var check= 0
-        for (index in 0 until presentConditionText.size) {
+        for (index in 0 until conditionName.size) {
             for (i in 0 until existEmpoloy.size) {
-                Log.d("test",existEmpoloy[i])
-                Log.d("test",existEmpoloyLevel[i])
-                if (presentConditionText[index] ==existEmpoloy[i]){
+                if (conditionName[index] ==existEmpoloy[i]){
                     check+=1
                     if (existEmpoloyLevel[i]!=null) {
-                        if (presentConditionLevel[index] <= existEmpoloyLevel[i].toInt()) {
+                        if (conditionLevel[index] <= existEmpoloyLevel[i].toInt()) {
                             existCheckList.add("구매가능")
                         }
                     }
                 }
             }
         }
-        if (check==existCheckList.size&& check==presentConditionText.size){
+        if (check==existCheckList.size&& check==conditionName.size){
             purchaseTrue=true
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.levelup_dialog,container,false)
 
         prefs = PreferenceInventory(requireContext())
 
         linearLayout = view.findViewById(R.id.levelup_dialog_scrollview_linear) // 스크롤 뷰의 linear layout - 여기다 커스텀 뷰를 추가해줌
         initPresentData()
-        initLevelCondition(view)
+        setView(view)
         initBtnEvent(view)
         return view
     }
@@ -197,7 +331,7 @@ class LevelUpDialog() : DialogFragment(){
         context?.dialogFragmentResize(this, 0.95f,0.7f) // 다이알로그 크기 조정
     }
 
-
+    //크기 조절
     fun Context.dialogFragmentResize(dialogFragment: DialogFragment, width: Float, height: Float) { // 다이알로그 크기 설정하는 함수
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         if (Build.VERSION.SDK_INT < 30) {

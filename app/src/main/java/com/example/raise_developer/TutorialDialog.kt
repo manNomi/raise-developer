@@ -20,7 +20,7 @@ class TutorialDialog: DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_view_pager,container,false)
+        val view = inflater.inflate(R.layout.tutorial_dialog,container,false)
         var bgColors = arrayListOf(
             R.color.background_color,
             R.color.deep_green,
@@ -31,7 +31,7 @@ class TutorialDialog: DialogFragment() {
 
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
         val dotIndicator = view.findViewById<DotsIndicator>(R.id.spring_dots_indicator)
-        viewPager.adapter = PagerRecyclerAdapter(bgColors)
+        viewPager.adapter = TutorialRecyclerAdapter(bgColors)
 
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 

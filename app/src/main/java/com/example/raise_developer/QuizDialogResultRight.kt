@@ -8,23 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
-class QuizDialogResult : DialogFragment() {
+class QuizDialogResultRight: DialogFragment()  {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.quiz_dialog_result,container,false)
-        isCancelable = false
+        val view = inflater.inflate(R.layout.quiz_dialog_result_right,container,false)
+        isCancelable = true
 
         return view
     }
+
     override fun onResume() {
         super.onResume()
-        context?.dialogFragmentResize(this,0.7f,0.4f) // 다이알로그 크기 조정
-    }
-
-    fun correctResult(view: View) {
-        val textResult = view.findViewById<TextView>(R.id.text_result)
+        context?.dialogFragmentResize(this,0.8f,0.4f) // 다이알로그 크기 조정
     }
 
     fun Context.dialogFragmentResize(dialogFragment: DialogFragment, width: Float, height: Float) {// 다이알로그 크기 설정하는 함수

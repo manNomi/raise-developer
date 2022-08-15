@@ -86,11 +86,15 @@ class QuizDialog : DialogFragment() {
         for(index in 0 until 4) {
             if(index == answerNum) {
                 btnList[index].setOnClickListener {
-                    Log.d("result","correct")
+                    dismiss()
+                    val dataInterface = context as QuizInterface
+                    dataInterface.quizAnswerLogic("Right")
                 }
             }else {
                 btnList[index].setOnClickListener {
-                    Log.d("result","incorrect")
+                    dismiss()
+                    val dataInterface = context as QuizInterface
+                    dataInterface.quizAnswerLogic("Wrong")
                 }
             }
         }

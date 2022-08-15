@@ -14,7 +14,7 @@
         android:background="@color/dark_green"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-186dp" />
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/topLine"
@@ -38,19 +38,55 @@
         android:background="@color/black"
         app:layout_constraintTop_toBottomOf="@id/mainTop" />
 
-<FrameLayout
-    android:id="@+id/main_page_character_frame_layout"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    app:layout_constraintBottom_toTopOf="@id/bot"
-    app:layout_constraintHeight_percent="0.6">
+    <FrameLayout
+        android:id="@+id/main_page_character_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bot"
+        app:layout_constraintHeight_percent="0.6">
 
-</FrameLayout>
-
-
+    </FrameLayout>
 
 
 
+
+    <LinearLayout
+        android:id="@+id/main_page_character"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8">
+
+        <ImageView
+            android:id="@+id/music_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_music_note_24"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/main_page_character_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="조성민"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/main_page_character_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/character1" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/main_page_sound_director"
@@ -104,20 +140,25 @@
         android:src="@mipmap/window"
         app:layout_constraintBottom_toTopOf="@+id/mainTopLine"
         app:layout_constraintEnd_toEndOf="@id/mainTop"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/mainTop"
         app:layout_constraintTop_toBottomOf="@+id/topLine" />
 
     <ImageButton
         android:id="@+id/quiz_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintWidth_percent="0.15"
         android:src="@mipmap/mark"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/mainTopLine"
         app:layout_constraintEnd_toEndOf="@id/mainTop"
         app:layout_constraintHorizontal_bias="0.995"
         app:layout_constraintStart_toStartOf="@id/mainTop"
         app:layout_constraintTop_toBottomOf="@+id/topLine"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <ImageButton
         android:id="@+id/trophy_btn"
@@ -127,48 +168,27 @@
         android:src="@mipmap/trophy"
         app:layout_constraintBottom_toBottomOf="@+id/quiz_btn"
         app:layout_constraintEnd_toStartOf="@+id/quiz_btn"
-        app:layout_constraintHeight_percent="0.09"
+        app:layout_constraintHeight_percent="0.1"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="@id/mainTop"
         app:layout_constraintTop_toTopOf="@+id/quiz_btn"
         app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintWidth_percent="0.15" />
-    <LinearLayout
-        android:id="@+id/main_page_character"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintWidth_percent="0.16" />
+
+    <ImageButton
+        android:id="@+id/saving_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@mipmap/hourglass"
+        app:layout_constraintWidth_percent="0.18"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintVertical_bias="0.01"
+        app:layout_constraintTop_toBottomOf="@id/main_page_top"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8">
-
-        <ImageView
-            android:id="@+id/music_note"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_baseline_headphones_24"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/main_page_character_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="조성민"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:src="@mipmap/character1" />
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="@id/trophy_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -178,7 +198,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
-    
+
     <ImageView
         android:id="@+id/main_page_piano"
         android:layout_width="80dp"
@@ -191,47 +211,92 @@
 
     <ImageButton
         android:id="@+id/main_page_button_option"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/dark_green"
-        android:src="@mipmap/settings"
-        app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toEndOf="@+id/main_page_top"
-        app:layout_constraintTop_toTopOf="@+id/main_page_top" />
-
-    <ImageView
-        android:id="@+id/main_page_image_view_personal_money"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintWidth_percent="0.1"
+        app:layout_constraintVertical_bias="0"
+        android:background="@color/dark_green"
+        android:src="@mipmap/settings"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/main_image_annual_money"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/main_image_personal_money"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.06"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintHorizontal_bias="0.03"
+        android:scaleType="fitXY"
         android:src="@mipmap/money_big"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
-        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView6"
-        android:layout_marginLeft="10dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/main_text_touch_money"/>
 
     <TextView
         android:id="@+id/main_page_text_view_personal_money"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintHeight_percent="0.04"
+        app:layout_constraintHorizontal_bias="0.15"
+        android:gravity="center"
         android:text="0원"
         android:textSize="20dp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
         app:layout_constraintEnd_toEndOf="@+id/main_page_top"
-        app:layout_constraintHorizontal_bias="0.30"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/main_page_top" />
+    <TextView
+        android:id="@+id/main_text_touch_money"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintVertical_bias="0.008"
+        app:layout_constraintHorizontal_bias="0.06"
+        android:gravity="left"
+        android:text="터치수당 : 10만원"
+        android:textSize="17dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/main_page_text_view_personal_money"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/main_image_annual_money"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintVertical_bias="0.01"
+        app:layout_constraintHorizontal_bias="0"
         android:src="@mipmap/money"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/main_image_personal_money"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/main_text_annaul_money"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="left"
+        android:text="연봉\n: 2000만원"
+        android:textSize="17dp"
+        android:textColor="@color/white"
+        app:layout_constraintWidth_percent="0.25"
+        app:layout_constraintHeight_percent="0.05"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
         app:layout_constraintEnd_toStartOf="@+id/main_page_button_option"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintStart_toStartOf="@+id/main_page_top"
         app:layout_constraintTop_toTopOf="@+id/main_page_top" />
 
