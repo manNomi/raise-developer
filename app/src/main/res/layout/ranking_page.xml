@@ -47,6 +47,21 @@
         app:layout_constraintHeight_percent="0.1"
         />
 
+    <TextView
+        android:id="@+id/page"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/bright_brown"
+        android:gravity="center"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/mainBotLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintWidth_percent="0.8" />
+
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="wrap_content"
@@ -93,44 +108,32 @@
         android:id="@+id/textView6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/bright_brown"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_square_brown"
         android:gravity="center"
         android:padding="15dp"
         android:text="LV랭킹"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/page"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
         app:layout_constraintWidth_percent="0.3"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/bright_brown"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/border_square_brown"
         android:gravity="center"
         android:padding="15dp"
-        android:text="LV랭킹"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        android:text="자산랭킹"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/page"
+        app:layout_constraintHorizontal_bias="0.196"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:layout_constraintWidth_percent="0.3"
-        android:layout_marginTop="10dp"/>
+        app:layout_constraintWidth_percent="0.3" />
 
-    <TextView
-        android:id="@+id/page"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/bright_brown"
-        android:gravity="center"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="@+id/mainBot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintWidth_percent="0.8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

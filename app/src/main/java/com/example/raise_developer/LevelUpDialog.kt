@@ -172,7 +172,7 @@ class LevelUpDialog(var userLv: Int, var personalMoney: Int, ) : DialogFragment(
         }
         else if (userLv == 99){
             effectAnnualMoneyPlus=0
-            effectAnnaulMoneyMultiple=3
+            effectAnnaulMoneyMultiple=30
             effectTouchMoney=3
             conditionName.add(DataBase.levelupCondition[9][0].name)
             conditionName.add(DataBase.levelupCondition[9][1].name)

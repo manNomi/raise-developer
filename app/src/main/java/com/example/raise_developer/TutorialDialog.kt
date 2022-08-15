@@ -24,9 +24,6 @@ class TutorialDialog: DialogFragment() {
         var bgColors = arrayListOf(
             R.color.background_color,
             R.color.deep_green,
-            R.color.bright_green,
-            R.color.grey,
-            R.color.black
         )
 
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)

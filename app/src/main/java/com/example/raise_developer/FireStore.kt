@@ -1,6 +1,8 @@
 package com.example.raise_developer
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.fragment.app.FragmentManager
+import com.google.android.gms.dynamic.SupportFragmentWrapper
 import com.google.firebase.firestore.FirebaseFirestore
 
 object FireStore {
@@ -8,12 +10,6 @@ object FireStore {
     var jsonData=""
     var level=""
     var presentMoney=""
-
-    fun returnMoney(userID:String,presentLV:String,prefs: SharedPreferences):Unit{
-        return checkData(userID,
-            presentLV.toString(),
-            prefs)
-    }
 
     fun readData(userId:String,prefs:SharedPreferences ){
         db.collection("user").document(userId)   // 작업할 컬렉션
@@ -31,14 +27,16 @@ object FireStore {
                 var jsonChanger=jsonDataSet[1].split("}]}")
                 Log.d("1",jsonChanger[0])
                 if (presentId == userId) {
-                    jsonData =
-                        jsonChanger[0]+"}]}"
+                    if(jsonChanger[0]!="}") {
+                        jsonData =
+                            jsonChanger[0] + "}]}"
+                    }
                     level = dataSet[2].replace("\\s".toRegex(), "").split("=")[1]
                     presentMoney=dataSet[1].replace("\\s".toRegex(), "").split("=")[1]
                 }
-                Log.d("id", userId)
-                Log.d("data", jsonData)
-                Log.d("level", level)
+                Log.d("파이어id", userId)
+                Log.d("파이어data", jsonData)
+                Log.d("파이어level", level)
                 Log.d("파이어스토어 머니", presentMoney)
 
                 prefs.edit().putString("inventory", jsonData).apply()
@@ -55,6 +53,8 @@ object FireStore {
 //        val data =db.collection("user").document(userId).get()
 //        Log.d("test",data)
     }
+
+    var tutorialCehck=false
     fun setData(userId:String,level:String,jsonString: String,money:String){
         val user = hashMapOf(
             "uID" to userId,
@@ -66,6 +66,8 @@ object FireStore {
         db.collection("user").document(userId).set(
             user
         )
+        tutorialCehck=true
+
     }
 
     fun updateData(userId:String,level:String,jsonString: String,money:String){
@@ -107,10 +109,7 @@ object FireStore {
             .addOnSuccessListener { result ->
                 Log.d("테스트데이터",result.data.toString())
                 if(result.data==null) {
-                    val jsonString=""
-                    val level="1"
-                    setData(userId, level, jsonString,money)
-                    Log.d("체크데이터", "새로만듬")
+                    Log.d("체크데이터", "업데이트 X")
                     prefs.edit().clear().apply()
                 }
                 else{

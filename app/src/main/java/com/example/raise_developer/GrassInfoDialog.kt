@@ -19,13 +19,12 @@ import androidx.fragment.app.DialogFragment
 import org.w3c.dom.Text
 
 class GrassInfoDialog(date: String, contributionCount: String, grassColor: String, playTime: Int): DialogFragment() {
-    var playTime = playTime*1000
+    var playTime = playTime
     var maxValue = 0
     var isThreadStop = false
     lateinit var progressBar: ProgressBar
     lateinit var progressBarValue: TextView
     lateinit var harvestButtonClickListener: HarvestButtonClickListener
-
 
 
     var date = date
@@ -43,22 +42,22 @@ class GrassInfoDialog(date: String, contributionCount: String, grassColor: Strin
         view.findViewById<TextView>(R.id.grass_info_dialog_contribution_count).text = "contributions=${contributionCount}"
 
         if (grassColor == "#9be9a8"){
-            maxValue = 20000
+            maxValue = 80
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_one)
         }
 
         else if(grassColor == "#40c463"){
-            maxValue = 30000
+            maxValue = 100
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_two)
         }
 
         else if(grassColor == "#30a14e"){
-            maxValue = 40000
+            maxValue = 120
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_three)
         }
 
         else if(grassColor == "#216e39"){
-            maxValue = 50000
+            maxValue = 140
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_four)
         }
 
@@ -97,15 +96,15 @@ class GrassInfoDialog(date: String, contributionCount: String, grassColor: Strin
 
                 activity?.runOnUiThread {
                     if (playTime >= maxValue){
-                        progressBarValue.text = "${maxValue} / ${maxValue}"
+                        progressBarValue.text = "${maxValue} / ${maxValue}만원"
                         progressBar.progress = maxValue
                     }
                     else{
-                        progressBarValue.text = "${playTime} / ${maxValue}"
+                        progressBarValue.text = "${playTime} / ${maxValue}만원"
                         progressBar.progress = playTime
                     }
                 }
-                playTime+=1000
+                playTime+=1
                 Thread.sleep(1000)
             }
         }

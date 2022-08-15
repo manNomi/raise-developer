@@ -19,7 +19,11 @@ import androidx.fragment.app.DialogFragment
 lateinit var backLogo : ImageView
 
 var backLogoOn=true
-class PersonalDialog: DialogFragment() {
+class PersonalDialog(annualMoney:Int,touchMoney:Int,LV:Int,ID:String): DialogFragment() {
+    val annualMoney=annualMoney
+    val touchMoney=touchMoney
+    val userLV=LV
+    val userIDdata=ID
     lateinit var linearLayout: LinearLayout
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,9 +33,16 @@ class PersonalDialog: DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val view = inflater.inflate(R.layout.personal_information_dialog,container,false)
         backLogo=view.findViewById<ImageView>(R.id.stage_us_logo)
+        val annualMoneyText=view.findViewById<TextView>(R.id.annual_money)
+        annualMoneyText.text= "연봉 : $annualMoney"
+        val touchMoneyText=view.findViewById<TextView>(R.id.touch_money)
+        touchMoneyText.text= "터치수당 : $touchMoney 만원"
+        val userIDText=view.findViewById<TextView>(R.id.user_id)
+        userIDText.text= "개발자 $userIDdata 만원"
+        val userLVText=view.findViewById<TextView>(R.id.lv_text)
+        userLVText.text= "현재레벨 : $userLV"
 
         initEvent(view)
-
         return view
     }
 

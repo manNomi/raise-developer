@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="조성민"
-            android:textSize="20dp"
+            android:textSize="13dp"
+            android:gravity="center"
             android:textColor="@color/black"
             android:layout_gravity="center"/>
         <ImageView

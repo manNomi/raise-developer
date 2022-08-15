@@ -57,8 +57,8 @@ class OptionDialog: DialogFragment() {
             dismiss()
         }
         view.findViewById<Button>(R.id.option_dialog_save_and_close_button).setOnClickListener {
-            saveAndCloseButtonClickListener.saveAndCloseButtonEvent()
-            dismiss()
+            val tutorialDialog = TutorialDialog()
+            tutorialDialog.show(parentFragmentManager,"optionDialog")
         }
 
     }

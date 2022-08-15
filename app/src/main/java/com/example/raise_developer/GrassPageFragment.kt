@@ -131,25 +131,25 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
             // 잔디 색깔에 따라 이미지를 씌움움
            if(grassColorArray[index] == "#9be9a8"){
 
-               maxValue = 20000
+               maxValue = 80
                grassMaxValue.add(maxValue)
                grassImage.setImageResource(R.mipmap.grass_one)
             }
 
             else if(grassColorArray[index] == "#40c463"){
-               maxValue = 30000
+               maxValue = 100
                grassMaxValue.add(maxValue)
                grassImage.setImageResource(R.mipmap.grass_two)
             }
 
             else if(grassColorArray[index] == "#30a14e"){
-               maxValue = 40000
+               maxValue = 120
                grassMaxValue.add(maxValue)
                grassImage.setImageResource(R.mipmap.grass_three)
             }
 
             else if(grassColorArray[index] == "#216e39"){
-               maxValue = 50000
+               maxValue = 140
                grassMaxValue.add(maxValue)
                grassImage.setImageResource(R.mipmap.grass_four)
             }

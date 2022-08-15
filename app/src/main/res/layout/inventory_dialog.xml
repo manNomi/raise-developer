@@ -6,7 +6,7 @@
     android:background="@color/background_color"
     >
     <ImageView
-        android:id="@+id/inventory_dialog_button_close"
+        android:id="@+id/close_button_inventory"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_baseline_close_24"

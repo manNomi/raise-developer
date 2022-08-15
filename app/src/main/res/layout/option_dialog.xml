@@ -207,7 +207,7 @@
                     android:layout_height="40dp"
                     android:gravity="center"
                     android:background="@color/background_color"
-                    android:text="저장하고 나가기"
+                    android:text="듀톨리얼 보기"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

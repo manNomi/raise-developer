@@ -4,17 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <TextView
-        android:id="@+id/pageName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Item Pager"
-        android:textSize="50sp"
-        android:gravity="center"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintHeight_percent="0.95"
+        app:layout_constraintVertical_bias="0"
+        >
+
+        <TextView
+            android:id="@+id/pageName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Pager"
+            android:textSize="15dp"
+            android:gravity="left"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+    </ScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

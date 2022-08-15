@@ -32,6 +32,8 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
     companion object {
         lateinit var prefs: PreferenceInventory
     }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,6 +65,8 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         val existEmploy =
             prefs.getString("employ", "") // empoloy로 되어있어서  employ로 바꿨음  preference 값 확인할 것
         presentLevel=existEmploy[3]
+        Log.d("presentLevel","${presentLevel}")
+        Log.d("existEMploty","${existEmploy}")
 //        네임 값
         var nameList = mutableListOf<String>()
 
@@ -108,6 +112,8 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
                 }
             }
         }
+        Log.d("image","${image}")
+        Log.d("imageIndex","${imageIndex}")
         for (index in 0 until image.size) {
             var shopCustomView =layoutInflater.inflate(R.layout.shop_dialog_employ, linearLayout, false)
             var customViewButton =
@@ -135,6 +141,8 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
             customViewImage.setImageResource(imageChange)
             var purchaseCheck = false
             var employCheck = false
+            var employLevelCheck=false
+
             customViewButton.text="구매"
             val customViewLevelPresentText =
                 shopCustomView.findViewById<TextView>(R.id.shop_employ_level)
@@ -149,9 +157,6 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
                     purchaseCheck = true
                     customViewButtonText.text="보유중"
                     if (presentType=="employ"){
-//                        val customViewLevelText =
-//                            shopCustomView.findViewById<TextView>(R.id.shop_custom_level_text)
-//                            customViewLevelText.text="보유중 LEVEL"
                         customViewLevelPresentText.text= employLevel[index].toString()
                         customViewButtonText.text = nameList[index]
                         val customViewEmployText =
@@ -163,27 +168,33 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
                             employLevel[index]=presentLevel[i].toInt()
                             Log.d("구매",presentLevel[i])
                         }
+                        else if(presentLevel[i].toInt()==10){
+                            employLevelCheck=false
+                            employLevel[index] =10
+                        }
                         else {
                             Log.d("구매","현재")
 //                            구매가능 변수
                             employCheck=true
+                            employLevelCheck=true
                             employLevel[index] = presentLevel[i].toInt()
                         }
                         customViewLevelPresentText.text= employLevel[index].toString()
                     }
                 }
             }
-            Log.d("test",index.toString())
             val customViewPriceText =
                 shopCustomView.findViewById<TextView>(R.id.price_text)
-            customViewPriceText.text=presentPrice[index].toString()
+            customViewPriceText.text="${presentPrice[index]}만원"
 
             customViewButton.setOnClickListener {
                 if (myPersonalMoney >= presentPrice[index] && !purchaseCheck) {
                     customViewClickListener.purchaseSuccess(
                         customViewPriceText.text.toString(),
                         image[index],
-                        presentType
+                        presentType,
+                        purchaseCheck,
+                        nameList[index]
                     ) // 값 전달
                     Log.d("구매여부", "구매성공")
                     myPersonalMoney -= presentPrice[index]
@@ -201,14 +212,16 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
                     customViewLevelPresentText.text= employLevel[index].toString()
 
                 }
-                else if (myPersonalMoney >= presentPrice[index] && employCheck) {
+                else if (myPersonalMoney >= presentPrice[index] && employCheck && employLevelCheck) {
                     Log.d("구매", "else if")
                     Log.d("레벨 현재",presentLevel.toString())
                     Log.d("고용 레벨",employLevel.toString())
                     customViewClickListener.purchaseSuccess(
                         customViewPriceText.text.toString(),
                         image[index],
-                        presentType
+                        presentType,
+                        purchaseCheck,
+                        nameList[index]
                     ) // 값 전달
                     Log.d("구매여부", "구매성공")
                     myPersonalMoney -= presentPrice[index]
@@ -234,7 +247,7 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
         }
     }
     interface CustomViewClickListener{ // 메인 페이지로 값을 전달하기 위한 인터페이스
-        fun purchaseSuccess(price: String, id:String, type: String)
+        fun purchaseSuccess(price: String, id:String, type: String, purchaseCheck: Boolean, characterName: String)
     }
 
     fun initEvent(view: View){
@@ -322,4 +335,5 @@ class ShopDialog(personalMoney: Int) : DialogFragment() {
             window?.setLayout(x, y)
         }
     }
+
 }

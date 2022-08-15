@@ -9,15 +9,13 @@ import android.media.SoundPool
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.core.animation.addListener
 import androidx.lifecycle.lifecycleScope
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.http.HttpRequest
@@ -26,13 +24,10 @@ import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
 import com.example.raise_developer.FireStore.checkData
-import com.example.raise_developer.ShopDialog.Companion.prefs
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.security.cert.PKIXRevocationChecker
-import kotlin.concurrent.thread
+import com.example.raise_developer.FireStore.presentMoney
+import com.example.raise_developer.FireStore.tutorialCehck
+import kotlinx.coroutines.*
+import java.lang.Runnable
 import kotlin.random.Random
 
 
@@ -70,6 +65,24 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         }
         return super.onTouchEvent(event)
     }
+
+    var doubleBackToExit: Boolean =false
+
+    override fun onBackPressed() {
+        if (doubleBackToExit) {
+            finishAffinity()
+        } else {
+            Toast.makeText(this, "종료하시려면 뒤로가기를 한번 더 눌러주세요.", Toast.LENGTH_SHORT).show()
+            doubleBackToExit = true
+            runDelayed(1500L) {
+                doubleBackToExit = false
+            }
+        }
+    }
+    fun runDelayed(millis: Long, function: () -> Unit) {
+        Handler(Looper.getMainLooper()).postDelayed(function, millis)
+    }
+
     fun setMoneyText(money:String){
         if (prefs.prefs.getString("money", "")!=null && prefs.prefs.getString("money", "")!=""&& money!="") {
             personalMoney = money.toInt()
@@ -130,6 +143,13 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         userLv = UserLv
     }
 
+    fun setLevelText(level:String){
+        if (prefs.prefs.getString("level", "")!=null && prefs.prefs.getString("level", "")!=""&& level!="") {
+            userLv = level.toInt()
+            Log.d("레벨 세팅",level.toString())
+        }
+    }
+
     // 퀴즈 관련
     lateinit var quizTimeThread: Thread
     val quizTimeHandler = Handler(Looper.getMainLooper()){
@@ -146,7 +166,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         override fun run() {
             while (!quizThreadStop) {
                 if(solveQuiz == false) {
-                    Thread.sleep(1000000) //현재 1000초
+                    Thread.sleep(10000) //현재 10초
                     quizTimeHandler.sendEmptyMessage(0)
                 }
             }
@@ -241,6 +261,8 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
     }
 
     //애니메이션
+    var characterCustomViewArray = arrayListOf<View>()
+    var characterCustomViewNameArray = arrayListOf<String>()
     fun mainCharacterMove(positionX: Float, positionY: Float) { // 내 캐릭터의 애니메이션
         val character = findViewById<LinearLayout>(R.id.main_page_character)
         val characterName = findViewById<TextView>(R.id.main_page_character_name)
@@ -269,8 +291,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                                         target = characterNoteMark
                                         start()
                                     }
-                                val tutorialDialog = TutorialDialog()
-                                tutorialDialog.show(supportFragmentManager,"optionDialog") // 다이알로그 생성
+//
                             }
                         })
                         start()
@@ -313,32 +334,82 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             start()
         }
     }
-    fun addCharacterAndMove(name: String) {
+    fun loadSavedCharacterAndMove(){
+        InventoryDialog.prefs = PreferenceInventory(this)
         val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
-        // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
-        val characterView =
-            layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
-        //캐릭터 커스텀뷰 내의 뷰들
-        val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
-        val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
-        val characterName = characterView.findViewById<TextView>(R.id.character_name)
-        val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
+        val employ = InventoryDialog.prefs.getString("empoloy", "")[0]
+        val employName = InventoryDialog.prefs.getString("empoloy", "")[1]
+        val employLevel = InventoryDialog.prefs.getString("empoloy", "")[3]
+        for (index in 0 until employ.size){
+            if (employName[index] == "힙합에 푹 빠진 사운드 디렉터"){
+                val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
+                //캐릭터 커스텀뷰 내의 뷰들
+                val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
+                val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
+                val characterName = characterView.findViewById<TextView>(R.id.character_name)
+                val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
+                val id = resources.getIdentifier(employ[index], "mipmap", packageName)
+                characterImage.setImageResource(id)
+                val subString1 = employName[index].substring(0 until employName[index].length/2)
+                val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
+                characterName.text = "${subString1}\n${subString2}"
+                soundDirectorCharacterMove(character, characterNoteMark, 300f, -640f)
+            }
+            val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
+            //캐릭터 커스텀뷰 내의 뷰들
+            val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
+            val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
+            val characterName = characterView.findViewById<TextView>(R.id.character_name)
+            val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
+            val id = resources.getIdentifier(employ[index], "mipmap", packageName)
+            characterImage.setImageResource(id)
+            val subString1 = employName[index].substring(0 until employName[index].length/2)
+            val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
+            characterName.text = "${subString1}\n${subString2}"
+            val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
+            animationOne.duration = 700
+            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+            animationOne.start()
 
-        val id = resources.getIdentifier(name, "mipmap", packageName)
-        characterImage.setImageResource(id)
+            val thread = Thread(AnimationThread(character))
+            thread.start()
 
-        val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
-        animationOne.duration = 700
-        animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-        animationOne.start()
-
-        val thread = Thread(AnimationThread(character))
-        thread.start()
-        frameLayout.addView(characterView)
+            frameLayout.addView(characterView)
+        }
     }
+
+    fun addCharacterAndMove(name: String, purchaseCheck: Boolean, characName: String) {
+        if(!purchaseCheck){
+            Log.d("else","else")
+            val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
+            // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
+            val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
+            //캐릭터 커스텀뷰 내의 뷰들
+            val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
+            val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
+            val characterName = characterView.findViewById<TextView>(R.id.character_name)
+            val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
+
+            val id = resources.getIdentifier(name, "mipmap", packageName)
+            characterImage.setImageResource(id)
+
+            characterName.text = characName
+
+            val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
+            animationOne.duration = 700
+            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+            animationOne.start()
+
+            val thread = Thread(AnimationThread(character))
+            thread.start()
+
+            frameLayout.addView(characterView)
+        }
+    }
+
+
     fun xMoveAnimation(character: View){
         var randomNumber = Random.nextInt(-500,500).toFloat()
-        Log.d("option","${randomNumber}")
         val animationOne = ObjectAnimator.ofFloat(character, "translationX", randomNumber)
         animationOne.duration = 700
 
@@ -357,9 +428,9 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         })
         animationOne.start()
     }
+
     fun yMoveAnimation(character: View){
         var randomNumber = Random.nextInt(-800,0).toFloat()
-        Log.d("yMoveAnimation()","${randomNumber}")
         val animationOne = ObjectAnimator.ofFloat(character, "translationY", randomNumber)
         animationOne.duration = 700
         animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
@@ -367,7 +438,6 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             override fun onAnimationEnd(animation: Animator?) {
                 var locationArray = IntArray(2)
                 character.getLocationInWindow(locationArray)
-                Log.d(" 캐릭터의 위치animation", "${locationArray[0]},${locationArray[1]}")
                 if (locationArray[1] < 710 ) {
                     character.y = 100f
                 }
@@ -379,6 +449,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         animationOne.start()
 
     }
+
     fun xyMoveAnimation(character: View){
         var randomX = Random.nextInt(-200,200).toFloat()
         var randomY = Random.nextInt(-800,0).toFloat()
@@ -415,8 +486,8 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         animationOne.start()
         animationTwo.start()
     }
+
     fun setAnimation(character: View, option: Int){// x: 20~ 1050  y: 710 ~ 1530
-        Log.d("setAnimation()","${option}")
         if (option == 0) {
             xMoveAnimation(character)
         }
@@ -427,12 +498,12 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             xyMoveAnimation(character)
         }
     }
+
     inner class AnimationThread(character: View): Runnable { //쓰레드 클래스 isAnimationThreadStop가 false일 때 멈춤
         val myCharacter = character
         override fun run() {
             while (!isAnimationThreadStop) {
                 var option = Random.nextInt(0, 3)
-//                Log.d("option값","${option}")
                 Thread.sleep(2000)
                 runOnUiThread {
                     setAnimation(myCharacter, option)
@@ -452,7 +523,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         soundId = soundPool.load(this, R.raw.typing_sound, 1)
     }
 
-    var userID="test data"
+    var userID="test qwe123rqw"
     var money = personalMoney.toString()
     var presentLV=1
 
@@ -519,15 +590,23 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                 override fun purchaseSuccess(
                     price: String,
                     menuName: String,
-                    type: String
+                    type: String,
+                    purchaseCheck: Boolean,
+                    characterName: String
                 ) { // price 라는 아이템의 가격값을 전달 받음
-                    personalMoney -= price.toInt() // 빼주고
+                    val price=price.split("만원")[0].toInt()
+                    personalMoney -= price // 빼주고
                     findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
                         "${personalMoney}만원" //적용
                     shopDialog.dismiss()
                     if (type == "employ") {
-                        addCharacterAndMove(menuName)
-                    } else {
+                        if(characterName == "힙합에 푹 빠진 사운드 디렉터"){
+                            val soundDirectorCharacter = findViewById<LinearLayout>(R.id.main_page_sound_director)
+                            soundDirectorCharacter.visibility = View.VISIBLE
+                            val soundDirectorCharacterNoteMark = findViewById<ImageView>(R.id.music_note1)
+                            soundDirectorCharacterMove(soundDirectorCharacter, soundDirectorCharacterNoteMark, 300f, -640f)
+                        }
+                        addCharacterAndMove(menuName, purchaseCheck, characterName)
                     }
                 }
             })
@@ -542,10 +621,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             optionDialog.setBgmOnButtonEvent(object : OptionDialog.BgmOnButtonClickListener {
                 override fun bgmOnButtonEvent() {
                     Log.d("버튼", "눌림")
-                    val soundDirectorCharacter = findViewById<LinearLayout>(R.id.main_page_sound_director)
-                    soundDirectorCharacter.visibility = View.VISIBLE
-                    val soundDirectorCharacterNoteMark = findViewById<ImageView>(R.id.music_note1)
-                    soundDirectorCharacterMove(soundDirectorCharacter, soundDirectorCharacterNoteMark, 300f, -640f)
+
                 }
             })
             optionDialog.setBgmOffButtonEvent(object: OptionDialog.BgmOffButtonClickListener{
@@ -628,7 +704,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
     fun btnEventInformation() {
         val personalInformationButton = findViewById<ImageButton>(R.id.private_btn)
         personalInformationButton.setOnClickListener {
-            val pIDialog = PersonalDialog()
+            val pIDialog = PersonalDialog(setAnnualMoney(),touchMoney,userLv,userID)
             pIDialog.show(supportFragmentManager, "personalInformationDialog")
         }
     }
@@ -642,6 +718,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         annualMoneyThread = Thread(AnnualMoneyThread())
         annualMoneyThread.start()
         setTypingSound()
+
         serviceBind()
     }
 
@@ -650,27 +727,40 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         setContentView(R.layout.main_page)
         initEvent()
         mainCharacterMove(470f, -550f)
-        val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
-        userID = id.toString()
+//        val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+//        userID = id.toString()
         prefs = PreferenceInventory(this)
-        checkData(userID,
-            presentLV.toString(),
-            prefs.prefs)
-        val handler = android.os.Handler()
-        handler.postDelayed({
-            setMoneyText(FireStore.presentMoney)
-        }, 1000)
+        CoroutineScope(Dispatchers.Main).launch {
+            val data = async {
+                checkData(userID, presentLV.toString(), prefs.prefs)
+                delay(3000)
+            }
+            data.await()
+            if (tutorialCehck) {
+                val tutorialDialog = TutorialDialog()
+                tutorialDialog.show(supportFragmentManager, "optionDialog")
+                tutorialCehck=false
+            }
+            if (presentMoney=="") {
+                presentMoney="0"
+            }
+            setMoneyText((presentMoney.toInt() + personalMoney).toString())
+            setLevelText(FireStore.level)
+        }
+
 
         val thread = Thread(PlayTime())
         thread.start()
         grassPref = getSharedPreferences("fragmentPlayTime",0)
         editor = grassPref.edit()
         setActivityResultInit()
-
+        loadSavedCharacterAndMove()
     }
 
     override fun onResume() {
         super.onResume()
+        isThreadStop = false
+        isAnimationThreadStop = false
     }
 
     override fun onStop() {

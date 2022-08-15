@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +29,9 @@ class InventoryDialog: DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.inventory_dialog, container, false)
-        prefs = PreferenceInventory(requireContext())
 
+        isCancelable = false
+        prefs = PreferenceInventory(requireContext())
         linearLayout = view.findViewById(R.id.inventory_dialog_scroll_view_linear_layout)
         existItem = prefs.getString("item", "")[0]
         existItemName = prefs.getString("item", "")[1]
@@ -42,19 +44,19 @@ class InventoryDialog: DialogFragment() {
         addCustomView("item")
         employButtonEvent(view)
         inventoryButtonEvent(view)
+
         return view
     }
 
     override fun onResume() {
         super.onResume()
         context?.dialogFragmentResize(this,0.95f,0.7f) // 다이알로그 크기 조정
-
     }
+
 
 
 //    삭제후 만드는 방식
     fun addCustomView(type:String){
-        val childCount = linearLayout.childCount // linear layout의 할당된 뷰들의 수
         val viewMenu :MutableList<String>
         val viewName :MutableList<String>
         val viewType :MutableList<String>
@@ -70,13 +72,14 @@ class InventoryDialog: DialogFragment() {
             viewName=empoloyName
             viewType=empoloyType
         }
+
         for(index in 0 until viewMenu.size){ // 나중에 사진이랑 금액 값 넣을거임
             val shopCustomView = layoutInflater.inflate(R.layout.inventory_custom_view,linearLayout,false)
             val customViewImage = shopCustomView.findViewById<ImageView>(R.id.inventory_custom_view_image_view)
             val customViewText =  shopCustomView.findViewById<TextView>(R.id.inventory_custom_view_text_view)
             shopCustomView.findViewById<ImageView>(R.id.inventory_custom_view_image_view)
-            val imgaeChange=resources.getIdentifier(viewMenu[index], "mipmap", activity?.packageName)
-            customViewImage.setImageResource(imgaeChange)
+            val imageChange=resources.getIdentifier(viewMenu[index], "mipmap", activity?.packageName)
+            customViewImage.setImageResource(imageChange)
             if (type=="item"){
                 customViewText.text=viewName[index]
             }
@@ -100,6 +103,10 @@ class InventoryDialog: DialogFragment() {
     }
 
     fun inventoryButtonEvent(view: View){
+        val closeButtonInventory = view.findViewById<ImageView>(R.id.close_button_inventory)
+        closeButtonInventory.setOnClickListener {
+            dismiss()
+        }
         val employButton = view.findViewById<Button>(R.id.inventory_dialog_employ_button)
         val inventoryButton = view.findViewById<Button>(R.id.inventory_dialog_inventory_button)
         val scrollView = view.findViewById<ScrollView>(R.id.inventory_dialog_scroll_view)
@@ -110,6 +117,7 @@ class InventoryDialog: DialogFragment() {
             addCustomView("item")
         }
     }
+
 
     fun Context.dialogFragmentResize(dialogFragment: DialogFragment, width: Float, height: Float) {// 다이알로그 크기 설정하는 함수
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager

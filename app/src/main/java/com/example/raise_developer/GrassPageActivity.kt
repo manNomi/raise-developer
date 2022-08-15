@@ -33,8 +33,6 @@ class GrassPageActivity: FragmentActivity(),GrassPageFragment.FragmentToActivity
     var githubDataArray = arrayListOf<List<String>>()
     var githubData: List<GithubCommitQuery.Week>? = null
 
-
-
     var myService : MyService? = null
     var isConService = false
     val serviceConnection = object : ServiceConnection {
@@ -49,28 +47,19 @@ class GrassPageActivity: FragmentActivity(),GrassPageFragment.FragmentToActivity
             isConService = false
         }
     }
-
-
     override fun onStart() {
         super.onStart()
     }
 
     override fun onReceivedMoney(Money: Int) {
         grassMoney += Money
-        findViewById<TextView>(R.id.grass_page_money_value).text = "${grassMoney}원"
+        findViewById<TextView>(R.id.grass_page_money_value).text = "${grassMoney}만원"
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.grass_page)
         findViewById<ImageView>(R.id.imageView3).setOnClickListener {
-            Log.d("뒤로가기","버튼")
-            val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra("grassMoney", grassMoney)
-            }
-            setResult(RESULT_OK, intent)
-            if (!isFinishing) finish()
         }
         CoroutineScope(Dispatchers.Main).launch {
             val bindSer = async { serviceBind() }
@@ -150,7 +139,12 @@ class GrassPageActivity: FragmentActivity(),GrassPageFragment.FragmentToActivity
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+//        super.onBackPressed()
+        Log.d("뒤로가기","버튼")
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("grassMoney", grassMoney)
+        setResult(RESULT_OK, intent)
+        finish()
 
 //        intent.putExtra("grassMoney",grassMoney)
 //        setResult(RESULT_OK,intent)
