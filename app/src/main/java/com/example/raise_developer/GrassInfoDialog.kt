@@ -6,17 +6,28 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import org.w3c.dom.Text
 
-class GrassInfoDialog(date: String, contributionCount: String, grassColor: String): DialogFragment() {
-    var progressValue = 0
+class GrassInfoDialog(date: String, contributionCount: String, grassColor: String, playTime: Int): DialogFragment() {
+    var playTime = playTime*1000
+    var maxValue = 0
+    var isThreadStop = false
+    lateinit var progressBar: ProgressBar
+    lateinit var progressBarValue: TextView
+    lateinit var harvestButtonClickListener: HarvestButtonClickListener
+
+
+
     var date = date
     var contributionCount = contributionCount
     var grassColor = grassColor
@@ -29,38 +40,75 @@ class GrassInfoDialog(date: String, contributionCount: String, grassColor: Strin
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val view = inflater.inflate(R.layout.grass_info_dialog,container,false)
         view.findViewById<TextView>(R.id.grass_info_dialog_date).text = date
-        view.findViewById<TextView>(R.id.grass_info_dialog_contribution_count).text = contributionCount
-        if(grassColor == "#9be9a8"){
+        view.findViewById<TextView>(R.id.grass_info_dialog_contribution_count).text = "contributions=${contributionCount}"
+
+        if (grassColor == "#9be9a8"){
+            maxValue = 20000
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_one)
         }
 
         else if(grassColor == "#40c463"){
+            maxValue = 30000
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_two)
         }
 
         else if(grassColor == "#30a14e"){
+            maxValue = 40000
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_three)
         }
 
         else if(grassColor == "#216e39"){
+            maxValue = 50000
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.grass_four)
         }
 
         else{
+            maxValue = 0
             view.findViewById<ImageView>(R.id.grass_info_dialog_grass_image).setImageResource(R.mipmap.empty_grass)
 
         }
+        progressBar = view.findViewById(R.id.grass_info_dialog_progress_bar)
+        progressBarValue = view.findViewById(R.id.grass_info_dialog_progress_bar_value)
+        progressBar.max = maxValue
+        Log.d("grassinfo","${maxValue}")
+        if (maxValue != 0){
+            val thread = Thread(PlayTime())
+            thread.start()
+        }
         return view
     }
-
+    interface HarvestButtonClickListener{
+        fun harvestMoney(playTime: Int)
+    }
 
     override fun onResume() {
         super.onResume()
-        context?.dialogFragmentResize(this, 0.6f,0.4f) // 다이알로그 크기 조정
+        context?.dialogFragmentResize(this, 0.7f,0.5f) // 다이알로그 크기 조정
     }
 
-    fun setProgressBar(i: Int){
-        progressValue = i
+    fun setDialogListener(listener: HarvestButtonClickListener){ // 인터페이스의 함수 초기화
+        harvestButtonClickListener = listener
+    }
+
+    inner class PlayTime(): Runnable {
+        override fun run() {
+            while (!isThreadStop) {
+                Log.d("grassInfo","${playTime}")
+
+                activity?.runOnUiThread {
+                    if (playTime >= maxValue){
+                        progressBarValue.text = "${maxValue} / ${maxValue}"
+                        progressBar.progress = maxValue
+                    }
+                    else{
+                        progressBarValue.text = "${playTime} / ${maxValue}"
+                        progressBar.progress = playTime
+                    }
+                }
+                playTime+=1000
+                Thread.sleep(1000)
+            }
+        }
     }
 
 
@@ -91,5 +139,10 @@ class GrassInfoDialog(date: String, contributionCount: String, grassColor: Strin
 
             window?.setLayout(x, y)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isThreadStop = true
     }
 }

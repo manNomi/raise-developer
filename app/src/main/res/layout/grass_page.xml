@@ -14,15 +14,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/grass_page_money_value"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"
         android:fontFamily="@font/dung_guen_mo"
-        android:gravity="center"
-        android:text="0G"
+        android:gravity="right"
+        android:text="0원"
         android:textColor="@color/black"
-        android:textSize="30dp"
+        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/top"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintHeight_percent="0.04"
@@ -46,7 +46,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/grass_page_money_value"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent">
         <TextView

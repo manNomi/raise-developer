@@ -4,10 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.media.SoundPool
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +25,8 @@ import com.apollographql.apollo3.api.http.HttpResponse
 import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.security.cert.PKIXRevocationChecker
@@ -40,6 +39,15 @@ class MainActivity : AppCompatActivity() {
     var personalMoney = 0  // 개인 자산
     var annualMoney = 2000 // 연봉. 10분에 한번 씩 올라가는거로 바꾸는게 나을듯
     var grassMoney = 0
+    val db = Firebase.firestore
+    val user = hashMapOf(
+        "first" to "Ada",
+        "last" to "Hi",
+        "born" to 19
+    )
+    lateinit var pref: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
+
     var githubContributionData: List<GithubCommitQuery.Week>? = null
     lateinit var getResultText: ActivityResultLauncher<Intent>
 
@@ -91,7 +99,14 @@ class MainActivity : AppCompatActivity() {
 
         setTypingSound()
         serviceBind()
-
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
         }
 
     fun setTypingSound() { // 터치 시 소리 세팅
@@ -106,24 +121,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_page)
         initEvent()
         mainCharacterMove(470f, -550f)
-        activityResultLauncherInit()
         val thread = Thread(PlayTime())
         thread.start()
         quizTimeThread = Thread(QuizTimer())
         quizTimeThread.start()
+        pref = getSharedPreferences("fragmentPlayTime",0)
+        editor = pref.edit()
+        setActivityResultInit()
     }
 
     override fun onResume() {
         super.onResume()
-
     }
-
-    fun activityResultLauncherInit(){
+    fun setActivityResultInit(){
         getResultText = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if(result.resultCode == RESULT_OK){
-                val data = result.data?.getStringExtra("grassMoney")
-                grassMoney = data?.toInt()!!
+                Log.d("mainActivityresult","result")
+                val data = result.data?.getIntExtra("grassMoney",0)
+                Log.d("data","${data}")
+                grassMoney = data!!
                 personalMoney += grassMoney
+                findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
+                    "${personalMoney}원"
             }
         }
     }
@@ -347,7 +366,6 @@ class MainActivity : AppCompatActivity() {
     inner class PlayTime: Runnable {
         override fun run() {
             while (!isThreadStop) {
-                Log.d("main","${playTime}")
                 playTime+=1
                 Thread.sleep(1000)
             }
@@ -393,7 +411,6 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         lifecycleScope.launchWhenResumed {
-            Log.d("이건 실행 됨?", "제발")
             val response = apolloClient.query(GithubCommitQuery("${id}")).execute()
             //바인드 서비스로 깃허브 정보 데이터 전달
             githubContributionData = response.data?.user?.contributionsCollection?.contributionCalendar?.weeks
@@ -509,6 +526,8 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         serviceUnBind()
+        Log.d("activity","onstop")
+
         isAnimationThreadStop = true
     }
 
@@ -527,6 +546,8 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         isThreadStop = true
+        Log.d("activity","destory")
+        editor.clear().apply()
     }
 }
 

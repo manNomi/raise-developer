@@ -4,35 +4,46 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.GridLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.core.view.setMargins
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.graphqlsample.queries.GithubCommitQuery
 
-class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCommitQuery.Week>?, playTime: Int): Fragment() {
+class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCommitQuery.Week>?, playTime: Int, position:Int): Fragment() {
+    val position = position
+    lateinit var pref: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
+    var grassHarvestMoney = 0
     var githubDataArray = githubDataArray // grassPageActivity 에서 해당 페이지의 날짜 정보 배열을 가져옴 (22,08,12) 이런식으로
     var githubData = githubData //깃허브 정보
     var playTime = playTime
     var isThreadStop = false
+    var grassMaxValue = arrayListOf<Int>()
+
+    lateinit var fragmentToActivityGrassMoney: FragmentToActivityGrassMoney
+
+    interface FragmentToActivityGrassMoney {
+        fun onReceivedMoney(Money: Int)
+    }
+
 
     // 해당 월의 날짜 정보 및 잔디 정보
     var numberOfDateArray = ArrayList<String>()
     var grassColorArray = ArrayList<String>()
     var contributionCountArray = ArrayList<String>()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        fragmentToActivityGrassMoney = activity as FragmentToActivityGrassMoney
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +52,14 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
     ): View? {
         val view = inflater.inflate(R.layout.grass_page_view_pager_layout, container, false)
         gridLayoutSetting(view)
+        pref = requireActivity().getSharedPreferences("fragmentPlayTime",0)
+        editor = pref.edit()
+        if(pref.getInt("fragment${position}",-1) != -1){
+            Log.d("첫단계","${pref.getInt("fragment${position}",0)}")
+            playTime -= pref.getInt("fragment${position}",0)
+        }
+        val thread = Thread(PlayTime())
+        thread.start()
         return view
     }
 
@@ -65,8 +84,9 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
 
     inner class PlayTime: Runnable {
         override fun run() {
+            Log.d("grassFragment${position}","${playTime}")
             while (!isThreadStop) {
-                Log.d("grass","${playTime}")
+
                 playTime+=1
                 Thread.sleep(1000)
             }
@@ -87,10 +107,11 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
     }
 
     fun gridLayoutSetting(view: View) {
-        Log.d("프레그먼트","${githubDataArray}")
         divideGithubDataInfo() // 각각 배열의 size는 8월이면 31, 2월이면 28, 이렇게 저장되어 있을 것임
         val gridLayout = view.findViewById<GridLayout>(R.id.gridLayout)
         for (index in 0 until numberOfDateArray.size) {
+
+            var maxValue = 0
             val customView = layoutInflater.inflate(R.layout.grass_page_custom_view,gridLayout,false)
             val grassImage = customView.findViewById<ImageView>(R.id.grass)
             val coinImage = customView.findViewById<ImageView>(R.id.coin)
@@ -109,33 +130,69 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
             }
             // 잔디 색깔에 따라 이미지를 씌움움
            if(grassColorArray[index] == "#9be9a8"){
-                grassImage.setImageResource(R.mipmap.grass_one)
+
+               maxValue = 20000
+               grassMaxValue.add(maxValue)
+               grassImage.setImageResource(R.mipmap.grass_one)
             }
 
             else if(grassColorArray[index] == "#40c463"){
-                grassImage.setImageResource(R.mipmap.grass_two)
+               maxValue = 30000
+               grassMaxValue.add(maxValue)
+               grassImage.setImageResource(R.mipmap.grass_two)
             }
 
             else if(grassColorArray[index] == "#30a14e"){
-                grassImage.setImageResource(R.mipmap.grass_three)
+               maxValue = 40000
+               grassMaxValue.add(maxValue)
+               grassImage.setImageResource(R.mipmap.grass_three)
             }
 
             else if(grassColorArray[index] == "#216e39"){
-                grassImage.setImageResource(R.mipmap.grass_four)
+               maxValue = 50000
+               grassMaxValue.add(maxValue)
+               grassImage.setImageResource(R.mipmap.grass_four)
             }
 
             else{
+                maxValue = 0
+                grassMaxValue.add(maxValue)
                 grassImage.setImageResource(R.mipmap.empty_grass)
 
             }
+
             customView.setOnClickListener { // 클릭하면 잔디 상점 다이알로그 띄움
-                val grassShopDialog = GrassInfoDialog(numberOfDateArray[index], contributionCountArray[index], grassColorArray[index])
-                grassShopDialog.show(parentFragmentManager,"grassShopDialog")
+                val grassInfoDialog = GrassInfoDialog(numberOfDateArray[index], contributionCountArray[index], grassColorArray[index], playTime)
+                grassInfoDialog.show(parentFragmentManager,"grassShopDialog")
             }
             gridLayout.addView(customView)
         }
         val harvestCoinButton = view.findViewById<Button>(R.id.harvestCoinButton)
         harvestCoinButton.setOnClickListener {
+            for (index in 0 until numberOfDateArray.size){
+                if (grassMaxValue[index] != 0){
+                    Log.d("수확버튼","${playTime}")
+                    if (playTime*1000 >= grassMaxValue[index]) {
+                        grassHarvestMoney += grassMaxValue[index]
+                        fragmentToActivityGrassMoney.onReceivedMoney(grassHarvestMoney)
+                    }
+                    else{
+                        grassHarvestMoney += playTime*1000
+                        fragmentToActivityGrassMoney.onReceivedMoney(grassHarvestMoney)
+                    }
+                }
+            }
+            if (pref.getInt("fragment${position}",-1) == -1){
+                Log.d("프리퍼런서 있냐","${playTime}")
+                editor.putInt("fragment${position}",playTime).apply()
+                playTime = 0
+            }
+            else{
+                Log.d("프리퍼런서 없냐","${playTime}")
+                editor.remove("fragment${position}").apply()
+                editor.putInt("fragment${position}",playTime).apply()
+                playTime = 0
+            }
             for (index in 0 until gridLayout.childCount){
                 val child = gridLayout.getChildAt(index)
                 val coin = child.findViewById<ImageView>(R.id.coin)
@@ -163,5 +220,6 @@ class GrassPageFragment(githubDataArray: List<String>, githubData: List<GithubCo
 
     override fun onDestroy() {
         super.onDestroy()
+        isThreadStop = true
     }
 }
