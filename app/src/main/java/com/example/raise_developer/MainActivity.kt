@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         initEvent()
         characterMove()
         prefs = PreferenceInventory(this)
-        checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs)
+        checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs,money)
 
 //         GridLayout에 addView를 해줄 때는 꼭!! 각 아이템마다 margin을 설정하여 겹치지 않게 할 것!! 겹치면 뷰 지 스스로 삭제함
 //         좀더 알아봐야함 뷰 위치 설정
@@ -410,7 +410,7 @@ class MainActivity : AppCompatActivity() {
 //        트로피 버튼
             val trophyBtn = findViewById<ImageView>(R.id.trophy_btn)
             trophyBtn.setOnClickListener {
-                checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs)
+                checkData(userID,presentLV.toString(),prefs.prefs.getString("inventory", "").toString(), prefs.prefs,money)
             }
 //        인벤토리 버튼
             val inventoryButton = findViewById<ImageButton>(R.id.inventory_btn)
@@ -435,7 +435,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    var userID="GG"
+    var userID="rqwee"
+    var money="12341"
+
 
     var presentLV=1
 
@@ -444,7 +446,7 @@ class MainActivity : AppCompatActivity() {
         serviceUnBind()
         isThreadStop = true
         isAnimationThreadStop = true
-        prefs.sendjsonString(userID,presentLV.toString())
+        prefs.sendjsonString(userID,presentLV.toString(),money)
     }
 
     fun serviceBind() {

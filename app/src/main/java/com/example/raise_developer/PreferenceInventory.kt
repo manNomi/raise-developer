@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.example.raise_developer.FierStore.checkData
+import com.example.raise_developer.FierStore.checkUpdate
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -50,9 +51,9 @@ class PreferenceInventory(context: Context) {
     }
 
 //    꺼질때
-    fun sendjsonString(userID:String,level:String){
+    fun sendjsonString(userID:String,level:String,money:String){
         val jsonString=prefs.getString("inventory", "").toString()
-        checkData(userID,level,jsonString,prefs)
+        checkUpdate(userID,level,jsonString,prefs,money)
     }
 
     fun clearString()
