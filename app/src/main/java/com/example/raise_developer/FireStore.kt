@@ -11,6 +11,8 @@ object FireStore {
     var level=""
     var presentMoney=""
 
+    var tutorialCehck=false
+
     fun readData(userId:String,prefs:SharedPreferences ){
         db.collection("user").document(userId)   // 작업할 컬렉션
             .get()      // 문서 가져오기
@@ -23,24 +25,24 @@ object FireStore {
                 Log.d("qwe",dataSet[2])
                 var jsonDataSet = result.data.toString().split("uID=")[1].split("jsonString=")
                 Log.d("qwe",jsonDataSet[1])
-
                 var jsonChanger=jsonDataSet[1].split("}]}")
                 Log.d("1",jsonChanger[0])
                 if (presentId == userId) {
-                    if(jsonChanger[0]!="}") {
+                    if (jsonChanger[0]!="}") {
                         jsonData =
                             jsonChanger[0] + "}]}"
                     }
                     level = dataSet[2].replace("\\s".toRegex(), "").split("=")[1]
                     presentMoney=dataSet[1].replace("\\s".toRegex(), "").split("=")[1]
                 }
-                Log.d("파이어id", userId)
-                Log.d("파이어data", jsonData)
-                Log.d("파이어level", level)
+                Log.d("id", userId)
+                Log.d("data", jsonData)
+                Log.d("level", level)
                 Log.d("파이어스토어 머니", presentMoney)
 
                 prefs.edit().putString("inventory", jsonData).apply()
                 prefs.edit().putString("money", presentMoney).apply()
+                prefs.edit().putString("level", level).apply()
 
                 updateData(userId,level,jsonData,presentMoney)
                 Log.d("코루틴 테스트","5")
@@ -53,8 +55,6 @@ object FireStore {
 //        val data =db.collection("user").document(userId).get()
 //        Log.d("test",data)
     }
-
-    var tutorialCehck=false
     fun setData(userId:String,level:String,jsonString: String,money:String){
         val user = hashMapOf(
             "uID" to userId,
@@ -67,7 +67,6 @@ object FireStore {
             user
         )
         tutorialCehck=true
-
     }
 
     fun updateData(userId:String,level:String,jsonString: String,money:String){
@@ -80,24 +79,24 @@ object FireStore {
     }
 
     fun checkData(userId:String,level:String,prefs:SharedPreferences){
-        db.collection("user").document(userId)   // 작업할 컬렉션
-            .get()      // 문서 가져오기
-            .addOnSuccessListener { result ->
-                Log.d("테스트데이터",result.data.toString())
-                if(result.data==null) {
-                    val jsonString=""
-                    val level="1"
-                    setData(userId, level, jsonString,"0")
-                    Log.d("체크데이터", "새로만듬")
-                    prefs.edit().clear().apply()
+        Log.d("체크데이터", "실행")
+        val data = db.collection("user").document(userId)   // 작업할 컬렉션
+            .get()   // 문서 가져오기
+        data.addOnSuccessListener { result ->
+            Log.d("테스트데이터",result.data.toString())
+            if(result.data==null) {
+                val jsonString=""
+                val level="1"
+                setData(userId, level, jsonString,"0")
+                Log.d("체크데이터", "새로만듬")
+                prefs.edit().clear().apply()
 //                    prefs.edit().putString("inventory", jsonString).apply()
-                }
-                else {
-                    Log.d("코루틴 테스트","1")
-                    readData(userId, prefs)
-                    Log.d("체크데이터", "수정함")
-                }
             }
+            else {
+                readData(userId, prefs)
+                Log.d("체크데이터", "수정함")
+            }
+        }
             .addOnFailureListener { exception ->
                 // 실패할 경우
                 Log.d("리드", "Error getting documents: $exception")
@@ -109,7 +108,10 @@ object FireStore {
             .addOnSuccessListener { result ->
                 Log.d("테스트데이터",result.data.toString())
                 if(result.data==null) {
-                    Log.d("체크데이터", "업데이트 X")
+                    val jsonString=""
+                    val level="1"
+                    setData(userId, level, jsonString,money)
+                    Log.d("체크데이터", "새로만듬")
                     prefs.edit().clear().apply()
                 }
                 else{

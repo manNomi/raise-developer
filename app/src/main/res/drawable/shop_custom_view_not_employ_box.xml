@@ -3,6 +3,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle" android:thickness="0dp">
     <stroke android:width="3dp" android:color="#000000"/>
-    <solid android:color="@color/shop_back"/>
+    <solid android:color="@color/shop_in"/>
     <corners android:radius="6dp"/>
 </shape>

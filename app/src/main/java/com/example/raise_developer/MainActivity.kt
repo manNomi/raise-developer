@@ -22,7 +22,6 @@ import com.apollographql.apollo3.api.http.HttpRequest
 import com.apollographql.apollo3.api.http.HttpResponse
 import com.apollographql.apollo3.network.http.HttpInterceptor
 import com.apollographql.apollo3.network.http.HttpInterceptorChain
-import com.example.graphqlsample.queries.GithubCommitQuery
 import com.example.raise_developer.FireStore.checkData
 import com.example.raise_developer.FireStore.presentMoney
 import com.example.raise_developer.FireStore.tutorialCehck
@@ -215,21 +214,21 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
     var isThreadStop = false
 
     //깃허브 정보
-    var githubContributionData: List<GithubCommitQuery.Week>? = null
-    fun getGithubContributionInfo(id: String?){
-        val token = BuildConfig.GITHUB_TOKEN
-        val apolloClient = ApolloClient.builder()
-            .addHttpInterceptor(AuthorizationInterceptor("${token}"))
-            .serverUrl("https://api.github.com/graphql")
-            .build()
-
-        lifecycleScope.launchWhenResumed {
-            val response = apolloClient.query(GithubCommitQuery("${id}")).execute()
-            //바인드 서비스로 깃허브 정보 데이터 전달
-            githubContributionData = response.data?.user?.contributionsCollection?.contributionCalendar?.weeks
-            myService?.githubInfoMainActivityToService(response.data?.user?.contributionsCollection?.contributionCalendar?.weeks)
-        }
-    }
+//    var githubContributionData: List<GithubCommitQuery.Week>? = null
+//    fun getGithubContributionInfo(id: String?){
+//        val token = BuildConfig.GITHUB_TOKEN
+//        val apolloClient = ApolloClient.builder()
+//            .addHttpInterceptor(AuthorizationInterceptor("${token}"))
+//            .serverUrl("https://api.github.com/graphql")
+//            .build()
+//
+//        lifecycleScope.launchWhenResumed {
+//            val response = apolloClient.query(GithubCommitQuery("${id}")).execute()
+//            //바인드 서비스로 깃허브 정보 데이터 전달
+//            githubContributionData = response.data?.user?.contributionsCollection?.contributionCalendar?.weeks
+//            myService?.githubInfoMainActivityToService(response.data?.user?.contributionsCollection?.contributionCalendar?.weeks)
+//        }
+//    }
     inner class AuthorizationInterceptor(val token: String) : HttpInterceptor {
         override suspend fun intercept(
             request: HttpRequest,
@@ -525,7 +524,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
 
     var userID="test qwe123rqw"
     var money = personalMoney.toString()
-    var presentLV=1
+    var presentLV=0
 
     // 서비스
     var myService : MyService? = null
@@ -537,7 +536,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             myService = b.getService()
             isConService = true
             val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
-            getGithubContributionInfo(id)
+//            getGithubContributionInfo(id)
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
@@ -724,6 +723,9 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val intent=Intent(this, LifecycleService::class.java)
+        startService(intent)
+
         setContentView(R.layout.main_page)
         initEvent()
         mainCharacterMove(470f, -550f)
@@ -778,6 +780,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         editor.clear().apply()
         money=personalMoney.toString()
         Log.d("현재머니",money)
+        presentLV=userLv
         prefs.sendjsonString(userID,presentLV.toString(),money)
     }
 }

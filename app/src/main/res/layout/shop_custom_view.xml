@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shop_scroll_view_design">
+    android:background="@drawable/shop_custom_view_not_employ_box"
+    android:layout_margin="5dp">
 
     <ImageView
         android:id="@+id/inventory_custom_view_image_view"
@@ -21,11 +22,11 @@
         android:id="@+id/shop_custom_view_buy_button"
         android:layout_width="0dp"
         android:layout_height="100dp"
-        android:background="@drawable/inventory_dialog_box_design"
+        android:background="@drawable/shop_dialog_not_employ"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:text="금액"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +42,7 @@
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/shop_custom_view_buy_button"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:padding="10dp"/>
 
     <TextView
@@ -49,7 +50,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="가격"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/price_text"
         app:layout_constraintTop_toBottomOf="@id/shop_custom_view_buy_button" />
