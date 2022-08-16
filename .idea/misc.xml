@@ -136,6 +136,7 @@
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/drawable/shop_category_not_selected_button.xml" value="0.1565" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/drawable/shop_category_selected_button.xml" value="0.1735" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/drawable/shop_dialog_box_without_top_border.xml" value="0.1735" />
+        <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/drawable/shop_dialog_not_employ.xml" value="0.1155" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/drawable/shop_scroll_view_design.xml" value="0.1735" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/activity_screen_slide.xml" value="0.1296875" />
@@ -154,7 +155,7 @@
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/item_view.xml" value="0.12545289855072464" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/levelup_dialog.xml" value="0.2" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/levelup_dialog_custom_view.xml" value="0.11145833333333334" />
-        <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/login_page.xml" value="0.4" />
+        <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/login_page.xml" value="0.176" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/main.xml" value="0.1" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/main_page.xml" value="0.2" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/main_page_character_view.xml" value="0.18333333333333332" />

@@ -8,10 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.OAuthProvider
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.oAuthCredential
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity: AppCompatActivity() {
@@ -30,20 +29,21 @@ class LoginActivity: AppCompatActivity() {
 //        로그인버튼
         val loginBtn=findViewById<TextView>(R.id.login_btn)
         loginBtn.setOnClickListener{
+
             auth.startActivityForSignInWithProvider(this, provider.build())
                 .addOnSuccessListener(
                     OnSuccessListener<AuthResult?> {
                             authResult -> auth.signInWithCredential(authResult.credential!!)
                         .addOnCompleteListener(this@LoginActivity) {task ->
                             if(task.isSuccessful) {
-                                val user = Firebase.auth.currentUser
-                                val id = user!!.providerData.toString()
+                                val user = Firebase.auth.currentUser?.email
                                 val userId = authResult.additionalUserInfo?.username.toString() // 유저의 아이디
-                                val userEmail = authResult.additionalUserInfo?.profile
                                 Log.d("if Login success", userId)
                                 val intent= Intent(this,MainActivity::class.java)
+                                intent.putExtra("userEmail",user)
                                 intent.putExtra("userId",userId) // 유저 아이디 전달
                                 startActivity(intent)
+                                finish()
                             }
                             else {
                                 Toast.makeText(this,"깃허브 로그인 실패", Toast.LENGTH_LONG).show()}

@@ -18,6 +18,11 @@
 
 <!--    만욱 추가-->
     <color name="blind">#00ffffff</color>
+    <color name="shop_back">#F4F3F3</color>
+    <color name="shop_in">#DFDFDF</color>
+    <color name="level_up_color">#D6F8B8</color>
+    <color name="level_up_background_color">#ACDEAA</color>
+
     // 재걸
     <color name="deep_green">#22B14C</color>
     <color name="deep_red">#ED1C24</color>

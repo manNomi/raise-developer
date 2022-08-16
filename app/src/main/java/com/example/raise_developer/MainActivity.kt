@@ -26,6 +26,8 @@ import com.example.graphqlsample.queries.GithubCommitQuery
 import com.example.raise_developer.FireStore.checkData
 import com.example.raise_developer.FireStore.presentMoney
 import com.example.raise_developer.FireStore.tutorialCehck
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import java.lang.Runnable
 import kotlin.random.Random
@@ -214,7 +216,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
     }
     var isThreadStop = false
 
-    //깃허브 정보
+//    깃허브 정보
     var githubContributionData: List<GithubCommitQuery.Week>? = null
     fun getGithubContributionInfo(id: String?){
         val token = BuildConfig.GITHUB_TOKEN
@@ -544,7 +546,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
 
     var userID="test qwe123rqw"
     var money = personalMoney.toString()
-    var presentLV=1
+    var presentLV=0
 
     // 서비스
     var myService : MyService? = null
@@ -640,9 +642,9 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
     fun btnEventOption() {
         val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
         optionButton.setOnClickListener {
-            val id = intent.getStringExtra("userEmail") // 로그인 페이지로부터 유저 아이디 받아오기
-            Log.d("ide","${id}")
-            val optionDialog = OptionDialog(id!!)
+            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+            val email = intent.getStringExtra("userEmail")
+            val optionDialog = OptionDialog(email!!)
             optionDialog.setBgmOnButtonEvent(object : OptionDialog.BgmOnButtonClickListener {
                 override fun bgmOnButtonEvent() {
                     val pianoNoteMark = findViewById<ImageView>(R.id.piano_music_note)
@@ -672,6 +674,9 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             optionDialog.setLogoutButtonEvent(object: OptionDialog.LogOutButtonClickListener{
                 override fun logoutButtonEvent() {
                     Log.d("로그아웃 버튼","눌림")
+                    val intent = Intent(this@MainActivity,LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             })
             optionDialog.setSaveAndCloseButtonEvent(object: OptionDialog.SaveAndCloseButtonClickListener{
@@ -747,6 +752,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         quizTimeThread.start()
         annualMoneyThread = Thread(AnnualMoneyThread())
         annualMoneyThread.start()
+
         setTypingSound()
 
         serviceBind()
@@ -754,11 +760,13 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val intent=Intent(this, LifecycleService::class.java)
+        startService(intent)
+
         setContentView(R.layout.main_page)
         initEvent()
         mainCharacterMove(470f, -550f)
-//        val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
-//        userID = id.toString()
+        val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
         prefs = PreferenceInventory(this)
         CoroutineScope(Dispatchers.Main).launch {
             val data = async {
@@ -777,7 +785,6 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             setMoneyText((presentMoney.toInt() + personalMoney).toString())
             setLevelText(FireStore.level)
         }
-
 
         val thread = Thread(PlayTime())
         thread.start()
@@ -808,6 +815,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         editor.clear().apply()
         money=personalMoney.toString()
         Log.d("현재머니",money)
+        presentLV=userLv
         prefs.sendjsonString(userID,presentLV.toString(),money)
     }
 }

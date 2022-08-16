@@ -130,6 +130,7 @@
         android:layout_height="0dp"
         android:scaleType="fitXY"
         android:src="@mipmap/trophy"
+        android:background="@color/grey"
         app:layout_constraintBottom_toBottomOf="@+id/quiz_btn"
         app:layout_constraintEnd_toStartOf="@+id/quiz_btn"
         app:layout_constraintHeight_percent="0.1"
@@ -144,8 +145,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@mipmap/hourglass"
+        android:background="@color/grey"
         app:layout_constraintWidth_percent="0.18"
-        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintHeight_percent="0.08"
         app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintVertical_bias="0.01"
         app:layout_constraintTop_toBottomOf="@id/main_page_top"
@@ -281,28 +283,29 @@
         app:layout_constraintStart_toStartOf="@+id/main_page_top"
         app:layout_constraintTop_toTopOf="@+id/main_page_top" />
 
+
     <ImageButton
         android:id="@+id/grass_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/dark_green"
-        android:src="@mipmap/grass_btn"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/grass_btn_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="@+id/bot"
-        app:layout_constraintWidth_percent="0.2" />
+        app:layout_constraintWidth_percent="0.2"
+        />
 
     <ImageButton
         android:id="@+id/inventory_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@mipmap/inventory_btn"
+        android:src="@mipmap/inventory_btn_image"
         app:layout_constraintBottom_toBottomOf="@+id/bot"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toEndOf="@+id/grass_btn"
         app:layout_constraintWidth_percent="0.2"
-        android:background="@color/dark_green"
         />
 
     <ImageButton
@@ -310,12 +313,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@mipmap/level_btn"
+        android:src="@mipmap/level_btn_image"
         app:layout_constraintBottom_toBottomOf="@+id/bot"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toEndOf="@+id/inventory_btn"
         app:layout_constraintWidth_percent="0.2"
-        android:background="@color/dark_green"
         />
 
     <ImageButton
@@ -323,12 +325,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@mipmap/personal_btn"
+        android:src="@mipmap/information_btn_image"
         app:layout_constraintBottom_toBottomOf="@+id/bot"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toEndOf="@+id/level_btn"
         app:layout_constraintWidth_percent="0.2"
-        android:background="@color/dark_green"
         />
 
     <ImageButton
@@ -336,13 +337,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@mipmap/shop_btn"
+        android:src="@mipmap/shop_image_btn"
         app:layout_constraintBottom_toBottomOf="@+id/bot"
         app:layout_constraintEnd_toEndOf="@+id/bot"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toEndOf="@+id/private_btn"
         app:layout_constraintWidth_percent="0.2"
-        android:background="@color/dark_green"
         />
 
 

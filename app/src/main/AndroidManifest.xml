@@ -19,6 +19,8 @@
             android:name=".MyService"
             android:enabled="true"
             android:exported="true"></service>
+        <service android:name=".LifecycleService"
+            android:stopWithTask="false" />
 
         <activity
             android:name=".SplashActivity"
@@ -33,7 +35,7 @@
         <activity android:name=".RankingActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ScreenSlidePagerActivity"/>
+<!--        <activity android:name=".ScreenSlidePagerActivity"/>-->
     </application>
 
 </manifest>

@@ -33,6 +33,14 @@
         app:layout_constraintHeight_percent="0.1"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="by PM-sm / PT-mw /PT-gg"
+        android:textColor="@color/white"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bot"
+        app:layout_constraintStart_toStartOf="@+id/bot" />
 
 
     <ImageView
