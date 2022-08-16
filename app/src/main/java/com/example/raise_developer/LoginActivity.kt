@@ -32,7 +32,7 @@ class LoginActivity: AppCompatActivity() {
 
             auth.startActivityForSignInWithProvider(this, provider.build())
                 .addOnSuccessListener(
-                    OnSuccessListener<AuthResult?> {
+                    OnSuccessListener<AuthResult?>() {
                             authResult -> auth.signInWithCredential(authResult.credential!!)
                         .addOnCompleteListener(this@LoginActivity) {task ->
                             if(task.isSuccessful) {

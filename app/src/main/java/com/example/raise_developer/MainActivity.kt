@@ -428,7 +428,6 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         }
     }
 
-
     fun xMoveAnimation(character: View){
         var randomNumber = Random.nextInt(-500,500).toFloat()
         val animationOne = ObjectAnimator.ofFloat(character, "translationX", randomNumber)
@@ -752,7 +751,8 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         quizTimeThread.start()
         annualMoneyThread = Thread(AnnualMoneyThread())
         annualMoneyThread.start()
-
+        isThreadStop = false
+        isAnimationThreadStop = false
         setTypingSound()
 
         serviceBind()
@@ -760,13 +760,13 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val intent=Intent(this, LifecycleService::class.java)
-        startService(intent)
+         startService(Intent(this, LifecycleService::class.java))
 
         setContentView(R.layout.main_page)
         initEvent()
         mainCharacterMove(470f, -550f)
         val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+        userID = id!!
         prefs = PreferenceInventory(this)
         CoroutineScope(Dispatchers.Main).launch {
             val data = async {
@@ -774,6 +774,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                 delay(3000)
             }
             data.await()
+            loadSavedCharacterAndMove()
             if (tutorialCehck) {
                 val tutorialDialog = TutorialDialog()
                 tutorialDialog.show(supportFragmentManager, "optionDialog")
@@ -791,7 +792,7 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         grassPref = getSharedPreferences("fragmentPlayTime",0)
         editor = grassPref.edit()
         setActivityResultInit()
-        loadSavedCharacterAndMove()
+
     }
 
     override fun onResume() {
@@ -805,18 +806,20 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         serviceUnBind()
         Log.d("activity","onstop")
 
-        isAnimationThreadStop = true
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        isThreadStop = true
         Log.d("activity","destory")
+        isThreadStop = true
+        isAnimationThreadStop = true
         editor.clear().apply()
         money=personalMoney.toString()
         Log.d("현재머니",money)
         presentLV=userLv
+
         prefs.sendjsonString(userID,presentLV.toString(),money)
+        prefs.prefs.edit().clear().apply()
     }
 }
 
