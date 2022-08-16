@@ -9,7 +9,6 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 android {
     compileSdk 32
-
     defaultConfig {
         applicationId "com.example.raise_developer"
         minSdk 21
@@ -17,11 +16,10 @@ android {
         versionCode 1
         versionName "1.0"
 
-//        buildConfigField "String", "GITHUB_TOKEN", properties['github_token']
+        buildConfigField "String", "GITHUB_TOKEN", properties['github_token']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -37,9 +35,7 @@ android {
     }
 }
 
-
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
@@ -52,8 +48,6 @@ dependencies {
     implementation("commons-io:commons-io:2.8.0")
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation("commons-io:commons-io:2.8.0")
-
-
     implementation("com.apollographql.apollo3:apollo-runtime:3.5.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
 // firebase 설치
@@ -61,12 +55,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
-
     implementation("com.tbuonomo:dotsindicator:4.3")
+
 }
-
-
-
 
 // 구글 서비스 추가
 apply plugin: 'com.android.application'
@@ -74,4 +65,3 @@ apply plugin: 'com.google.gms.google-services'
 apollo {
     packageName.set("com.example.graphqlsample.queries")
 }
-

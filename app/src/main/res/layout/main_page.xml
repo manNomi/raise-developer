@@ -211,7 +211,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.4"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/main_page_button_option"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -219,7 +219,7 @@
         app:layout_constraintWidth_percent="0.1"
         app:layout_constraintVertical_bias="0"
         android:background="@color/dark_green"
-        android:src="@mipmap/settings"
+        android:src="@mipmap/setting2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/main_image_annual_money"
         app:layout_constraintEnd_toEndOf="parent"

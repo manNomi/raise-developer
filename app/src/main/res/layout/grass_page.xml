@@ -104,7 +104,7 @@
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/settings"
+        android:src="@mipmap/setting2"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
         app:layout_constraintEnd_toEndOf="@+id/top"
         app:layout_constraintTop_toTopOf="@+id/top" />
