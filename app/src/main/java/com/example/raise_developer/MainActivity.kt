@@ -301,86 +301,105 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             start()
         }
     }
-    fun soundDirectorCharacterMove(character: View, characterNoteMark: View , positionX: Float, positionY: Float) { //피아노 치는 얘 애니메이션
-        Log.d("애니메이션","두번 되야 하는데?")
-        ObjectAnimator.ofFloat(character, "translationY", positionY).apply { // y축 이동
-            duration = 700
-            interpolator = LinearInterpolator()
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
+    fun soundDirectorCharacterMove(imageName: String, characName: String,  purchaseCheck: Boolean) {
+        Log.d("sounddirec","실행됨")
+        if(!purchaseCheck){
+            Log.d("sounddirec","if문")
+            val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
+            val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
+            //캐릭터 커스텀뷰 내의 뷰들
+            val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
+            val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
+            val characterName = characterView.findViewById<TextView>(R.id.character_name)
+            val id = resources.getIdentifier(imageName, "mipmap", packageName)
+            characterImage.setImageResource(id)
+            val subString1 = characName.substring(0 until characName.length/2)
+            val subString2 = characName.substring(characName.length/2 until characName.length)
+            characterName.text = "${subString1}\n${subString2}"
+            ObjectAnimator.ofFloat(character, "translationY", -650f).apply { // y축 이동
+                duration = 700
+                interpolator = LinearInterpolator()
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
 
-                    ObjectAnimator.ofFloat(character, "translationX", positionX).apply { // x축 이동
-                        duration = 700
-                        interpolator = LinearInterpolator()
-                        addListener(object : AnimatorListenerAdapter() {
+                        ObjectAnimator.ofFloat(character, "translationX", 300f).apply { // x축 이동
+                            duration = 700
+                            interpolator = LinearInterpolator()
+                            addListener(object : AnimatorListenerAdapter() {
 
-                            override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
-                                characterNoteMark.visibility = View.VISIBLE
-                                ObjectAnimator.ofFloat(characterNoteMark, "translationY", 30f)
-                                    .apply {
-                                        duration = 800
-                                        repeatCount = ValueAnimator.INFINITE
-                                        repeatMode = ValueAnimator.REVERSE
-                                        target = characterNoteMark
-                                        start()
-                                    }
-                                myService?.musicStart()
-                            }
-                        })
-                        start()
+                                override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
+                                    val pianoNoteMark = findViewById<ImageView>(R.id.piano_music_note)
+                                    pianoNoteMark.visibility = View.VISIBLE
+                                    ObjectAnimator.ofFloat(pianoNoteMark, "translationY", 15f)
+                                        .apply { // x축 이동
+                                            duration = 800
+                                            repeatCount = ValueAnimator.INFINITE
+                                            repeatMode = ValueAnimator.REVERSE
+                                            myService?.musicStart()
+                                            start()
+                                        }
+                                }
+                            })
+                            start()
+                        }
                     }
-                }
-            })
-            start()
+                })
+                start()
+            }
+            frameLayout.addView(characterView)
         }
     }
+
     fun loadSavedCharacterAndMove(){
         InventoryDialog.prefs = PreferenceInventory(this)
         val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
         val employ = InventoryDialog.prefs.getString("empoloy", "")[0]
         val employName = InventoryDialog.prefs.getString("empoloy", "")[1]
         val employLevel = InventoryDialog.prefs.getString("empoloy", "")[3]
+        Log.d("loadsavedch","${employ}")
         for (index in 0 until employ.size){
             if (employName[index] == "힙합에 푹 빠진 사운드 디렉터"){
+                Log.d("loadsavedch","if문")
                 val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
                 //캐릭터 커스텀뷰 내의 뷰들
                 val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
                 val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
                 val characterName = characterView.findViewById<TextView>(R.id.character_name)
-                val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
                 val id = resources.getIdentifier(employ[index], "mipmap", packageName)
                 characterImage.setImageResource(id)
                 val subString1 = employName[index].substring(0 until employName[index].length/2)
                 val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
                 characterName.text = "${subString1}\n${subString2}"
-                soundDirectorCharacterMove(character, characterNoteMark, 300f, -640f)
+                soundDirectorCharacterMove(employ[index], "힙합에 푹 빠진 사운드 디렉터", false)
             }
-            val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
-            //캐릭터 커스텀뷰 내의 뷰들
-            val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
-            val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
-            val characterName = characterView.findViewById<TextView>(R.id.character_name)
-            val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
-            val id = resources.getIdentifier(employ[index], "mipmap", packageName)
-            characterImage.setImageResource(id)
-            val subString1 = employName[index].substring(0 until employName[index].length/2)
-            val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
-            characterName.text = "${subString1}\n${subString2}"
-            val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
-            animationOne.duration = 700
-            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-            animationOne.start()
+            else{
+                Log.d("loadsavedch","esle문")
+                val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
+                //캐릭터 커스텀뷰 내의 뷰들
+                val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
+                val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
+                val characterName = characterView.findViewById<TextView>(R.id.character_name)
+                val id = resources.getIdentifier(employ[index], "mipmap", packageName)
+                characterImage.setImageResource(id)
+                val subString1 = employName[index].substring(0 until employName[index].length/2)
+                val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
+                characterName.text = "${subString1}\n${subString2}"
+                val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
+                animationOne.duration = 700
+                animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+                animationOne.start()
 
-            val thread = Thread(AnimationThread(character))
-            thread.start()
+                val thread = Thread(AnimationThread(character))
+                thread.start()
 
-            frameLayout.addView(characterView)
-        }
+                frameLayout.addView(characterView)
+            }
+            }
+
     }
 
-    fun addCharacterAndMove(name: String, purchaseCheck: Boolean, characName: String) {
+    fun addCharacterAndMove(imageName: String, purchaseCheck: Boolean, characName: String) {
         if(!purchaseCheck){
-            Log.d("else","else")
             val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
             // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
             val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
@@ -388,12 +407,12 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
             val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
             val characterName = characterView.findViewById<TextView>(R.id.character_name)
-            val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
 
-            val id = resources.getIdentifier(name, "mipmap", packageName)
+            val id = resources.getIdentifier(imageName, "mipmap", packageName)
             characterImage.setImageResource(id)
-
-            characterName.text = characName
+            val subString1 = characName.substring(0 until characName.length/2)
+            val subString2 = characName.substring(characName.length/2 until characName.length)
+            characterName.text = "${subString1}\n${subString2}"
 
             val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
             animationOne.duration = 700
@@ -598,15 +617,19 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                     personalMoney -= price // 빼주고
                     findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
                         "${personalMoney}만원" //적용
+                    Log.d("text","적용")
                     shopDialog.dismiss()
                     if (type == "employ") {
+                        Log.d("characterNAmeㅁㄴㅇㄹ","${characterName}")
                         if(characterName == "힙합에 푹 빠진 사운드 디렉터"){
-                            val soundDirectorCharacter = findViewById<LinearLayout>(R.id.main_page_sound_director)
-                            soundDirectorCharacter.visibility = View.VISIBLE
-                            val soundDirectorCharacterNoteMark = findViewById<ImageView>(R.id.music_note1)
-                            soundDirectorCharacterMove(soundDirectorCharacter, soundDirectorCharacterNoteMark, 300f, -640f)
+                            Log.d("ifㅁㄴㅇㄹ","${characterName}")
+                            soundDirectorCharacterMove(menuName, characterName, purchaseCheck)
                         }
-                        addCharacterAndMove(menuName, purchaseCheck, characterName)
+                        else{
+                            Log.d("elseㅁㄴㅇㄹ","${characterName}")
+                            addCharacterAndMove(menuName, purchaseCheck, characterName)
+                        }
+
                     }
                 }
             })
@@ -617,16 +640,23 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
     fun btnEventOption() {
         val optionButton = findViewById<ImageButton>(R.id.main_page_button_option)
         optionButton.setOnClickListener {
-            val optionDialog = OptionDialog()
+            val id = intent.getStringExtra("userEmail") // 로그인 페이지로부터 유저 아이디 받아오기
+            Log.d("ide","${id}")
+            val optionDialog = OptionDialog(id!!)
             optionDialog.setBgmOnButtonEvent(object : OptionDialog.BgmOnButtonClickListener {
                 override fun bgmOnButtonEvent() {
-                    Log.d("버튼", "눌림")
+                    val pianoNoteMark = findViewById<ImageView>(R.id.piano_music_note)
+                    pianoNoteMark.visibility = View.VISIBLE
+                    myService?.musicStart()
 
                 }
             })
             optionDialog.setBgmOffButtonEvent(object: OptionDialog.BgmOffButtonClickListener{
                 override fun bgmOffButtonEvent() {
+                    val pianoNoteMark = findViewById<ImageView>(R.id.piano_music_note)
+                    pianoNoteMark.visibility = View.INVISIBLE
                     myService?.musicStop()
+
                 }
             })
             optionDialog.setSoundEffectOnButtonEvent(object: OptionDialog.SoundEffectOnButtonClickListener{

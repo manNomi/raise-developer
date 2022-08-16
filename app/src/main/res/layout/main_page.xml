@@ -68,8 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_baseline_music_note_24"
-            android:visibility="gone" />
+            android:src="@drawable/ic_baseline_headphones_24"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/main_page_character_name"
@@ -82,48 +82,12 @@
 
         <ImageView
             android:id="@+id/main_page_character_image_view"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="39dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
             android:src="@mipmap/character1" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/main_page_sound_director"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        android:visibility="invisible">
-
-        <ImageView
-            android:id="@+id/music_note1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_baseline_music_note_24"
-            android:visibility="gone" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="사운드 디렉터"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:src="@mipmap/character15" />
-    </LinearLayout>
 
 
     <TextView
@@ -199,15 +163,32 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/main_page_piano"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@mipmap/piano"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.4"/>
+        app:layout_constraintVertical_bias="0.4"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/piano_music_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_music_note_24"
+            android:visibility="invisible"
+             />
+        <ImageView
+            android:id="@+id/main_page_piano"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/piano"
+            />
+    </LinearLayout>
+
 
     <ImageButton
         android:id="@+id/main_page_button_option"
@@ -304,13 +285,12 @@
         android:id="@+id/grass_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/dark_green"
         android:src="@mipmap/grass_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="@+id/bot"
-        app:layout_constraintWidth_percent="0.2"
-        android:background="@color/dark_green"
-        />
+        app:layout_constraintWidth_percent="0.2" />
 
     <ImageButton
         android:id="@+id/inventory_btn"

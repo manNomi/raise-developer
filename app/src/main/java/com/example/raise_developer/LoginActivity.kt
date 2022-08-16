@@ -37,8 +37,9 @@ class LoginActivity: AppCompatActivity() {
                         .addOnCompleteListener(this@LoginActivity) {task ->
                             if(task.isSuccessful) {
                                 val user = Firebase.auth.currentUser
-                                val id = user!!.providerData
+                                val id = user!!.providerData.toString()
                                 val userId = authResult.additionalUserInfo?.username.toString() // 유저의 아이디
+                                val userEmail = authResult.additionalUserInfo?.profile
                                 Log.d("if Login success", userId)
                                 val intent= Intent(this,MainActivity::class.java)
                                 intent.putExtra("userId",userId) // 유저 아이디 전달
