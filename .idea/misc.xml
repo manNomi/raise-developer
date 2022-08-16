@@ -145,7 +145,7 @@
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/fragment_view_pager.xml" value="0.1375" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/grass_check_page.xml" value="0.4" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/grass_info_dialog.xml" value="0.2" />
-        <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/grass_page.xml" value="0.176" />
+        <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/grass_page.xml" value="0.6" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/grass_page_custom_view.xml" value="0.264" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/grass_page_view_pager_layout.xml" value="0.2526041666666667" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/grass_shop_custom_view.xml" value="0.22826086956521738" />
@@ -163,7 +163,7 @@
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/option_dialog.xml" value="0.25" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/overlap_dialog_check.xml" value="0.10052083333333334" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/personal_information_dialog.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/quiz_dialog_problem.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/quiz_dialog_problem.xml" value="0.1" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/quiz_dialog_result.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/quiz_dialog_result_right.xml" value="0.2526041666666667" />
         <entry key="..\:/Users/joh9911/Desktop/joh9911/stageus/raise_developer/app/src/main/res/layout/quiz_dialog_result_wrong.xml" value="0.2526041666666667" />
@@ -186,7 +186,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.11" />
+        <option name="scale" value="0.6" />
       </ProjectState>
     </option>
   </component>
