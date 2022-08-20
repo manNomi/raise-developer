@@ -763,6 +763,10 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         startService(Intent(this, LifecycleService::class.java))
         val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
         userID = id.toString()
+         startService(Intent(this, LifecycleService::class.java))
+        setContentView(R.layout.main_page)
+        initEvent()
+        mainCharacterMove(470f, -550f)
         userID = id!!
         prefs = PreferenceInventory(this)
         CoroutineScope(Dispatchers.Main).launch {
@@ -868,8 +872,20 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                 }
                 dataSecond.await()
             }
+            loadSavedCharacterAndMove()
+            if (tutorialCehck) {
+                val tutorialDialog = TutorialDialog()
+                tutorialDialog.show(supportFragmentManager, "optionDialog")
+                tutorialCehck=false
+            }
+            if (presentMoney=="") {
+                presentMoney="0"
+            }
+            setMoneyText((presentMoney.toInt() + personalMoney).toString())
+            setLevelText(FireStore.level)
         }
         setActivityResultInit()
+
     }
 
     override fun onResume() {
