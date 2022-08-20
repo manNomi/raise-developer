@@ -12,15 +12,18 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
-class OptionDialog: DialogFragment() {
+class OptionDialog(userId: String): DialogFragment() {
+    var id = userId
     lateinit var bgmOnButtonClickListener: BgmOnButtonClickListener
     lateinit var bgmOffButtonClickListener: BgmOffButtonClickListener
     lateinit var soundEffectOffButtonClickListener: SoundEffectOffButtonClickListener
     lateinit var soundEffectOnButtonClickListener: SoundEffectOnButtonClickListener
     lateinit var logOutButtonClickListener: LogOutButtonClickListener
     lateinit var saveAndCloseButtonClickListener: SaveAndCloseButtonClickListener
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +32,7 @@ class OptionDialog: DialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.option_dialog,container,false)
         isCancelable = false
+        view.findViewById<TextView>(R.id.option_dialog_id).text = id
         initEvent(view)
         return view
     }

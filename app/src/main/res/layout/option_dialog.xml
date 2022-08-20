@@ -62,7 +62,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:text="joh9911@naver.com"
                 android:textSize="25dp"
                 android:textColor="@color/black"/>
 

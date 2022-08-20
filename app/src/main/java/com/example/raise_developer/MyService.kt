@@ -21,7 +21,7 @@ class MyService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        player = MediaPlayer.create(this,R.raw.cookie_inst)
+        player = MediaPlayer.create(this,R.raw.music)
     }
 
     inner class LocalBinder : Binder() {
@@ -42,8 +42,9 @@ class MyService : Service() {
     fun musicStart(){ //음악 재생
         Log.d("음악","재생")
         if (player?.isPlaying == null){
-            player = MediaPlayer.create(this,R.raw.cookie_inst)
+            player = MediaPlayer.create(this,R.raw.music)
         }
+        player?.isLooping = true
         player?.start()
     }
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <TextView
         android:id="@+id/top"
         android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
+
     <TextView
         android:id="@+id/grass_page_money_value"
         android:layout_width="0dp"
@@ -36,12 +38,13 @@
         android:layout_height="0dp"
         android:src="@mipmap/grass_icon"
         app:layout_constraintBottom_toTopOf="@+id/topLine"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/text_linear"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="@+id/top"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.1" />
     <LinearLayout
+        android:id="@+id/text_linear"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -51,19 +54,22 @@
         app:layout_constraintTop_toTopOf="parent">
         <TextView
             android:id="@+id/grass_page_year_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:text="2022년"
             android:textColor="@color/black"
-            android:textSize="30dp"/>
+            android:gravity="center"
+            android:autoSizeTextType="uniform"/>
         <TextView
             android:id="@+id/grass_page_month_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:text="1월"
             android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:textSize="30dp"/>
+            android:gravity="center"
+            android:layout_weight="1"
+            android:autoSizeTextType="uniform"/>
 
     </LinearLayout>
 

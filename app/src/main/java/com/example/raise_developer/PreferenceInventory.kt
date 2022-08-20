@@ -41,11 +41,7 @@ class PreferenceInventory(context: Context) {
     //    온크리에이트 해줄때
 
     //    꺼질때
-    fun sendjsonString(userID:String,level:String,money:String){
-        val jsonString=prefs.getString("inventory", "").toString()
-        Log.d("센드제이슨",jsonString)
-         checkUpdate(userID,level,jsonString,prefs,money)
-    }
+
 
     fun clearString()
     {

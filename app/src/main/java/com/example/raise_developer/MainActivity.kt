@@ -25,7 +25,10 @@ import com.apollographql.apollo3.network.http.HttpInterceptorChain
 import com.example.graphqlsample.queries.GithubCommitQuery
 import com.example.raise_developer.FireStore.checkData
 import com.example.raise_developer.FireStore.presentMoney
+import com.example.raise_developer.FireStore.sendjsonString
 import com.example.raise_developer.FireStore.tutorialCehck
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import java.lang.Runnable
 import kotlin.random.Random
@@ -301,86 +304,105 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             start()
         }
     }
-    fun soundDirectorCharacterMove(character: View, characterNoteMark: View , positionX: Float, positionY: Float) { //피아노 치는 얘 애니메이션
-        Log.d("애니메이션","두번 되야 하는데?")
-        ObjectAnimator.ofFloat(character, "translationY", positionY).apply { // y축 이동
-            duration = 700
-            interpolator = LinearInterpolator()
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
+    fun soundDirectorCharacterMove(imageName: String, characName: String,  purchaseCheck: Boolean) {
+        Log.d("sounddirec","실행됨")
+        if(!purchaseCheck){
+            Log.d("sounddirec","if문")
+            val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
+            val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
+            //캐릭터 커스텀뷰 내의 뷰들
+            val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
+            val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
+            val characterName = characterView.findViewById<TextView>(R.id.character_name)
+            val id = resources.getIdentifier(imageName, "mipmap", packageName)
+            characterImage.setImageResource(id)
+            val subString1 = characName.substring(0 until characName.length/2)
+            val subString2 = characName.substring(characName.length/2 until characName.length)
+            characterName.text = "${subString1}\n${subString2}"
+            ObjectAnimator.ofFloat(character, "translationY", -650f).apply { // y축 이동
+                duration = 700
+                interpolator = LinearInterpolator()
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때
 
-                    ObjectAnimator.ofFloat(character, "translationX", positionX).apply { // x축 이동
-                        duration = 700
-                        interpolator = LinearInterpolator()
-                        addListener(object : AnimatorListenerAdapter() {
+                        ObjectAnimator.ofFloat(character, "translationX", 300f).apply { // x축 이동
+                            duration = 700
+                            interpolator = LinearInterpolator()
+                            addListener(object : AnimatorListenerAdapter() {
 
-                            override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
-                                characterNoteMark.visibility = View.VISIBLE
-                                ObjectAnimator.ofFloat(characterNoteMark, "translationY", 30f)
-                                    .apply {
-                                        duration = 800
-                                        repeatCount = ValueAnimator.INFINITE
-                                        repeatMode = ValueAnimator.REVERSE
-                                        target = characterNoteMark
-                                        start()
-                                    }
-                                myService?.musicStart()
-                            }
-                        })
-                        start()
+                                override fun onAnimationEnd(animation: Animator?) { // 애니메이션이 종료되었을 때때
+                                    val pianoNoteMark = findViewById<ImageView>(R.id.piano_music_note)
+                                    pianoNoteMark.visibility = View.VISIBLE
+                                    ObjectAnimator.ofFloat(pianoNoteMark, "translationY", 15f)
+                                        .apply { // x축 이동
+                                            duration = 800
+                                            repeatCount = ValueAnimator.INFINITE
+                                            repeatMode = ValueAnimator.REVERSE
+                                            myService?.musicStart()
+                                            start()
+                                        }
+                                }
+                            })
+                            start()
+                        }
                     }
-                }
-            })
-            start()
+                })
+                start()
+            }
+            frameLayout.addView(characterView)
         }
     }
+
     fun loadSavedCharacterAndMove(){
         InventoryDialog.prefs = PreferenceInventory(this)
         val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
         val employ = InventoryDialog.prefs.getString("empoloy", "")[0]
         val employName = InventoryDialog.prefs.getString("empoloy", "")[1]
         val employLevel = InventoryDialog.prefs.getString("empoloy", "")[3]
+        Log.d("loadsavedch","${employ}")
         for (index in 0 until employ.size){
             if (employName[index] == "힙합에 푹 빠진 사운드 디렉터"){
+                Log.d("loadsavedch","if문")
                 val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
                 //캐릭터 커스텀뷰 내의 뷰들
                 val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
                 val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
                 val characterName = characterView.findViewById<TextView>(R.id.character_name)
-                val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
                 val id = resources.getIdentifier(employ[index], "mipmap", packageName)
                 characterImage.setImageResource(id)
                 val subString1 = employName[index].substring(0 until employName[index].length/2)
                 val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
                 characterName.text = "${subString1}\n${subString2}"
-                soundDirectorCharacterMove(character, characterNoteMark, 300f, -640f)
+                soundDirectorCharacterMove(employ[index], "힙합에 푹 빠진 사운드 디렉터", false)
             }
-            val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
-            //캐릭터 커스텀뷰 내의 뷰들
-            val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
-            val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
-            val characterName = characterView.findViewById<TextView>(R.id.character_name)
-            val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
-            val id = resources.getIdentifier(employ[index], "mipmap", packageName)
-            characterImage.setImageResource(id)
-            val subString1 = employName[index].substring(0 until employName[index].length/2)
-            val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
-            characterName.text = "${subString1}\n${subString2}"
-            val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
-            animationOne.duration = 700
-            animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
-            animationOne.start()
+            else{
+                Log.d("loadsavedch","esle문")
+                val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
+                //캐릭터 커스텀뷰 내의 뷰들
+                val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
+                val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
+                val characterName = characterView.findViewById<TextView>(R.id.character_name)
+                val id = resources.getIdentifier(employ[index], "mipmap", packageName)
+                characterImage.setImageResource(id)
+                val subString1 = employName[index].substring(0 until employName[index].length/2)
+                val subString2 = employName[index].substring(employName[index].length/2 until employName[index].length)
+                characterName.text = "${subString1}\n${subString2}"
+                val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
+                animationOne.duration = 700
+                animationOne.interpolator = LinearInterpolator() // 애니메이션 효과
+                animationOne.start()
 
-            val thread = Thread(AnimationThread(character))
-            thread.start()
+                val thread = Thread(AnimationThread(character))
+                thread.start()
 
-            frameLayout.addView(characterView)
-        }
+                frameLayout.addView(characterView)
+            }
+            }
+
     }
 
-    fun addCharacterAndMove(name: String, purchaseCheck: Boolean, characName: String) {
+    fun addCharacterAndMove(imageName: String, purchaseCheck: Boolean, characName: String) {
         if(!purchaseCheck){
-            Log.d("else","else")
             val frameLayout = findViewById<FrameLayout>(R.id.main_page_character_frame_layout)
             // 캐릭터 커스텀 뷰, 캐릭터 커스텀 뷰를 프레임 레이아웃에다가 넣을거임
             val characterView = layoutInflater.inflate(R.layout.main_page_character_view, frameLayout, false)
@@ -388,12 +410,12 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             val character = characterView.findViewById<LinearLayout>(R.id.character_linear_layout)
             val characterImage = characterView.findViewById<ImageView>(R.id.character_image)
             val characterName = characterView.findViewById<TextView>(R.id.character_name)
-            val characterNoteMark = characterView.findViewById<ImageView>(R.id.character_music_note)
 
-            val id = resources.getIdentifier(name, "mipmap", packageName)
+            val id = resources.getIdentifier(imageName, "mipmap", packageName)
             characterImage.setImageResource(id)
-
-            characterName.text = characName
+            val subString1 = characName.substring(0 until characName.length/2)
+            val subString2 = characName.substring(characName.length/2 until characName.length)
+            characterName.text = "${subString1}\n${subString2}"
 
             val animationOne = ObjectAnimator.ofFloat(character, "translationY", -300f)
             animationOne.duration = 700
@@ -406,7 +428,6 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             frameLayout.addView(characterView)
         }
     }
-
 
     fun xMoveAnimation(character: View){
         var randomNumber = Random.nextInt(-500,500).toFloat()
@@ -598,15 +619,19 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                     personalMoney -= price // 빼주고
                     findViewById<TextView>(R.id.main_page_text_view_personal_money).text =
                         "${personalMoney}만원" //적용
+                    Log.d("text","적용")
                     shopDialog.dismiss()
                     if (type == "employ") {
+                        Log.d("characterNAmeㅁㄴㅇㄹ","${characterName}")
                         if(characterName == "힙합에 푹 빠진 사운드 디렉터"){
-                            val soundDirectorCharacter = findViewById<LinearLayout>(R.id.main_page_sound_director)
-                            soundDirectorCharacter.visibility = View.VISIBLE
-                            val soundDirectorCharacterNoteMark = findViewById<ImageView>(R.id.music_note1)
-                            soundDirectorCharacterMove(soundDirectorCharacter, soundDirectorCharacterNoteMark, 300f, -640f)
+                            Log.d("ifㅁㄴㅇㄹ","${characterName}")
+                            soundDirectorCharacterMove(menuName, characterName, purchaseCheck)
                         }
-                        addCharacterAndMove(menuName, purchaseCheck, characterName)
+                        else{
+                            Log.d("elseㅁㄴㅇㄹ","${characterName}")
+                            addCharacterAndMove(menuName, purchaseCheck, characterName)
+                        }
+
                     }
                 }
             })
@@ -617,16 +642,23 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
     fun btnEventOption() {
         val optionButton = findViewById<ImageView>(R.id.main_page_button_option)
         optionButton.setOnClickListener {
-            val optionDialog = OptionDialog()
+            val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
+            val email = intent.getStringExtra("userEmail")
+            val optionDialog = OptionDialog(email!!)
             optionDialog.setBgmOnButtonEvent(object : OptionDialog.BgmOnButtonClickListener {
                 override fun bgmOnButtonEvent() {
-                    Log.d("버튼", "눌림")
+                    val pianoNoteMark = findViewById<ImageView>(R.id.piano_music_note)
+                    pianoNoteMark.visibility = View.VISIBLE
+                    myService?.musicStart()
 
                 }
             })
             optionDialog.setBgmOffButtonEvent(object: OptionDialog.BgmOffButtonClickListener{
                 override fun bgmOffButtonEvent() {
+                    val pianoNoteMark = findViewById<ImageView>(R.id.piano_music_note)
+                    pianoNoteMark.visibility = View.INVISIBLE
                     myService?.musicStop()
+
                 }
             })
             optionDialog.setSoundEffectOnButtonEvent(object: OptionDialog.SoundEffectOnButtonClickListener{
@@ -642,6 +674,9 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
             optionDialog.setLogoutButtonEvent(object: OptionDialog.LogOutButtonClickListener{
                 override fun logoutButtonEvent() {
                     Log.d("로그아웃 버튼","눌림")
+                    val intent = Intent(this@MainActivity,LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             })
             optionDialog.setSaveAndCloseButtonEvent(object: OptionDialog.SaveAndCloseButtonClickListener{
@@ -709,7 +744,6 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         }
     }
 
-
     //생명주기
     override fun onStart() {
         super.onStart()
@@ -717,45 +751,125 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         quizTimeThread.start()
         annualMoneyThread = Thread(AnnualMoneyThread())
         annualMoneyThread.start()
+        isThreadStop = false
+        isAnimationThreadStop = false
         setTypingSound()
-
         serviceBind()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startService(Intent(this, LifecycleService::class.java))
-        setContentView(R.layout.main_page)
-        initEvent()
-        mainCharacterMove(470f, -550f)
+        startService(Intent(this, LifecycleService::class.java))
         val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
         userID = id.toString()
+        userID = id!!
         prefs = PreferenceInventory(this)
         CoroutineScope(Dispatchers.Main).launch {
-            val data = async {
-                checkData(userID, presentLV.toString(), prefs.prefs)
-                delay(3000)
+            Log.d("체크데이터", "실행")
+            CoroutineScope(Dispatchers.Main).launch {
+                var data = FireStore.db.collection("user").document(userID).get()// 작업할 컬렉션
+                val dataFirst = async {
+                    data = FireStore.db.collection("user").document(userID)   // 작업할 컬렉션
+                        .get()   // 문서 가져오기
+                }
+                dataFirst.await()
+                val dataSecond = async {
+                    data.addOnSuccessListener { result ->
+                        Log.d("테스트데이터", result.data.toString())
+                        if (result.data == null) {
+                            val jsonString = ""
+                            val level = "1"
+                            val user = hashMapOf(
+                                "uID" to userID,
+                                "money" to money,
+                                "level" to level,
+                                "jsonString" to jsonString
+                            )
+                            FireStore.db.collection("user").document(userID).set(
+                                user
+                            )
+                            tutorialCehck = true
+                            Log.d("체크데이터", "새로만듬")
+                            prefs.prefs.edit().clear().apply()
+                        } else {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val dataSecond_2 = async {
+                                    data.addOnSuccessListener { result ->
+                                        Log.d("리드", "성공")
+                                        Log.d("리드데이터셋", result.data.toString())
+                                        var dataSet =
+                                            result.data.toString().split("uID=")[1].split(",")
+                                        var presentId = dataSet[0]
+                                        Log.d("qwe", dataSet.toString())
+                                        Log.d("qwe", dataSet[2])
+                                        var jsonDataSet =
+                                            result.data.toString()
+                                                .split("uID=")[1].split("jsonString=")
+                                        Log.d("qwe", jsonDataSet[1])
+                                        var jsonChanger = jsonDataSet[1].split("}]}")
+                                        Log.d("1", jsonChanger[0])
+                                        if (presentId == userID) {
+                                            if (jsonChanger[0] != "}") {
+                                                FireStore.jsonData =
+                                                    jsonChanger[0] + "}]}"
+                                            }
+                                            FireStore.level =
+                                                dataSet[2].replace("\\s".toRegex(), "")
+                                                    .split("=")[1]
+                                            presentMoney =
+                                                dataSet[1].replace("\\s".toRegex(), "")
+                                                    .split("=")[1]
+                                        }
+                                        Log.d("저장", "돈 ${presentMoney} , 레벨 ${FireStore.level}")
+                                        prefs.prefs.edit()
+                                            .putString("inventory", FireStore.jsonData)
+                                            .apply()
+                                        prefs.prefs.edit().putString("money", presentMoney).apply()
+                                        prefs.prefs.edit().putString("level", FireStore.level)
+                                            .apply()
+                                        val user = hashMapOf(
+                                            "money" to presentMoney,
+                                            "level" to FireStore.level,
+                                            "jsonString" to FireStore.jsonData
+                                        )
+                                        FireStore.db.collection("user").document(userID)
+                                            .update(user as Map<String, Any>)
+                                        Log.d("코루틴 테스트", "5")
+                                    }
+                                }
+                                    data.addOnFailureListener { exception ->
+                                            // 실패할 경우
+                                            Log.d("리드", "Error getting documents: $exception")
+                                        }
+                                dataSecond_2.await()
+                                setContentView(R.layout.main_page)
+                                Log.d("화면","화면실행")
+                                if (tutorialCehck) {
+                                    val tutorialDialog = TutorialDialog()
+                                    tutorialDialog.show(supportFragmentManager, "optionDialog")
+                                    tutorialCehck=false
+                                }
+                                if (presentMoney=="") {
+                                    presentMoney="0"
+                                }
+                                setMoneyText((presentMoney.toInt() + personalMoney).toString())
+                                setLevelText(FireStore.level)
+                                initEvent()
+                                mainCharacterMove(470f, -550f)
+                                val thread = Thread(PlayTime())
+                                thread.start()
+                                grassPref = getSharedPreferences("fragmentPlayTime", 0)
+                                editor = grassPref.edit()
+                                loadSavedCharacterAndMove()
+                            }
+                        }
+                    }
+                }
+                dataSecond.await()
             }
-            data.await()
-            if (tutorialCehck) {
-                val tutorialDialog = TutorialDialog()
-                tutorialDialog.show(supportFragmentManager, "optionDialog")
-                tutorialCehck=false
-            }
-            if (presentMoney=="") {
-                presentMoney="0"
-            }
-            setMoneyText((presentMoney.toInt() + personalMoney).toString())
-            setLevelText(FireStore.level)
         }
-
-
-        val thread = Thread(PlayTime())
-        thread.start()
-        grassPref = getSharedPreferences("fragmentPlayTime",0)
-        editor = grassPref.edit()
         setActivityResultInit()
-        loadSavedCharacterAndMove()
     }
 
     override fun onResume() {
@@ -769,22 +883,21 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         serviceUnBind()
         Log.d("activity","onstop")
 
-        isAnimationThreadStop = true
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        isThreadStop = true
         Log.d("activity","destory")
+        isThreadStop = true
+        isAnimationThreadStop = true
         editor.clear().apply()
         money=personalMoney.toString()
         Log.d("현재머니",money)
         presentLV=userLv
-        prefs.sendjsonString(userID,presentLV.toString(),money)
+        sendjsonString(userID,presentLV.toString(),money,prefs.prefs)
+        prefs.prefs.edit().clear().apply()
     }
 }
-
-
 
 
 
