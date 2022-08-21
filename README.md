@@ -178,6 +178,9 @@ https://cloud.google.com/firestore/docs/samples/firestore-data-set-field?hl=ko <
 - 또한 스트링으로 저장하기 때문에 데이터를 잘라줘야 했음 
 - 스트링으로 온것들을 split과 toList를 통해 잘라주고 다시 붙히는 과정을 반복하면서 원하는 데이터를 끌고오기 위해 고생함 
 
+#### 다음과 같은 방식으로 저장됨 
+
+<img width="1097" alt="firebase image" src="https://user-images.githubusercontent.com/98882987/185796173-40d0bf4b-aebd-4172-ada9-6b866d2f63d2.png">
 
 ## 랭킹 페이지 정렬 함수 
 
