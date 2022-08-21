@@ -203,7 +203,7 @@ fun selectionSort(data: MutableList<Array<String>>):MutableList<Array<String>> {
 - 2차원 배열에서 인데스 1번에 있는 숫자들을 비교해서 크면 앞으로 보내주는 형식의 선택정렬 알고리즘 채용 
 - c++ 코드를 참고했는데 c++ 코드를 입력해도 알아서 kotlin 언어로 바꿔준다 (kotlin이 진짜 사기인 이유)
 
-
+-삽입정렬 설명 이미지 
 ![244575335708D49925](https://user-images.githubusercontent.com/98882987/185795964-3fdb010e-7c07-46d0-83c6-b1b69915a7d3.gif)
 
 
