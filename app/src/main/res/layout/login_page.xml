@@ -42,7 +42,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/bot"
         app:layout_constraintStart_toStartOf="@+id/bot" />
 
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +77,6 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         />
-
 
     <TextView
         android:id="@+id/login_btn"
@@ -123,12 +121,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="by PM-sm / PT-mw /PT-gg"
+        android:text="projected by\n프로젝트마스터 - 성민 / 프로젝트 - 팀원 /PT-gg"
         android:textColor="@color/white"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/bot"
         app:layout_constraintStart_toStartOf="@+id/bot" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,9 +47,6 @@
 
     </FrameLayout>
 
-
-
-
     <LinearLayout
         android:id="@+id/main_page_character"
         android:layout_width="wrap_content"
@@ -87,8 +84,6 @@
             android:layout_gravity="center"
             android:src="@mipmap/character1" />
     </LinearLayout>
-
-
 
     <TextView
         android:id="@+id/bot"
@@ -344,6 +339,5 @@
         app:layout_constraintStart_toEndOf="@+id/private_btn"
         app:layout_constraintWidth_percent="0.2"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

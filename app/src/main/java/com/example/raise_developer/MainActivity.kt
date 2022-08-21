@@ -271,7 +271,9 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         val characterName = findViewById<TextView>(R.id.main_page_character_name)
         val characterNoteMark = findViewById<ImageView>(R.id.music_note)
         val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
-        characterName.text = id
+        if (id!=null) {
+            characterName.text = id
+        }
 
         ObjectAnimator.ofFloat(character, "translationY", positionY).apply { // y축 이동
             duration = 700
@@ -764,9 +766,6 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
         val id = intent.getStringExtra("userId") // 로그인 페이지로부터 유저 아이디 받아오기
         userID = id.toString()
          startService(Intent(this, LifecycleService::class.java))
-        setContentView(R.layout.main_page)
-        initEvent()
-        mainCharacterMove(470f, -550f)
         userID = id!!
         prefs = PreferenceInventory(this)
         CoroutineScope(Dispatchers.Main).launch {
@@ -782,21 +781,45 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                     data.addOnSuccessListener { result ->
                         Log.d("테스트데이터", result.data.toString())
                         if (result.data == null) {
-                            val jsonString = ""
-                            val level = "1"
-                            val user = hashMapOf(
-                                "uID" to userID,
-                                "money" to money,
-                                "level" to level,
-                                "jsonString" to jsonString
-                            )
-                            FireStore.db.collection("user").document(userID).set(
-                                user
-                            )
-                            tutorialCehck = true
-                            Log.d("체크데이터", "새로만듬")
-                            prefs.prefs.edit().clear().apply()
-                        } else {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val dataSecond_3 = async {
+                                    val jsonString = ""
+                                    val level = "1"
+                                    val user = hashMapOf(
+                                        "uID" to userID,
+                                        "money" to money,
+                                        "level" to level,
+                                        "jsonString" to jsonString
+                                    )
+                                    FireStore.db.collection("user").document(userID).set(
+                                        user
+                                    )
+                                    tutorialCehck = true
+                                    Log.d("체크데이터", "새로만듬")
+                                    prefs.prefs.edit().clear().apply()
+                                }
+                                setContentView(R.layout.main_page)
+                                dataSecond_3.await()
+                                if (tutorialCehck) {
+                                    val tutorialDialog = TutorialDialog()
+                                    tutorialDialog.show(supportFragmentManager, "optionDialog")
+                                    tutorialCehck = false
+                                }
+                                if (presentMoney == "") {
+                                    presentMoney = "0"
+                                }
+                                setMoneyText((presentMoney.toInt() + personalMoney).toString())
+                                setLevelText(FireStore.level)
+                                mainCharacterMove(470f, -550f)
+                                loadSavedCharacterAndMove()
+                                initEvent()
+                                val thread = Thread(PlayTime())
+                                thread.start()
+                                grassPref = getSharedPreferences("fragmentPlayTime", 0)
+                                editor = grassPref.edit()
+                            }
+                        }
+                        else {
                             CoroutineScope(Dispatchers.Main).launch {
                                 val dataSecond_2 = async {
                                     data.addOnSuccessListener { result ->
@@ -842,50 +865,38 @@ class MainActivity : AppCompatActivity(), QuizInterface, LevelUpInterface {
                                         Log.d("코루틴 테스트", "5")
                                     }
                                 }
-                                    data.addOnFailureListener { exception ->
-                                            // 실패할 경우
-                                            Log.d("리드", "Error getting documents: $exception")
-                                        }
+                                data.addOnFailureListener { exception ->
+                                    // 실패할 경우
+                                    Log.d("리드", "Error getting documents: $exception")
+                                }
                                 dataSecond_2.await()
                                 setContentView(R.layout.main_page)
-                                Log.d("화면","화면실행")
+                                Log.d("화면", "화면실행")
                                 if (tutorialCehck) {
                                     val tutorialDialog = TutorialDialog()
                                     tutorialDialog.show(supportFragmentManager, "optionDialog")
-                                    tutorialCehck=false
+                                    tutorialCehck = false
                                 }
-                                if (presentMoney=="") {
-                                    presentMoney="0"
+                                if (presentMoney == "") {
+                                    presentMoney = "0"
                                 }
                                 setMoneyText((presentMoney.toInt() + personalMoney).toString())
                                 setLevelText(FireStore.level)
-                                initEvent()
                                 mainCharacterMove(470f, -550f)
+                                loadSavedCharacterAndMove()
+                                initEvent()
                                 val thread = Thread(PlayTime())
                                 thread.start()
                                 grassPref = getSharedPreferences("fragmentPlayTime", 0)
                                 editor = grassPref.edit()
-                                loadSavedCharacterAndMove()
                             }
                         }
                     }
                 }
                 dataSecond.await()
             }
-            loadSavedCharacterAndMove()
-            if (tutorialCehck) {
-                val tutorialDialog = TutorialDialog()
-                tutorialDialog.show(supportFragmentManager, "optionDialog")
-                tutorialCehck=false
-            }
-            if (presentMoney=="") {
-                presentMoney="0"
-            }
-            setMoneyText((presentMoney.toInt() + personalMoney).toString())
-            setLevelText(FireStore.level)
         }
         setActivityResultInit()
-
     }
 
     override fun onResume() {
